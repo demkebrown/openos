@@ -1,0 +1,1124 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Contributing &#8212; Introduction to Operating Systems</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Introduction" href="../intro/intro.html" />
+    <link rel="prev" title="Preface" href="../intro/pref.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Operating Systems</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro_tb.html">
+                    <no title>
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/pref.html">
+   Preface
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   Contributing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/intro.html">
+   Intro
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../proc_threads/proc_threads.html">
+   Processes and Threads
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/scheduling.html">
+   Scheduling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sync.html">
+   Synchronization and Deadlock
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/mm.html">
+   Memory Management
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/fs.html">
+   File Systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sec/sec.html">
+   Security
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../virt/virt.html">
+   Virtualization &amp; Cloud
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/bib.html">
+   Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://jupyterhub-opf-jupyterhub.apps.smaug.na.operate-first.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/contributing/Contributing.ipynb&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/okrieg/openos"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Fcontributing/Contributing.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/edit/main/content/contributing/Contributing.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/contributing/Contributing.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resources-to-look-at">
+   Resources to look at
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-choices">
+   Design choices
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authoring-tutorial-getting-started">
+   Authoring tutorial - getting started
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setting-up-your-environment-a-simple-tutorial">
+     Setting up your environment; a simple tutorial
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#every-time">
+     Every time
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#authoring-workflow">
+     Authoring workflow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#submitting-changes">
+     Submitting changes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accepting-changes">
+     Accepting changes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authoring-content">
+   Authoring content
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-jupyterlab">
+     Using jupyterlab
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adding-figures">
+     Adding figures
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tags">
+     TAGS
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rise-presentations">
+     RISE presentations.
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#developing-one">
+       Developing one
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#coverting-google-slide-presentation">
+       Coverting google slide presentation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#running-one">
+       Running one
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#useful-tricks-and-stuff-we-should-try">
+     Useful tricks and stuff we should try
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proposed-structure">
+   Proposed structure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-1">
+     Part 1:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-2-core-os-services">
+     Part 2: Core OS services
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-3-parallelism-synchronization">
+     Part 3: Parallelism &amp; Synchronization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-4-other-other-important-topics">
+     Part 4: Other other important topics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-5-appendix">
+     Part 5: Appendix
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#todo-on-ostextbook">
+   Todo on ostextbook:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Contributing</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#resources-to-look-at">
+   Resources to look at
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#design-choices">
+   Design choices
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authoring-tutorial-getting-started">
+   Authoring tutorial - getting started
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setting-up-your-environment-a-simple-tutorial">
+     Setting up your environment; a simple tutorial
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#every-time">
+     Every time
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#authoring-workflow">
+     Authoring workflow
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#submitting-changes">
+     Submitting changes
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accepting-changes">
+     Accepting changes
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#authoring-content">
+   Authoring content
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#using-jupyterlab">
+     Using jupyterlab
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#adding-figures">
+     Adding figures
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#tags">
+     TAGS
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#rise-presentations">
+     RISE presentations.
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#developing-one">
+       Developing one
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#coverting-google-slide-presentation">
+       Coverting google slide presentation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#running-one">
+       Running one
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#useful-tricks-and-stuff-we-should-try">
+     Useful tricks and stuff we should try
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#proposed-structure">
+   Proposed structure
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-1">
+     Part 1:
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-2-core-os-services">
+     Part 2: Core OS services
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-3-parallelism-synchronization">
+     Part 3: Parallelism &amp; Synchronization
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-4-other-other-important-topics">
+     Part 4: Other other important topics
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#part-5-appendix">
+     Part 5: Appendix
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#todo-on-ostextbook">
+   Todo on ostextbook:
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="contributing">
+<span id="cont-contr"></span><h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">#</a></h1>
+<aside class="sidebar">
+<p class="sidebar-title">fast links/info:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/lab">development environment</a></p>
+<ul>
+<li><p>select Jonathan’s textbook (not the OPE one)</p></li>
+<li><p>type “dowork” and “rejup” to add back all the jupyter lab tabs and browser</p></li>
+</ul>
+</li>
+</ul>
+</aside>
+<p>This notebook, currently linked into textbook is intended to be a guild to people collaborating with us on developing the open OS textbook.  We first provide <a class="reference internal" href="#cont-contr-links"><span class="std std-ref">links</span></a> to background information on the tools used and describe some of our design <a class="reference internal" href="#cont-contr-design"><span class="std std-ref">choices</span></a>.  Next, we provide a <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> on how to get started with the environment if you are a collaborator of the authors, followed by information on how to <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">author</span></a> content.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We recommend you look at this notebook as the best example of generating content, and we will keep it up to date as we gain more experience.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>It is really easy to wast months with all the degrees of freedom with this authoring model, and we will try to be prescriptive on how we use the tools, so we recommend you jump straight to the <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> directions on <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">authoring</span></a> material.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is an example of a note, in a warning, in a note.</p>
+</div>
+</div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<p>At the end of this section we discuss our current thinking on the proposed <a class="reference internal" href="#cont-contr-structure"><span class="std std-ref">outline</span></a> of the textbook, our list of <a class="reference internal" href="#cont-contr-todo"><span class="std std-ref">todo</span></a> items that contributors can take a look at, and links to various <a class="reference internal" href="#cont-contr-ref"><span class="std std-ref">reference</span></a> materials, for example, sections of Jonathan’s textbook that we plan to steal materials from.</p>
+<section id="resources-to-look-at">
+<span id="cont-contr-links"></span><h2>Resources to look at<a class="headerlink" href="#resources-to-look-at" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/intro.html">jupyterbook: </a>: look here for basic instructions on authoring; we are basically using jupyterbook in a prescriptive fashion for the static content.</p>
+<ul>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/reference/cheatsheet.html">cheat sheet for myst markdown</a></p></li>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/structure/toc.html">modifying table of contents</a></p></li>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/content/myst.html">myst markdown</a>: we plan on authoring much of this with myst, although the current implementation of myst for jupyterbook is experimental.</p></li>
+<li><p><a class="reference external" href="https://jupyterbook.org/en/stable/content/metadata.html#jupyter-cell-tags">tags on cells</a>: use this to, for example hide inputs</p></li>
+</ul>
+</li>
+<li><p><a class="reference external" href="https://jappavoo.github.io/UndertheCovers/lecturenotes/lnhowto.html">jonathan notes on looking slides</a></p></li>
+<li><p><a class="reference external" href="https://github.com/jappavoo/UndertheCovers">jonthans repo for under the covers</a></p></li>
+</ul>
+</section>
+<section id="design-choices">
+<span id="cont-contr-design"></span><h2>Design choices<a class="headerlink" href="#design-choices" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>All real content is in the “content” directory</p>
+<ul>
+<li><p>tb_toc.yml - the table of contents for the book</p></li>
+</ul>
+</li>
+<li><p>The images should all be in the image directory</p></li>
+<li><p>We are creating one subdirectory for each chapter that will contain:</p>
+<ul>
+<li><p>book materials; for now, its a single file for book; likely will eventually break into sections</p></li>
+<li><p>all corresponding lectures, referred to as lecture notes</p></li>
+<li><p>all corresponding lab materials</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="authoring-tutorial-getting-started">
+<span id="cont-contr-tutorial"></span><h2>Authoring tutorial - getting started<a class="headerlink" href="#authoring-tutorial-getting-started" title="Permalink to this headline">#</a></h2>
+<p>Here is tutorial to getting started that describes how to set up your authoring environment assuming you are a collaborator of the authors, how to .</p>
+<section id="setting-up-your-environment-a-simple-tutorial">
+<h3>Setting up your environment; a simple tutorial<a class="headerlink" href="#setting-up-your-environment-a-simple-tutorial" title="Permalink to this headline">#</a></h3>
+<p>Connect to development environment <a class="reference external" href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/lab">here</a> or to public operate first <a class="reference external" href="https://jupyterhub-opf-jupyterhub.apps.smaug.na.operate-first.cloud/hub/user-redirect/lab">here</a>
+* you need to be a member of the following github <a class="reference external" href="https://github.com/organizations/OPEFFORT-DEV/settings/profile">organization</a> for authorization; send github id to <a class="reference external" href="mailto:okrieg&#37;&#52;&#48;bu&#46;edu">okrieg<span>&#64;</span>bu<span>&#46;</span>edu</a> and ask to join the group.  Orran can help. you debug problems (you likely are not authorized) by connecting to <a class="reference external" href="https://rhods-dashboard-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/notebookImages">dashboard</a> to <a class="reference external" href="https://console-openshift-console.apps.buaws-dev.idu6.p1.openshiftapps.com/k8s/ns/rhods-notebooks/pods">open shift console</a> for debugging issues with container run time… (or for operate first <a class="reference external" href="https://console-openshift-console.apps.smaug.na.operate-first.cloud/topology/ns/opf-jupyterhub?view=graph&amp;%5B%E2%80%A6%5D-4fe3-a08a-4dd796af34ea&amp;searchQuery=app">here</a>)</p>
+<p>The book you should be using right now is the OPE one, it contains a full lab environment.  When you first start it, you won’t see any content. While there is a persistent volume mounted by the container, we hide it to encourage students to use github and commit their changes there frequently or else lose progress. For authoring material, given how long it takes to generate the textbook, it is likely you will want to do your work in the persistent volume that a new server automatically mounts.  To do that, the first time you start the server:</p>
+<ul class="simple">
+<li><p>start a terminal</p></li>
+<li><p>checkout the following setup <a class="reference external" href="https://github.com/jappavoo/juphub-utils">repo</a></p></li>
+<li><p>do what it says at the end, i.e.:</p></li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="hll"><span class="linenos">1</span><span class="nb">cd</span> /opt/app-root/src
+</span><span class="linenos">2</span>git clone https://github.com/jappavoo/juphub-utils.git
+<span class="linenos">3</span>./juphub-utils/setup.sh
+</pre></div>
+</div>
+<aside class="sidebar">
+<p class="sidebar-title">For more info:</p>
+<p>To see how to put in code-blocks … look <a class="reference external" href="https://jupyterbook.org/en/stable/content/layout.html#sidebars-within-content">here</a></p>
+</aside>
+<ul class="simple">
+<li><p>shutdown the server, and restart it</p></li>
+<li><p>Suggest create a new ssh key for each environment, i.e. run ssh-keygen on container and then add to your profile on github clicking on your profile, and then adding to your ssh keys id_rsa.pub</p>
+<ul>
+<li><p>go to ssh and GPG keys</p></li>
+<li><p>add ssh key - add new sssh key</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="every-time">
+<h3>Every time<a class="headerlink" href="#every-time" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>type <code class="docutils literal notranslate"><span class="pre">dowork</span></code>  which will create a folder named <code class="docutils literal notranslate"><span class="pre">Work</span></code> in the home directory, linked to the  persistent storage <code class="docutils literal notranslate"><span class="pre">/opt/app-root/src</span></code></p>
+<ul>
+<li><p>we have set things up so that the home directory is ephemeral, so students will commit things to github frequently</p></li>
+</ul>
+</li>
+<li><p>to set up full lab environment in container type “rejup” to add back all the jupyter lab tabs and browser</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/okrieg/openos</span></code> or <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;your</span> <span class="pre">fork</span> <span class="pre">of</span> <span class="pre">openOS&gt;</span></code> to load the notebooks of an existing textbook, so they can be edited.</p></li>
+</ul>
+</section>
+<section id="authoring-workflow">
+<h3>Authoring workflow<a class="headerlink" href="#authoring-workflow" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Fork the operating system textbook from <a class="reference external" href="https://github.com/okrieg/openos">here</a></p></li>
+<li><p>Clone your fork on your container and you are ready to generate content</p></li>
+<li><p>make XX in the directory, where make with no arguments will provide help, right now:</p>
+<ul>
+<li><p>make build-tb - build the textbook</p></li>
+<li><p>make pub-tb -  will actually publish it to git</p></li>
+</ul>
+</li>
+<li><p>You don’t need to do any making, just edit the corresponding notebooks</p></li>
+<li><p>After you build it, you can look at the textbook by going to textbook/_build/html/intro_tb.html</p></li>
+<li><p>For suggesting small changes, or discussing topics, join the OPE annotation group on <a class="reference external" href="https://hypothes.is/groups/9Q6GRjK4/ope">hypothesis</a></p>
+<ul>
+<li><p>you can annotate clicking on icon on the very right on the published document after creating a hypothesis group</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="submitting-changes">
+<h3>Submitting changes<a class="headerlink" href="#submitting-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>you should on your fork create a <a class="reference external" href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork">pull request to original branch</a> of main repo</p></li>
+</ul>
+</section>
+<section id="accepting-changes">
+<h3>Accepting changes<a class="headerlink" href="#accepting-changes" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Go to github, look for pull requests, I like to use the git commands directly, describe ehre</p></li>
+</ul>
+<p>This book is based off of OPE, to re-integrate (FIX to explain below)</p>
+<ul class="simple">
+<li><p>git remote add ope <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:OPEFFORT/ope.git</p></li>
+<li><p>git log –oneline –all –graph –decorate</p></li>
+<li><p>git log –oneline –graph –decorate  –all</p></li>
+<li><p>git rebase ope/coursecontenttemplate</p></li>
+<li><p>git log –oneline –graph –decorate  new-structure</p></li>
+<li><p>git switch main</p></li>
+<li><p>git rebase new-feature</p></li>
+<li><p>git fetch origin</p></li>
+<li><p>git fetch  ope</p></li>
+</ul>
+</section>
+</section>
+<section id="authoring-content">
+<span id="cont-contr-authoring"></span><h2>Authoring content<a class="headerlink" href="#authoring-content" title="Permalink to this headline">#</a></h2>
+<section id="using-jupyterlab">
+<h3>Using jupyterlab<a class="headerlink" href="#using-jupyterlab" title="Permalink to this headline">#</a></h3>
+<p>Will put various hints here on what we find works, although for the most part like any editor, you will gradually experience what works best for you.</p>
+<ul class="simple">
+<li><p>there seems to be just one file browser, I tend to open multiple links to the textbook:</p>
+<ol class="simple">
+<li><p>for the place I am actually authoring</p></li>
+<li><p>for a browser to move around, look at examples</p></li>
+<li><p>for the rendered book/result</p></li>
+</ol>
+</li>
+<li><p>we might want to build some simple vidios/todos</p></li>
+</ul>
+</section>
+<section id="adding-figures">
+<h3>Adding figures<a class="headerlink" href="#adding-figures" title="Permalink to this headline">#</a></h3>
+<p>Use <a class="reference external" href="http://draw.io">draw.io</a> for open source software, I download the desktop version from here since it seems more reliable.  You can just download the image to your desktop, edit it there, and upload it again. Please use png as the source type of the file, rather than the default drawio; in this case it will create a XXX.drawio.png file, where the diagram is embedded in the png, so you can both dispay it, and edit it. This means you can not only continue to edit the file directly, but can also include exactly the same file in a figure.</p>
+<p>We use the figure directive in myst, so the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>As shown in figure {ref}`contrib:fig:examp`, most operating systems today have ... 
+
+```{figure} ../images/osstructure-1.drawio.png
+---
+height: 10px
+name: fcontrib:fig:examp
+align: right
+---
+A caption for figure
+```
+</pre></div>
+</div>
+<p>Results in this:</p>
+<p>As shown in figure <a class="reference internal" href="#contrib-fig-examp"><span class="std std-ref">A caption for figure</span></a>, most operating systems today have …</p>
+<figure class="align-right" id="contrib-fig-examp">
+<a class="reference internal image-reference" href="../_images/osstructure-1.drawio.png"><img alt="../_images/osstructure-1.drawio.png" src="../_images/osstructure-1.drawio.png" style="height: 10px;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">A caption for figure</span><a class="headerlink" href="#contrib-fig-examp" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>For more on figures look at this <a class="reference external" href="https://myst-parser.readthedocs.io/en/latest/syntax/roles-and-directives.html#images-and-figures">reference</a>.</p>
+</section>
+<section id="tags">
+<h3>TAGS<a class="headerlink" href="#tags" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>you can add <a class="reference external" href="https://jupyterbook.org/en/stable/content/metadata.html#jupyter-cell-tags%7D">tags</a> to cells, e.g., to make a slide a note, or to make a cell display in the margin.  Tags I am using so far are:</p>
+<ul>
+<li><p>margin</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="rise-presentations">
+<h3>RISE presentations.<a class="headerlink" href="#rise-presentations" title="Permalink to this headline">#</a></h3>
+<section id="developing-one">
+<h4>Developing one<a class="headerlink" href="#developing-one" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>you can find an example with templates for slides in the “content/contributing” directory under L01-example notebook.</p></li>
+<li><p>you should create a symbolic link to the lecture note css file (content/css/ln.css) with the name of your slide (e.g., L01-example), and commit it to the repo</p></li>
+<li><p>to determin which cells are slides, versus notes, versus subslides… edit the tags</p></li>
+</ul>
+</section>
+<section id="coverting-google-slide-presentation">
+<h4>Coverting google slide presentation<a class="headerlink" href="#coverting-google-slide-presentation" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>download google slidedeck as a powerpoint</p></li>
+<li><p>open powerpoint in keynote</p></li>
+<li><p>export to images,</p>
+<ul>
+<li><p>set to do an image for each stage of animations</p></li>
+<li><p>make sure png and transpartent backgrounds</p></li>
+<li><p>upload to book directory “content/from-google-slides”</p>
+<ul>
+<li><p>create new subdirectory (e.g., MM01)</p></li>
+<li><p>upload all images generated into that directory</p></li>
+<li><p>in directory, e.g., mm, type <code class="docutils literal notranslate"><span class="pre">{code-block}</span> <span class="pre">../python/mkln</span> <span class="pre">MM-L1</span> <span class="pre">../from-google-slides/MM01</span> </code></p></li>
+<li><p>you should now have a rise presentation titled MM-L1, where each image is a seperate slide</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="running-one">
+<h4>Running one<a class="headerlink" href="#running-one" title="Permalink to this headline">#</a></h4>
+<ul class="simple">
+<li><p>press lower case “t”, in screen show for speaker notes; my experience is that only works if you start the note before going to full screen on the slide</p></li>
+</ul>
+</section>
+</section>
+<section id="useful-tricks-and-stuff-we-should-try">
+<h3>Useful tricks and stuff we should try<a class="headerlink" href="#useful-tricks-and-stuff-we-should-try" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>as add-on to google doc, can convert google doc to markdown using <a class="reference external" href="https://workspace.google.com/marketplace/app/docs_to_markdown/700168918607">docs to markdown</a></p></li>
+<li><p>worth downloading google slides and then converting to markdown to get a start on slides and figures we want to include</p></li>
+</ul>
+</section>
+</section>
+<section id="proposed-structure">
+<span id="cont-contr-structure"></span><h2>Proposed structure<a class="headerlink" href="#proposed-structure" title="Permalink to this headline">#</a></h2>
+<section id="part-1">
+<h3>Part 1:<a class="headerlink" href="#part-1" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>CH: Introduction</p></li>
+</ul>
+</section>
+<section id="part-2-core-os-services">
+<h3>Part 2: Core OS services<a class="headerlink" href="#part-2-core-os-services" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>CH: scheduling</p></li>
+<li><p>CH: memory management</p></li>
+<li><p>CH: file systems</p></li>
+<li><p>CH: networking</p></li>
+</ul>
+</section>
+<section id="part-3-parallelism-synchronization">
+<h3>Part 3: Parallelism &amp; Synchronization<a class="headerlink" href="#part-3-parallelism-synchronization" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>CH: MP hardware</p></li>
+<li><p>CH: threads</p></li>
+<li><p>CH: locking</p></li>
+<li><p>CH: deadlock</p></li>
+</ul>
+</section>
+<section id="part-4-other-other-important-topics">
+<h3>Part 4: Other other important topics<a class="headerlink" href="#part-4-other-other-important-topics" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>CH Devices</p></li>
+<li><p>CH Security</p></li>
+<li><p>CH Virtualization and Cloud Computing</p></li>
+<li><p>CH Networking</p></li>
+</ul>
+</section>
+<section id="part-5-appendix">
+<h3>Part 5: Appendix<a class="headerlink" href="#part-5-appendix" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>using git</p></li>
+<li><p>makefile</p></li>
+<li><p>shell</p></li>
+<li><p>defensive programming</p></li>
+</ul>
+<ol class="simple">
+<li><p>read first four chapters of under the covers: <a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/unix/shellintro.html">https://jappavoo.github.io/UndertheCovers/textbook/unix/shellintro.html</a></p></li>
+<li></li>
+</ol>
+<p style="text-align: right">
+<a href="https://massopencloud.slack.com/archives/C03KHQ3KDPW/p1659732852816709">4:54</a></p>
+<p style="text-align: right">
+<a href="https://massopencloud.slack.com/archives/C03KHQ3KDPW/p1659732862900279">4:54</a></p>
+<p style="text-align: right">
+<a href="https://massopencloud.slack.com/archives/C03KHQ3KDPW/p1659732872013099">4:54</a></p></section>
+</section>
+<section id="todo-on-ostextbook">
+<span id="cont-contr-todo"></span><h2>Todo on ostextbook:<a class="headerlink" href="#todo-on-ostextbook" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p>add example with markdown cell under figure</p></li>
+<li><p>switch to Jonathan’s container and fix directions to use that</p></li>
+<li><p>upload all slides into the image, and test creation of slides</p></li>
+<li><p>commit and publish</p></li>
+<li><p>integrate google doc, examples from previous versions, and zackary’s notes - in progressm</p></li>
+<li><p>go through Jnathan’s first three chapters</p>
+<ol class="simple">
+<li><p>steal stuff form his About - preface say this is a companion book to his systems book, while not required, we will point to it..</p></li>
+<li><p>get rid of title of first section, just call preface</p></li>
+<li><p>point to Jonathan’s book for his perspectiv eon OS , but need to replicate in mine</p></li>
+<li><p>point ot jonathan’s for terminal - systess</p></li>
+<li><p>references to background</p>
+<ol class="simple">
+<li><p>write down section numbers and ordering for reading</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>customize container for the OS book for openshift environment - for now we are using the base OPE container</p></li>
+<li><p>create a container for gradescope.</p></li>
+<li><p>have a container running in local environment to avoid network problems.</p></li>
+</ul>
+</section>
+<section id="references">
+<span id="cont-contr-ref"></span><h2>References<a class="headerlink" href="#references" title="Permalink to this headline">#</a></h2>
+<p>Stuff to steal from look at, pasting here</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/unix/shellintro.html#standard-output-and-redirection">examples of proc file system</a></p></li>
+</ul>
+<p>xv6 - simple OS from MIT - <a class="reference external" href="https://pdos.csail.mit.edu/6.828/2012/xv6.html">https://pdos.csail.mit.edu/6.828/2012/xv6.html</a></p>
+<p>book from peter</p>
+<p>book three easy steps or whatever, ..</p>
+<p>Style here from jonathan hiding content: <a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/assembly/InfoRepI.html#gdb-display-and-set-registers">#</a></p>
+<p><a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/assembly/InfoRepI.html#gdb-display-and-set-registers">https://jappavoo.github.io/UndertheCovers/textbook/assembly/InfoRepI.html#gdb-display-and-set-registers</a></p>
+<p>Order in which to read book -</p>
+<ul class="simple">
+<li><p>what is introductory content, what is detail…</p></li>
+</ul>
+<p>Figure out how to put in tags in book, so that the tags will reflect…</p>
+<p>Test if you can put in reading order in different ways, can you put in maps, or can you</p>
+<ul class="simple">
+<li><p>several curated reading order</p></li>
+</ul>
+<p>We have asked you to take on faith, we want to give you to learn by trying…</p>
+<p>look at <a class="reference external" href="https://jappavoo.github.io/UndertheCovers/lecturenotes/assembly/L14.html">    14. SLS Lecture 14 : Assembly using the OS   </a></p>
+<p>hello world in assembly in 14.5.2</p>
+<p>experience perspective - top down, experiential, repeating multipel times…</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ which date
+/usr/bin/date
+$ file /usr/bin/date 
+/usr/bin/date: ELF 64-bit LSB shared object, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, BuildID[sha1]=731c2a7a56b2d07e67ac99b4960ec700b3faad68, for GNU/Linux 3.2.0, stripped
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Here is a note</p>
+</div>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./contributing"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="../intro/pref.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title">Preface</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="../intro/intro.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Introduction</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By Orran Krieger and Larry Woodman<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
