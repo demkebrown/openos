@@ -701,13 +701,13 @@ title="Print to PDF"
 </li>
 </ul>
 </aside>
-<p>This notebook, currently linked into textbook is intended to be a guild to people collaborating with us on developing the open OS textbook.  We first provide <a class="reference internal" href="#cont-contr-links"><span class="std std-ref">links</span></a> to background information on the tools used and describe some of our design <a class="reference internal" href="#cont-contr-design"><span class="std std-ref">choices</span></a>.  Next, we provide a <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> on how to get started with the environment if you are a collaborator of the authors, followed by information on how to <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">author</span></a> content.</p>
+<p>This notebook, currently linked into textbook is intended to be a guide to people collaborating with us on developing the open OS textbook.  We first provide <a class="reference internal" href="#cont-contr-links"><span class="std std-ref">links</span></a> to background information on the tools used and describe some of our design <a class="reference internal" href="#cont-contr-design"><span class="std std-ref">choices</span></a>.  Next, we provide a <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> on how to get started with the environment if you are a collaborator of the authors, followed by information on how to <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">author</span></a> content.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>We recommend you look at this notebook as the best example of generating content, and we will keep it up to date as we gain more experience.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>It is really easy to wast months with all the degrees of freedom with this authoring model, and we will try to be prescriptive on how we use the tools, so we recommend you jump straight to the <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> directions on <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">authoring</span></a> material.</p>
+<p>It is really easy to waste months with all the degrees of freedom with this authoring model, and we will try to be prescriptive on how we use the tools, so we recommend you jump straight to the <a class="reference internal" href="#cont-contr-tutorial"><span class="std std-ref">tutorial</span></a> directions on <a class="reference internal" href="#cont-contr-authoring"><span class="std std-ref">authoring</span></a> material.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This is an example of a note, in a warning, in a note.</p>
@@ -753,11 +753,11 @@ title="Print to PDF"
 </section>
 <section id="authoring-tutorial-getting-started">
 <span id="cont-contr-tutorial"></span><h2>Authoring tutorial - getting started<a class="headerlink" href="#authoring-tutorial-getting-started" title="Permalink to this headline">#</a></h2>
-<p>Here is tutorial to getting started that describes how to set up your authoring environment assuming you are a collaborator of the authors, how to .</p>
+<p>Here is tutorial to getting started that describes how to set up your authoring environment assuming you are a collaborator of the authors.</p>
 <section id="setting-up-your-environment-a-simple-tutorial">
 <h3>Setting up your environment; a simple tutorial<a class="headerlink" href="#setting-up-your-environment-a-simple-tutorial" title="Permalink to this headline">#</a></h3>
 <p>Connect to development environment <a class="reference external" href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/lab">here</a> or to public operate first <a class="reference external" href="https://jupyterhub-opf-jupyterhub.apps.smaug.na.operate-first.cloud/hub/user-redirect/lab">here</a>
-* you need to be a member of the following github <a class="reference external" href="https://github.com/organizations/OPEFFORT-DEV/settings/profile">organization</a> for authorization; send github id to <a class="reference external" href="mailto:okrieg&#37;&#52;&#48;bu&#46;edu">okrieg<span>&#64;</span>bu<span>&#46;</span>edu</a> and ask to join the group.  Orran can help. you debug problems (you likely are not authorized) by connecting to <a class="reference external" href="https://rhods-dashboard-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/notebookImages">dashboard</a> to <a class="reference external" href="https://console-openshift-console.apps.buaws-dev.idu6.p1.openshiftapps.com/k8s/ns/rhods-notebooks/pods">open shift console</a> for debugging issues with container run time… (or for operate first <a class="reference external" href="https://console-openshift-console.apps.smaug.na.operate-first.cloud/topology/ns/opf-jupyterhub?view=graph&amp;%5B%E2%80%A6%5D-4fe3-a08a-4dd796af34ea&amp;searchQuery=app">here</a>)</p>
+* you need to be a member of the following github <a class="reference external" href="https://github.com/organizations/OPEFFORT-DEV/settings/profile">organization</a> for authorization; send github id to <a class="reference external" href="mailto:okrieg&#37;&#52;&#48;bu&#46;edu">okrieg<span>&#64;</span>bu<span>&#46;</span>edu</a> and ask to join the group.  Orran can help you debug problems (you likely are not authorized) by connecting to <a class="reference external" href="https://rhods-dashboard-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/notebookImages">dashboard</a> to <a class="reference external" href="https://console-openshift-console.apps.buaws-dev.idu6.p1.openshiftapps.com/k8s/ns/rhods-notebooks/pods">open shift console</a> for debugging issues with container run time… (or for operate first <a class="reference external" href="https://console-openshift-console.apps.smaug.na.operate-first.cloud/topology/ns/opf-jupyterhub?view=graph&amp;%5B%E2%80%A6%5D-4fe3-a08a-4dd796af34ea&amp;searchQuery=app">here</a>)</p>
 <p>The book you should be using right now is the OPE one, it contains a full lab environment.  When you first start it, you won’t see any content. While there is a persistent volume mounted by the container, we hide it to encourage students to use github and commit their changes there frequently or else lose progress. For authoring material, given how long it takes to generate the textbook, it is likely you will want to do your work in the persistent volume that a new server automatically mounts.  To do that, the first time you start the server:</p>
 <ul class="simple">
 <li><p>start a terminal</p></li>
@@ -774,9 +774,9 @@ title="Print to PDF"
 <p>To see how to put in code-blocks … look <a class="reference external" href="https://jupyterbook.org/en/stable/content/layout.html#sidebars-within-content">here</a></p>
 </aside>
 <ul class="simple">
-<li><p>shutdown the server, and restart it</p></li>
-<li><p>Suggest create a new ssh key for each environment, i.e. run ssh-keygen on container and then add to your profile on github clicking on your profile, and then adding to your ssh keys id_rsa.pub</p>
+<li><p>shutdown the server, and restart it</p>
 <ul>
+<li><p>go to File menu and select “Hub Control Panel”, then click “Stop My Server”- Suggest create a new ssh key for each environment, i.e. run ssh-keygen on container and then add to your profile on github clicking on your profile, and then adding to your ssh keys id_rsa.pub</p></li>
 <li><p>go to ssh and GPG keys</p></li>
 <li><p>add ssh key - add new sssh key</p></li>
 </ul>
@@ -792,7 +792,7 @@ title="Print to PDF"
 </ul>
 </li>
 <li><p>to set up full lab environment in container type “rejup” to add back all the jupyter lab tabs and browser</p></li>
-<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/okrieg/openos</span></code> or <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;your</span> <span class="pre">fork</span> <span class="pre">of</span> <span class="pre">openOS&gt;</span></code> to load the notebooks of an existing textbook, so they can be edited.</p></li>
+<li><p>run <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">git&#64;github.com:okrieg/openos</span></code> or <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">&lt;your</span> <span class="pre">fork</span> <span class="pre">of</span> <span class="pre">openOS&gt;</span></code> to load the notebooks of an existing textbook, so they can be edited.</p></li>
 </ul>
 </section>
 <section id="authoring-workflow">
