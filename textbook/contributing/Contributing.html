@@ -695,7 +695,7 @@ title="Print to PDF"
 <ul class="simple">
 <li><p><a class="reference external" href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/lab">development environment</a></p>
 <ul>
-<li><p>select Jonathan’s textbook (not the OPE one)</p></li>
+<li><p>select Jonathan’s textbook called UCLSC Unix environment (not the OPE one)</p></li>
 <li><p>type “dowork” and “rejup” to add back all the jupyter lab tabs and browser</p></li>
 </ul>
 </li>
@@ -758,6 +758,13 @@ title="Print to PDF"
 <h3>Setting up your environment; a simple tutorial<a class="headerlink" href="#setting-up-your-environment-a-simple-tutorial" title="Permalink to this headline">#</a></h3>
 <p>Connect to development environment <a class="reference external" href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/lab">here</a> or to public operate first <a class="reference external" href="https://jupyterhub-opf-jupyterhub.apps.smaug.na.operate-first.cloud/hub/user-redirect/lab">here</a>
 * you need to be a member of the following github <a class="reference external" href="https://github.com/organizations/OPEFFORT-DEV/settings/profile">organization</a> for authorization; send github id to <a class="reference external" href="mailto:okrieg&#37;&#52;&#48;bu&#46;edu">okrieg<span>&#64;</span>bu<span>&#46;</span>edu</a> and ask to join the group.  Orran can help you debug problems (you likely are not authorized) by connecting to <a class="reference external" href="https://rhods-dashboard-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/notebookImages">dashboard</a> to <a class="reference external" href="https://console-openshift-console.apps.buaws-dev.idu6.p1.openshiftapps.com/k8s/ns/rhods-notebooks/pods">open shift console</a> for debugging issues with container run time… (or for operate first <a class="reference external" href="https://console-openshift-console.apps.smaug.na.operate-first.cloud/topology/ns/opf-jupyterhub?view=graph&amp;%5B%E2%80%A6%5D-4fe3-a08a-4dd796af34ea&amp;searchQuery=app">here</a>)</p>
+<p>The container you should be using now is the one from Jonathan’s book, as shown in <a class="reference internal" href="#contrib-fig-contsec"><span class="std std-ref">Container to select.</span></a></p>
+<figure class="align-default" id="contrib-fig-contsec">
+<a class="reference internal image-reference" href="../_images/container-selection.png"><img alt="../_images/container-selection.png" src="../_images/container-selection.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">Container to select.</span><a class="headerlink" href="#contrib-fig-contsec" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
 <p>The book you should be using right now is the OPE one, it contains a full lab environment.  When you first start it, you won’t see any content. While there is a persistent volume mounted by the container, we hide it to encourage students to use github and commit their changes there frequently or else lose progress. For authoring material, given how long it takes to generate the textbook, it is likely you will want to do your work in the persistent volume that a new server automatically mounts.  To do that, the first time you start the server:</p>
 <ul class="simple">
 <li><p>start a terminal</p></li>
@@ -862,13 +869,39 @@ title="Print to PDF"
 </section>
 <section id="adding-figures">
 <h3>Adding figures<a class="headerlink" href="#adding-figures" title="Permalink to this headline">#</a></h3>
-<p>Use <a class="reference external" href="http://draw.io">draw.io</a> for open source software, I download the desktop version from here since it seems more reliable.  You can just download the image to your desktop, edit it there, and upload it again. Please use png as the source type of the file, rather than the default drawio; in this case it will create a XXX.drawio.png file, where the diagram is embedded in the png, so you can both dispay it, and edit it. This means you can not only continue to edit the file directly, but can also include exactly the same file in a figure.</p>
+<p>Use <a class="reference external" href="http://draw.io">draw.io</a> for open source software, I download the desktop version from <a class="reference external" href="https://www.diagrams.net/%7D">here</a> since it seems more reliable.  You can just download the image to your desktop, edit it there, and upload it again. You can Please use png as the source type of the file, rather than the default drawio; in this case it will create a XXX.drawio.png file, where the diagram is embedded in the png, so you can both dispay it, and edit it. This means you can not only continue to edit the file directly, but can also include exactly the same file in a figure.</p>
+<p>Tricks I have found in using this:</p>
+<ol class="simple">
+<li><p>with the desktop version you can directly copy images browser see this <a class="reference external" href="https://www.youtube.com/watch?v=pYROq5Aphoc">vidio</a></p></li>
+<li><p>I tend to use layers, for animation, then upload it and generate multiple png files form the same image</p></li>
+<li><p>You very much want to export the picture as high-resolution, by using a large zoom, see Figure <a class="reference internal" href="#contrib-fig-dioex2"><span class="std std-ref">Export drawio figure as png.</span></a></p></li>
+</ol>
+<figure class="align-default" id="contrib-fig-dioex3">
+<a class="reference internal image-reference" href="images/contrib/draw-io-control-resolution.png"><img alt="images/contrib/draw-io-control-resolution.png" src="images/contrib/draw-io-control-resolution.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2 </span><span class="caption-text">Making images high resolution.</span><a class="headerlink" href="#contrib-fig-dioex3" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>If you use the drawio embedded in the notebook environment, to generate a png rather than using the file export from the figure, use the command palette from jupyter “view” menue as shown in figures
+<a class="reference internal" href="#contrib-fig-dioex1"><span class="std std-ref">Activate Command Palette to export drawio figure as png.</span></a> and <a class="reference internal" href="#contrib-fig-dioex2"><span class="std std-ref">Export drawio figure as png.</span></a>.</p>
+<figure class="align-default" id="contrib-fig-dioex1">
+<a class="reference internal image-reference" href="../_images/drawio-export-1.png"><img alt="../_images/drawio-export-1.png" src="../_images/drawio-export-1.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 3 </span><span class="caption-text">Activate Command Palette to export drawio figure as png.</span><a class="headerlink" href="#contrib-fig-dioex1" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="contrib-fig-dioex2">
+<a class="reference internal image-reference" href="../_images/drawio-export-2.png"><img alt="../_images/drawio-export-2.png" src="../_images/drawio-export-2.png" style="width: 60%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4 </span><span class="caption-text">Export drawio figure as png.</span><a class="headerlink" href="#contrib-fig-dioex2" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Note, this is strongly discouraged, since I don’t see any way to fix the resolution so that the images don’t suck.  I end up exporting from <a class="reference external" href="http://draw.io">draw.io</a> at 500% to get pictures to look reasonable.</p>
 <p>We use the figure directive in myst, so the following:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>As shown in figure {ref}`contrib:fig:examp`, most operating systems today have ... 
-
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
 ```{figure} ../images/osstructure-1.drawio.png
 ---
-height: 10px
+width: 50%
 name: fcontrib:fig:examp
 align: right
 ---
@@ -879,9 +912,9 @@ A caption for figure
 <p>Results in this:</p>
 <p>As shown in figure <a class="reference internal" href="#contrib-fig-examp"><span class="std std-ref">A caption for figure</span></a>, most operating systems today have …</p>
 <figure class="align-right" id="contrib-fig-examp">
-<a class="reference internal image-reference" href="../_images/osstructure-1.drawio.png"><img alt="../_images/osstructure-1.drawio.png" src="../_images/osstructure-1.drawio.png" style="height: 10px;" /></a>
+<a class="reference internal image-reference" href="../_images/osstructure-1.dio.png"><img alt="../_images/osstructure-1.dio.png" src="../_images/osstructure-1.dio.png" style="width: 50%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text">A caption for figure</span><a class="headerlink" href="#contrib-fig-examp" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 5 </span><span class="caption-text">A caption for figure</span><a class="headerlink" href="#contrib-fig-examp" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
 <p>For more on figures look at this <a class="reference external" href="https://myst-parser.readthedocs.io/en/latest/syntax/roles-and-directives.html#images-and-figures">reference</a>.</p>
@@ -944,6 +977,10 @@ A caption for figure
 </section>
 <section id="proposed-structure">
 <span id="cont-contr-structure"></span><h2>Proposed structure<a class="headerlink" href="#proposed-structure" title="Permalink to this headline">#</a></h2>
+<div class="admonition attention">
+<p class="admonition-title">Attention</p>
+<p>only half in there; We need to discuss this structure, since changes how we covered 440 in the past.</p>
+</div>
 <section id="part-1">
 <h3>Part 1:<a class="headerlink" href="#part-1" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
@@ -1107,7 +1144,7 @@ $ file /usr/bin/date
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Orran Krieger and Larry Woodman<br/>
+    By Angela Demke Brown, Orran Krieger & Larry Woodman<br/>
   
       &copy; Copyright 2022.<br/>
 </p>
