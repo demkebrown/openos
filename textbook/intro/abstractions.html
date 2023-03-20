@@ -1,0 +1,1057 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>4. Operating System Abstractions &#8212; Introduction to Operating Systems</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Tools" href="tools.html" />
+    <link rel="prev" title="3. Operating System Structure &amp; Unix/Linux" href="structure.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Operating Systems</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="pref.html">
+                    Preface
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="purpose.html">
+   2. Purpose of operating systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="structure.html">
+   3. Operating System Structure &amp; Unix/Linux
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   4. Operating System Abstractions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tools.html">
+   5. Tools
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Processor
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/intro.html">
+   6. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/process.html">
+   7. Virtualizing a CPU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/scheduling.html">
+   8. Scheduling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/real_sched.html">
+   9. A Look at the Linux Scheduler
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  File Systems
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/intro.html">
+   10. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/interface.html">
+   11. File System Abstraction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/diskhw.html">
+   12. A bit about Disks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/disklayout.html">
+   13. File System Layout
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_used.html">
+   14. Disk Layout:Tracking Used Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_free.html">
+   15. Disk Layout:Tracking Free Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_name.html">
+   16. Disk Layout:Implementing Name Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_failures.html">
+   17. Disk Layout:Dealing with Failures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_ex_exx.html">
+   18. Disk Layout:Examples of Real World File Systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/kernelimp.html">
+   19. Kernel implementation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Memory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/intro.html">
+   20. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/phys-and-seg.html">
+   21. Memory management before paged virtual memory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/virt-paging.html">
+   22. Paging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-tables.html">
+   23. Page Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/reclamation.html">
+   24. Memory reclaiming algorithms.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-size.html">
+   25. Page Sizes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/misc.html">
+   26. Other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/buffer-cache.html">
+   27. Buffer Cache
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/pagefaults.html">
+   28. Memory Management Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/realworld.html">
+   29. Memory management in the real world
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/concl.html">
+   30. Conclusion
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Concurrency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sync.html">
+   31. Intro Concurrency Synchronization and Deadlock
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sharing.html">
+   32. Cooperating Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/locking.html">
+   33. Synchronization Primitives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/deadlock.html">
+   34. Deadlocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/hardware_challenges.html">
+   35. Challenges of Modern Hardware
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/linux_locking.html">
+   36. Locking in the Linux Kernel
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other Topics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/OtherInro.html">
+   37. Overview of other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../virt/virt.html">
+   38. Virtualization and Cloud computing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="other.html">
+   39. Other OS structures
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendices
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/howto.html">
+   40. How to read this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing/Contributing.html">
+   41. Contributing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/bib.html">
+   42. Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/intro/abstractions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/intro/abstractions.ipynb&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/okrieg/openos"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Fintro/abstractions.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/edit/main/content/intro/abstractions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/intro/abstractions.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#everything-is-a-file">
+   4.1. Everything is a file
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#process-management">
+   4.2. Process management
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#state">
+     4.2.1. State
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#system-calls">
+     4.2.2. System calls
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     4.2.3. Examples
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     4.2.4. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-system">
+   4.3. File system
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#changing-stdin-and-stdout">
+   4.4. Changing stdin and stdout
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipes">
+   4.5. Pipes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#signals-protecting-against-dreaded-zombies">
+   4.6. Signals protecting against dreaded zombies
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4.7. Conclusion
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Operating System Abstractions</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#everything-is-a-file">
+   4.1. Everything is a file
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#process-management">
+   4.2. Process management
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#state">
+     4.2.1. State
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#system-calls">
+     4.2.2. System calls
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#examples">
+     4.2.3. Examples
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#summary">
+     4.2.4. Summary
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-system">
+   4.3. File system
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#changing-stdin-and-stdout">
+   4.4. Changing stdin and stdout
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pipes">
+   4.5. Pipes
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#signals-protecting-against-dreaded-zombies">
+   4.6. Signals protecting against dreaded zombies
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conclusion">
+   4.7. Conclusion
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="cell tag_remove-input tag_hide-output docutils container">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="operating-system-abstractions">
+<span id="cont-gs-abstractions"></span><h1><span class="section-number">4. </span>Operating System Abstractions<a class="headerlink" href="#operating-system-abstractions" title="Permalink to this headline">#</a></h1>
+<p>UNIX has instilled in generations of engineers a basic aesthetic for how to design and structure complicated collections of software.  In particular one learns that the designers of UNIX tried to structure the system around a small core set of ideas, “abstractions”, that once understood allows a programmer to understand the rest of the system and how to get things done.</p>
+<p>We first describe the fundamental abstraction of <a class="reference internal" href="#cont-gs-abstractions-file"><span class="std std-ref">files</span></a> that is core to the power and understand of Unix’s ability to enable programs, to be composed together, and how this enables powerful functionality to be implemented in a shell.  We then, using a shell as a example, briefly discuss key abstractions and and the interfaces a shell uses to control <a class="reference internal" href="#cont-gs-abstractions-process"><span class="std std-ref">processes</span></a>, enable processes to <a class="reference internal" href="#cont-gs-abstractions-pipes"><span class="std std-ref">communicate</span></a>, operate on <a class="reference internal" href="#cont-gs-abstractions-fs"><span class="std std-ref">files in a file systems</span></a> and find out what <a class="reference internal" href="#cont-gs-abstractions-signals"><span class="std std-ref">happened</span></a> to processes it started.</p>
+<section id="everything-is-a-file">
+<span id="cont-gs-abstractions-file"></span><h2><span class="section-number">4.1. </span>Everything is a file<a class="headerlink" href="#everything-is-a-file" title="Permalink to this headline">#</a></h2>
+<p>A core idea of Unix is that everything is a file, where a file is a stream of bytes.  As shown <a class="reference internal" href="#file-desc"><span class="std std-numref">Fig. 4.1</span></a> the kernel maintains for each process a <em>file descriptor table</em>, where a file descriptor is an index into that table that can be used to read or write to a particular file.  The system calls that work on all files are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">write(desc,</span> <span class="pre">buffer,</span> <span class="pre">len)</span></code>: Write <code class="docutils literal notranslate"><span class="pre">len</span></code> bytes from <code class="docutils literal notranslate"><span class="pre">buffer</span></code> into a stream identified by <code class="docutils literal notranslate"><span class="pre">desc</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">read(desc,</span> <span class="pre">buffer,</span> <span class="pre">max)</span></code>: Read <code class="docutils literal notranslate"><span class="pre">max</span></code> bytes (or fewer if no data is available) from stream identified by <code class="docutils literal notranslate"><span class="pre">desc</span></code> into <code class="docutils literal notranslate"><span class="pre">buffer</span></code>and returning the actual number of bytes <code class="docutils literal notranslate"><span class="pre">n</span></code> read.</p></li>
+</ul>
+<p>To understand how to use these operations, you really need to read the manual.  In Linux you can find out about everything using the <strong>man</strong> program.  For example, <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">2</span> <span class="pre">write</span></code> tells you everything about the <code class="docutils literal notranslate"><span class="pre">write</span></code> system call:</p>
+<div class="margin admonition note">
+<p class="admonition-title">Note</p>
+<p>In this case, the <em>2</em> refers to the section of the manual for system calls.  To find out about the different sections, you, of course, read the manual about the man command.</p>
+</div>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>To make files in the file system look like a stream, on each read or write operation, the kernel increases a (per open file)  <code class="docutils literal notranslate"><span class="pre">offset</span></code> by the amount of data read or written.  Turns out that this naturally matches many applications that read or write files in their entirety.</p>
+<p>Entries are added to the file descriptor table by operations that open or create a file or create a special file like a network connection, or a tty.  There are three special file descriptors shown in <a class="reference internal" href="#fd-table"><span class="std std-numref">Table 4.1</span></a>, that programs (and libraries) should use for input, output and errors.</p>
+<figure class="align-default" id="file-desc">
+<a class="reference internal image-reference" href="../_images/osstructure-fd.drawio.png"><img alt="../_images/osstructure-fd.drawio.png" src="../_images/osstructure-fd.drawio.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.1 </span><span class="caption-text">The kernel maintains for each process an array of file descriptors, where a process can read or write to any kind of I/O object that are open in its table.</span><a class="headerlink" href="#file-desc" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<table class="colwidths-given table" id="fd-table">
+<caption><span class="caption-number">Table 4.1 </span><span class="caption-text">Standard well known file descriptors. </span><a class="headerlink" href="#fd-table" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 18%" />
+<col style="width: 71%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Value</p></th>
+<th class="head"><p>Name</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0</p></td>
+<td><p>stdin</p></td>
+<td><p>standard input; process should read data from here</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>stdout</p></td>
+<td><p>standard output; process will write its output here</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>stderr</p></td>
+<td><p>standard error; process should write out errors here</p></td>
+</tr>
+</tbody>
+</table>
+<p>So, for example, the following program echos a string to the terminal:</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>While the same program, can have its output redirected to a file:</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>And we can see that the contents of this file are the same as what was previously written to the terminal, by using the <code class="docutils literal notranslate"><span class="pre">cat</span></code> program which writes the contents of a file to its <code class="docutils literal notranslate"><span class="pre">stdout</span></code>, by default the terminal:</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<div class="margin admonition note">
+<p class="admonition-title">Note</p>
+<p>This probably seems obvious to a modern reader, i.e., an object oriented design, where you can do the same operations on any object. However, at the time, it was a radical idea, operating systems had specialized interfaces for files with records, terminals, etc…</p>
+</div>
+<p>This fundamental idea Unix introduced, that you can use the same  <code class="docutils literal notranslate"><span class="pre">read</span></code> and <code class="docutils literal notranslate"><span class="pre">write</span></code> operations on any kind of I/O object, is very powerful.  It enables a single program, depending on how it is launched by the shell, to work on data stored in a file system, data entered on a keyboard, or even on data sent over a network by other processes.  By introducing the idea of a special object/file, a <em>pipe</em>, you could allow programs to be combined together to do much more powerful tasks.   The <strong>|</strong> symbol tells the shell to create a pipe that connects the output of one program to the input of the next program.  So, lets say we are trying to find all the programs on our computer that have anything to do with perl, the following command will: 1) list the contents of the /usr/bin/ directory 2) send the output of that listing to a grep program that searches for the word perl, and 3) send the output of that to a program that counts the number of lines of input received.</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>Today, the idea of everything is a file has been taken much further in Linux.  Linux now exposes all kinds of information through synthetic file systems, giving users and administrators massive ability to automate.  For example, in <code class="docutils literal notranslate"><span class="pre">bash</span></code> the shell we are using <code class="docutils literal notranslate"><span class="pre">$$</span></code> lets us know the <code class="docutils literal notranslate"><span class="pre">id</span></code> of the process we are in.  So, stealing a nice example from <a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/unix/shellintro.html#standard-output-and-redirection">jonathan</a>, the following command shows the</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>And we can see that our stdin, stdout, and stderr all point to a character special file is in Unix is used to represent a terminal, and we can write to that same special device and it will appear in our terminal.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>I would strongly encourage reading the shell and unix sections of <a class="reference external" href="https://jappavoo.github.io/UndertheCovers/textbook/intro_tb.html#under-the-covers-the-secret-life-of-software">Under the Covers: The Secret Life of Software</a>  for a much more detailed coverage of this material.  However, hopefully this has given you enough information to understand the power Unix introduced by introducing polymorphism in the operating system, and creating a shell that enables you to combine all kinds of programs together in complicated ways.</p>
+<p>The remainder of this chapter introduces the core abstractions of Unix, and the system calls you use on those examples, all with examples from a shell.</p>
+</section>
+<section id="process-management">
+<span id="cont-gs-abstractions-process"></span><h2><span class="section-number">4.2. </span>Process management<a class="headerlink" href="#process-management" title="Permalink to this headline">#</a></h2>
+<p>As discussed <a class="reference internal" href="structure.html#cont-gs-structure-struc"><span class="std std-ref">previously</span></a> a process is a virtual computer, and the kernel provides each process: 1) an abstraction of an isolated CPU (while multiplexing it between different processes), 2) a <em>virtual memory</em> abstraction of massive contiguous memory that starts at address <span class="math notranslate nohighlight">\(0x0\)</span>, and 3) a set of file abstractions that allow the process to persist data and communicate with other processes.    After discussing the state maintained by the kernel, we discuss the interfaces the shell (or any application) can use to manipulate processes.</p>
+<section id="state">
+<h3><span class="section-number">4.2.1. </span>State<a class="headerlink" href="#state" title="Permalink to this headline">#</a></h3>
+<p>As shown in <a class="reference internal" href="#img-intro-proc"><span class="std std-numref">Fig. 4.2</span></a> the kernel maintains a table of all processes, indexed by the <code class="docutils literal notranslate"><span class="pre">process</span> <span class="pre">id</span></code>, or <code class="docutils literal notranslate"><span class="pre">PID</span></code> to keep track of all the information about that process.   This includes a pointer to the <code class="docutils literal notranslate"><span class="pre">file</span> <span class="pre">descriptor</span> <span class="pre">table</span></code>(discussed <a class="reference internal" href="#file-desc"><span class="std std-ref">earlier</span></a>), as well as data structures to maintain CPU and memory management state.  For CPU, this includes all the registers that need to be loaded when the process runs.</p>
+<figure class="align-default" id="img-intro-proc">
+<a class="reference internal image-reference" href="../_images/osstructure-proc.drawio.png"><img alt="../_images/osstructure-proc.drawio.png" src="../_images/osstructure-proc.drawio.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.2 </span><span class="caption-text">A process table, in the kernel, indexed by PID, points to the file descriptor table, memory management regions, and CPU state.</span><a class="headerlink" href="#img-intro-proc" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>In today’s computers the address space, or <em>virtual memory</em>, of a process is a huge contiguous abstraction of memory that goes from 0 to <span class="math notranslate nohighlight">\(2^{64}\)</span>.  As shown in <a class="reference internal" href="#img-intro-mmlay"><span class="std std-numref">Fig. 4.3</span></a> it is typically divided into  <em>code</em> or machine-language instructions (for some reason typically
+called “text”), <em>initialized data</em>, consisting of read-only and
+read-write initialized data, <em>initialized-zero data</em>, called “BSS” for
+obscure historical reasons, <em>heap</em> or dynamically allocated memory, and
+<em>stack</em>.  The <em>memory regions</em> referred to in <a class="reference internal" href="#img-intro-mmlay"><span class="std std-numref">Fig. 4.3</span></a> keeps track of each of these regions.</p>
+<figure class="align-right" id="img-intro-mmlay">
+<a class="reference internal image-reference" href="../_images/trad-addr-space.png"><img alt="../_images/trad-addr-space.png" src="../_images/trad-addr-space.png" style="width: 45%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.3 </span><span class="caption-text">Virtuam memory layout</span><a class="headerlink" href="#img-intro-mmlay" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="system-calls">
+<h3><span class="section-number">4.2.2. </span>System calls<a class="headerlink" href="#system-calls" title="Permalink to this headline">#</a></h3>
+<p>Key System calls in traditional unix related to processes are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pid</span> <span class="pre">=</span> <span class="pre">fork(void)</span></code>:  create a child process that is a duplicate of the parent. Return 0 in child, and <code class="docutils literal notranslate"><span class="pre">PID</span></code> of child in parent.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">exit(status)</span></code>: terminate the calling process and record the status passed in for others</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pid</span> <span class="pre">=</span> <span class="pre">waitpid(pid,</span> <span class="pre">*status...)</span></code>: wait for specified process to complete (or change state), return the status passed on exit, and garbage collect any kernel resources</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">err</span> <span class="pre">=</span> <span class="pre">execve(program,</span> <span class="pre">arguments,</span> <span class="pre">environment)</span></code>: start executing a new process with specified arguments and environment information</p></li>
+</ul>
+<p>The <code class="docutils literal notranslate"><span class="pre">fork</span></code> system call duplicates the parent into a new child process, where the only difference that enables the parent and child to distinguish itself is the return value.  You can think of this logically as creating a copy of all the memory, copying the CPU state, and copying the file descriptor able (while incrementing reference counts on all the files pointed to by the file descriptor table).</p>
+<p>Unix maintains tree in the kernel, where every process has a parent, and a parent may have many children.   For example, below I type I run the bash shell several times, and then printing out the process tree (see <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">ps</span></code> for arguments) you see that ps is a child of bash, which is a child of bash…</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">exit</span></code> system call causes the process to complete, passing in a status for the reason and <code class="docutils literal notranslate"><span class="pre">waitpid</span></code> waits for a <em>process</em> to change status, and if it has executed, returns the status passed in by <code class="docutils literal notranslate"><span class="pre">exit</span></code>.    While most of the state goes away (e.g., the file descriptor table and memory regions) the process descriptor stays around to keep track of this status information. As a result, if another process does not do a wait on a process, it will become a <strong>zombie</strong> (yes, that is a real unix term) holding on to a process descriptor in the kernel forever.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">execve</span></code> sysem call executes a new program replacing the memory regions (BSS, text, …) with memory from the file which the <code class="docutils literal notranslate"><span class="pre">program</span></code> points to.  The CPU state is set to pass in the arguments, and the file descriptor table is not modified.  Note, <code class="docutils literal notranslate"><span class="pre">exec</span></code> will never return unless there was some kind of failure; it is the same process just executing a different program.</p>
+</section>
+<section id="examples">
+<span id="cont-gs-abstractions-process-example"></span><h3><span class="section-number">4.2.3. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">#</a></h3>
+<p>Okay lets look at some code. Checking out repository for examples from year</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>The parent prints out the child <code class="docutils literal notranslate"><span class="pre">pid</span></code> that it gets from the fork, and the its <code class="docutils literal notranslate"><span class="pre">pid</span></code> (from calling <code class="docutils literal notranslate"><span class="pre">getpid()</span></code>).  You can see that these values match the pid that the child gets from <code class="docutils literal notranslate"><span class="pre">getppid()</span></code>. Again, please use man to find out about any of these system calls.</p>
+<aside class="sidebar">
+<p>While it seems important to explain <code class="docutils literal notranslate"><span class="pre">fork</span></code> as <strong>the</strong> system call that Unix have been designed around, as some of the authors have <a class="reference external" href="https://www.bu.edu/rhcollab/files/2019/04/fork-in-the-road.pdf">written in the past</a>, it is a highly flawed interface.  Note, when you question religious dogma, be prepared for the <a class="reference external" href="https://lwn.net/Articles/785430/">abuse</a>, and, if you can, find a member in good standing of the religion to have a reasoned <a class="reference external" href="https://www.bu.edu/rhcollab/2019/04/11/a-fork-in-the-road/">debate</a>.</p>
+</aside>
+<p>To see how one can use the combination of fork and exec to start a new program, and wait until that program completes, see below.  Note that it is an error if the procedure returns from exec. Also, note that the parent explicitly waits for the <code class="docutils literal notranslate"><span class="pre">pid</span></code> of the child returned by fork on line 21, and then returns that status.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+</section>
+<section id="summary">
+<h3><span class="section-number">4.2.4. </span>Summary<a class="headerlink" href="#summary" title="Permalink to this headline">#</a></h3>
+<p>So, you should now understand the abstraction of a process as a virtual computer, with CPU state and virtual memory.  A process (parent) can create another process (child) by calling <code class="docutils literal notranslate"><span class="pre">fork</span></code> which causes the kernel to create a child with a duplicate of the CPU and virtual memory of the parent.  The child, like children everywhere, can decide to be different from its parent by <code class="docutils literal notranslate"><span class="pre">exec</span></code> of a different program.  In that case the kernel looks at the program, and creates a new virtual address space by loading (potentially lazily as we will see) the text, initialized and uninitialized  data segments of the program into memory.  You can now see how to implement the core part of any shell, reading from <code class="docutils literal notranslate"><span class="pre">stdin</span></code> the names of programs to execute, and creating new processes to execute those programs.</p>
+</section>
+</section>
+<section id="file-system">
+<span id="cont-gs-abstractions-fs"></span><h2><span class="section-number">4.3. </span>File system<a class="headerlink" href="#file-system" title="Permalink to this headline">#</a></h2>
+<p>Normally, the programs come out of a file system, and we are often using redirection (e.g., <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>) to set the input or output of the program into some file in a file system.   We will discuss <a class="reference internal" href="../fs/interface.html#cont-fs-interface"><span class="std std-ref">later</span></a> in much more detail the abstractions of a file system, but for now we briefly introduce the key information you need to know.  First, it is important to realize that all Unix file systems organize information in a hierarchy as shown in numref}<code class="docutils literal notranslate"><span class="pre">fs:tree-logical-abs</span></code>.</p>
+<figure class="align-default" id="fs-tree-logical-abs">
+<a class="reference internal image-reference" href="../_images/filesys-tree.png"><img alt="../_images/filesys-tree.png" src="../_images/filesys-tree.png" style="width: 45%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 4.4 </span><span class="caption-text">Logical view: hierarchical file system name space</span><a class="headerlink" href="#fs-tree-logical-abs" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>We talked earlier about doing an exec, and with the <code class="docutils literal notranslate"><span class="pre">execve</span></code> call above, you need to specify the absolute path name to the program being executed.  For example, if you want to run the cat program, the argument to <code class="docutils literal notranslate"><span class="pre">execve</span></code> on our system would be <code class="docutils literal notranslate"><span class="pre">/usr/bin/cat</span></code>.</p>
+<p>You can tell the shell where to search for executable programs by specifying a PATH environment variable, for example, the following echo tells me the shell should look for the program <code class="docutils literal notranslate"><span class="pre">cat</span></code> and the following <code class="docutils literal notranslate"><span class="pre">type</span></code> is a command to tell you where the shell will find an executable.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>So, a shell could go through each element of the path environment variable searching for a program. Thankfully, there is a whole family of library calls built on top of the <code class="docutils literal notranslate"><span class="pre">execve</span></code> system call that does this work for you (see execlp from the man page below.</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>Some of the system calls specific to file systems are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">desc</span> <span class="pre">=</span> <span class="pre">open(pathname,</span> <span class="pre">O_READ)</span></code>: Verify that file <code class="docutils literal notranslate"><span class="pre">name</span></code> exists and may
+be read, and then return a <em>descriptor</em> which may be used to refer to
+that file when reading it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">desc</span> <span class="pre">=</span> <span class="pre">open(pathname,</span> <span class="pre">O_WRITE</span> <span class="pre">|</span> <span class="pre">flags,</span> <span class="pre">mode)</span></code>: Verify permissions and
+open <code class="docutils literal notranslate"><span class="pre">name</span></code> for writing, creating it (or erasing existing contents) if
+necessary as specified in <code class="docutils literal notranslate"><span class="pre">flags</span></code>. Returns a descriptor which may be
+used for writing to that file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close(desc)</span></code>: stop using this descriptor, decremented reference count in the file, and, if the reference count is zero, free any resources
+allocated for it.</p></li>
+</ul>
+<p>Every process has associated with it a <code class="docutils literal notranslate"><span class="pre">current</span> <span class="pre">working</span> <span class="pre">directory</span></code>.  The pathname may start with a <code class="docutils literal notranslate"><span class="pre">/</span></code> then it is an absolute pathname from the top of the file tree.  If it doesn’t then it is interpreted relative to the current working directory.  This is convenient, since often you are doing all your work in a directory, and you don’t need to figure out where that is in the whole file system.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">close</span></code> call tells the kernel you are not using a file anymore,  However, the kernel can’t free up resources until the reference count goes to zero.  On a fork, the kernel increments a reference count on each of the files, since now both the parent and child processes have it open, and both the parent and the child should close the file.</p>
+</section>
+<section id="changing-stdin-and-stdout">
+<h2><span class="section-number">4.4. </span>Changing stdin and stdout<a class="headerlink" href="#changing-stdin-and-stdout" title="Permalink to this headline">#</a></h2>
+<p>Now that we know how to open a file in the file system, all we need to do to change a program so that it gets its input from a file, or write its output to a file, is get the kernel to change the file descriptor table.  A process/shell can manipulate file descriptor tables using the <code class="docutils literal notranslate"><span class="pre">dup</span></code> system calls:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">err</span> <span class="pre">=</span> <span class="pre">dup2(oldfd,</span> <span class="pre">newfd)</span></code> : creates a copy of the file descriptor <code class="docutils literal notranslate"><span class="pre">oldfd</span></code>, to <code class="docutils literal notranslate"><span class="pre">newfd</span></code>; closing <code class="docutils literal notranslate"><span class="pre">newfd</span></code> if there is already an entry there.</p></li>
+</ul>
+<p>So, imagine we have the following shell script:</p>
+<p><code class="docutils literal notranslate"> <span class="pre">foo</span> <span class="pre">&gt;</span> <span class="pre">/tmp/bar</span></code></p>
+<p>The shell would:</p>
+<ol class="simple">
+<li><p>open a file in the director /tmp/ called bar</p></li>
+<li><p>fork a process to execute but before doing the <code class="docutils literal notranslate"><span class="pre">exec</span></code> of <code class="docutils literal notranslate"><span class="pre">foo</span></code> the child process should use <code class="docutils literal notranslate"><span class="pre">dup2</span></code> to modify its <code class="docutils literal notranslate"><span class="pre">stdout</span></code> to be the file descriptor it got back from the open</p></li>
+</ol>
+<p>Great, now we know how to write a shell that can start a process that writes data into a file or reads data from a file specified by the user.  How do we get programs to talk to each other without staging it through a file?</p>
+</section>
+<section id="pipes">
+<span id="cont-gs-abstractions-pipes"></span><h2><span class="section-number">4.5. </span>Pipes<a class="headerlink" href="#pipes" title="Permalink to this headline">#</a></h2>
+<p>A ‘pipe’ is a Unix kernel abstraction to allow communication between processes. A <code class="docutils literal notranslate"><span class="pre">read</span></code> of the pipe will return data previously written to it in a first-in-first-out (FIFO) fashion.   A programmer can create a pipe, and then use operations that change the entries in the file descriptor table to tie the output of one program to the input of another.</p>
+<p>A pipe is created with the following system call:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">err</span> <span class="pre">=</span> <span class="pre">pipe(&amp;fdpair[0])</span></code>: creates a pipe where fdpair is an array of two file descriptors returned by the kernel.</p></li>
+</ul>
+<p>After this call, <code class="docutils literal notranslate"><span class="pre">fdpair[0]</span></code> will have the descriptor for the entry in the file descriptor table for the  read end of the pipe, and <code class="docutils literal notranslate"><span class="pre">fdpair[1]</span></code> will  refer to the   write end of the pipe.  Data written to the write end of the pipe  is  buffered by  the  kernel  until it is read from the read end of the pipe.  A read to an empty pipe will block until there is some data in it, and will then return the max of the buffered data and the request size of the read.</p>
+<p>To see how this is used, look at the following code (stolen from the linux man page for <code class="docutils literal notranslate"><span class="pre">pipe</span></code>)</p>
+<p>The child code (lines 33/34) just sits in a loop reading from the pipe and then writing to <code class="docutils literal notranslate"><span class="pre">stdout</span></code>.  The parent just writes (line 42) whatever its arguments are to the write side of the pipe.</p>
+<p>Note, on lines 37 and lines 43, we see that each of the processes close the side of the pipe they are not using.  This is important, since, as mentioned above, the reference count for all the file descriptors  are increased on a fork, so, after the fork both the parent and the child have both the read and write side of the pipe open. The only reason that the child process gets a 0 result on a read (rather than blocking) is because all the references to the write side are closed.</p>
+<p>So, imagine we have the following shell script:</p>
+<p><code class="docutils literal notranslate"> <span class="pre">foo</span> <span class="pre">|</span> <span class="pre">bar</span></code></p>
+<p>The shell would:</p>
+<ol class="simple">
+<li><p>create a pipe</p></li>
+<li><p>fork a process to execute foo, but before doing the <code class="docutils literal notranslate"><span class="pre">exec</span></code> the process should use <code class="docutils literal notranslate"><span class="pre">dup2</span></code> to modify its <code class="docutils literal notranslate"><span class="pre">stdout</span></code> to be the write side of the pipe</p></li>
+<li><p>fork a process to execute bar, and that child should use <code class="docutils literal notranslate"><span class="pre">dup2</span></code> to modify its <code class="docutils literal notranslate"><span class="pre">stdin</span></code> to the read side of the pipe.</p></li>
+</ol>
+<p>Now we can start two processes, executing different programs, that talk directly to each other through a pipe.  These programs don’t care that that are talking to each other, they work exactly the same way if they are talking to a terminal, a file or a pipe.  Now we know everything we need to know to write a shell that can combine together different programs to, tell me how many programs in <code class="docutils literal notranslate"><span class="pre">/usr/bin</span></code> have something to do with <code class="docutils literal notranslate"><span class="pre">perl</span></code>, i.e.:</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+</section>
+<section id="signals-protecting-against-dreaded-zombies">
+<span id="cont-gs-abstractions-signals"></span><h2><span class="section-number">4.6. </span>Signals protecting against dreaded zombies<a class="headerlink" href="#signals-protecting-against-dreaded-zombies" title="Permalink to this headline">#</a></h2>
+<p>When we talked about processes, we wrote a well behaved shell that started another process using <code class="docutils literal notranslate"><span class="pre">fork</span></code> and then waited for it to finish.  What would happen if we didn’t wait?  Both the shell and the program it started would run at the same time, or at least as we will talk about <a class="reference internal" href="../scheduling/intro.html#cont-scheduling"><span class="std std-ref">later</span></a>, the kernel cause the hardware to take turns running one and then the other. This is exactly what the symbol <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> does, i.e., tells the shell to let the program run in parallel.  As an example, if I am building something complicated, I will often do it in parallel while continuing to work on my shell, e.g., the following command runs make, redirecting all its output into the file RES, and then returns control to the user.  You can every so often look at RES to see if the make is done.</p>
+<div class="cell tag_output_scroll tag_remove-input docutils container">
+</div>
+<p>While this is great, if the child finishes, it will exit with its status, but, if the shell never waits for it, it will become a zombie.  After a while, the system will be filled with zombies and come to a grinding halt.</p>
+<p>The way Unix deals with this is by sending a signal to a parent process when a child finishes.  A signal is, for a virtual computer, similar to what an interrupt is for a physical computer.  It tells it that some event happened on the outside world that it might want to know about.</p>
+<p>There are a large number of signals the system can tell you about, and you can find out more about all of them with <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">7</span> <span class="pre">signal</span></code>.  The shell should register a signal handler using the <code class="docutils literal notranslate"><span class="pre">sigaction</span></code> system call.</p>
+<ul class="simple">
+<li><p>sigaction(signum, act, &amp;oldact);</p></li>
+</ul>
+<p>The act points to a data structure <code class="docutils literal notranslate"><span class="pre">struct</span> <span class="pre">sigaction</span></code> that describes how the caller wants to handle the signal.  If there was previously a handler registered, the oldact tells the caller what the old action was.</p>
+</section>
+<section id="conclusion">
+<h2><span class="section-number">4.7. </span>Conclusion<a class="headerlink" href="#conclusion" title="Permalink to this headline">#</a></h2>
+<p>This chapter has given you a worldwind toor of some of the key abstractions of Unix. A process is a virtual computer, with its own virtual CPU and virtual memory.   You should know how to create a new process, tell it to execute a program.</p>
+<p>The power of Unix is the idea that we can combine many programs together, using a shell, where the input and output of processes can be set up to be the terminal, files, or pipes.  You should have an idea now on some of the key system calls that enable a shell to do this.  Later chapters will discuss in much more detail the abstraction of a CPU and how it is scheduled, how memory management works and the system calls you can do to control it, and how file systems work and their system calls.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./intro"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="structure.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">3. </span>Operating System Structure &amp; Unix/Linux</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="tools.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">5. </span>Tools</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By (see contributing chapter book)<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

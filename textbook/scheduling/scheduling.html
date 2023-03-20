@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Processor Scheduling &#8212; Introduction to Operating Systems</title>
+    <title>8. Scheduling &#8212; Introduction to Operating Systems</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -53,8 +53,8 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Synchronization and Deadlock" href="../sync/sync.html" />
-    <link rel="prev" title="Processes and Threads" href="../proc_threads/proc_threads.html" />
+    <link rel="next" title="9. A Look at the Linux Scheduler" href="real_sched.html" />
+    <link rel="prev" title="7. Virtualizing a CPU" href="process.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -109,65 +109,267 @@ const thebe_selector_output = ".output, .cell_output"
         
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
-                <a class="reference internal" href="../intro_tb.html">
-                    <no title>
+                <a class="reference internal" href="../intro/pref.html">
+                    Preface
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
- <li class="toctree-l1">
-  <a class="reference internal" href="../intro/pref.html">
-   Preface
-  </a>
- </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../contributing/Contributing.html">
-   Contributing
-  </a>
- </li>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../intro/intro.html">
-   Intro
+   1. Introduction
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../proc_threads/proc_threads.html">
-   Processes and Threads
+  <a class="reference internal" href="../intro/purpose.html">
+   2. Purpose of operating systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/structure.html">
+   3. Operating System Structure &amp; Unix/Linux
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/abstractions.html">
+   4. Operating System Abstractions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/tools.html">
+   5. Tools
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Processor
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   6. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="process.html">
+   7. Virtualizing a CPU
   </a>
  </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   Scheduling
+   8. Scheduling
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="real_sched.html">
+   9. A Look at the Linux Scheduler
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  File Systems
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/intro.html">
+   10. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/interface.html">
+   11. File System Abstraction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/diskhw.html">
+   12. A bit about Disks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/disklayout.html">
+   13. File System Layout
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_used.html">
+   14. Disk Layout:Tracking Used Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_free.html">
+   15. Disk Layout:Tracking Free Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_name.html">
+   16. Disk Layout:Implementing Name Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_failures.html">
+   17. Disk Layout:Dealing with Failures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_ex_exx.html">
+   18. Disk Layout:Examples of Real World File Systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/kernelimp.html">
+   19. Kernel implementation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Memory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/intro.html">
+   20. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/phys-and-seg.html">
+   21. Memory management before paged virtual memory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/virt-paging.html">
+   22. Paging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-tables.html">
+   23. Page Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/reclamation.html">
+   24. Memory reclaiming algorithms.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-size.html">
+   25. Page Sizes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/misc.html">
+   26. Other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/buffer-cache.html">
+   27. Buffer Cache
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/pagefaults.html">
+   28. Memory Management Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/realworld.html">
+   29. Memory management in the real world
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/concl.html">
+   30. Conclusion
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Concurrency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../sync/sync.html">
-   Synchronization and Deadlock
+   31. Intro Concurrency Synchronization and Deadlock
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../mm/mm.html">
-   Memory Management
+  <a class="reference internal" href="../sync/sharing.html">
+   32. Cooperating Processes
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/fs.html">
-   File Systems
+  <a class="reference internal" href="../sync/locking.html">
+   33. Synchronization Primitives
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../sec/sec.html">
-   Security
+  <a class="reference internal" href="../sync/deadlock.html">
+   34. Deadlocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/hardware_challenges.html">
+   35. Challenges of Modern Hardware
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/linux_locking.html">
+   36. Locking in the Linux Kernel
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other Topics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/OtherInro.html">
+   37. Overview of other topics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../virt/virt.html">
-   Virtualization &amp; Cloud
+   38. Virtualization and Cloud computing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/other.html">
+   39. Other OS structures
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendices
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/howto.html">
+   40. How to read this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing/Contributing.html">
+   41. Contributing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/bib.html">
-   Bibliography
+   42. Bibliography
   </a>
  </li>
 </ul>
@@ -229,7 +431,25 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://jupyterhub-opf-jupyterhub.apps.smaug.na.operate-first.cloud/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/scheduling/scheduling.ipynb&branch=main"
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/scheduling/scheduling.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/scheduling/scheduling.ipynb&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -371,23 +591,208 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-process-life-cycle">
+   8.1. The Process Life Cycle
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#performing-a-context-switch">
+   8.2. Performing a Context Switch
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#batch-versus-preemptive">
+   8.3. Batch versus Preemptive
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factors-in-process-selection">
+   8.4. Factors in Process Selection
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#responsiveness">
+     8.4.1. Responsiveness
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#turnaround-time">
+     8.4.2. Turnaround Time
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#throughput">
+     8.4.3. Throughput
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#predictability">
+     8.4.4. Predictability
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fairness">
+     8.4.5. Fairness
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simple-examples">
+   8.5. Simple Examples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-come-first-served">
+     8.5.1. First Come, First Served
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shortest-job-first">
+     8.5.2. Shortest Job First
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#round-robin">
+     8.5.3. Round Robin
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#priority">
+     8.5.4. Priority
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lottery">
+     8.5.5. Lottery
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Processor Scheduling</h1>
+                <h1>Scheduling</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-process-life-cycle">
+   8.1. The Process Life Cycle
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#performing-a-context-switch">
+   8.2. Performing a Context Switch
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#batch-versus-preemptive">
+   8.3. Batch versus Preemptive
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#factors-in-process-selection">
+   8.4. Factors in Process Selection
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#responsiveness">
+     8.4.1. Responsiveness
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#turnaround-time">
+     8.4.2. Turnaround Time
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#throughput">
+     8.4.3. Throughput
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#predictability">
+     8.4.4. Predictability
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#fairness">
+     8.4.5. Fairness
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#simple-examples">
+   8.5. Simple Examples
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#first-come-first-served">
+     8.5.1. First Come, First Served
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#shortest-job-first">
+     8.5.2. Shortest Job First
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#round-robin">
+     8.5.3. Round Robin
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#priority">
+     8.5.4. Priority
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#lottery">
+     8.5.5. Lottery
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+                        </nav>
                     </div>
                 </div>
             </div>
@@ -395,9 +800,99 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="processor-scheduling">
-<h1>Processor Scheduling<a class="headerlink" href="#processor-scheduling" title="Permalink to this headline">#</a></h1>
-<p>We are talking here about scheduling the processor not the damn memory, disk, …</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="scheduling">
+<h1><span class="section-number">8. </span>Scheduling<a class="headerlink" href="#scheduling" title="Permalink to this headline">#</a></h1>
+<p>The scheduler is responsible for managing the entirety of the process life cycle and for selecting the next process to run. In the next few sections we will describe the process life cycle and several methods for ordering runnable processes. Before we discuss details we need to define a few new terms. Earlier we described how we will approach virtualizing the CPU, by allowing a process to run for an amount of time and then switching for another process and then repeating these steps as long as there are processes that need to run. We allot a bounded amount of time for a process to run in a given turn and this bounded time is called a <em>time slice</em>. In batch scheduling, this time slice is the entire time needed to execute the job and in preemptive scheduling this is a bounded amount (though not necessarily static as we will see). We need a mechanism for changing what the active process on a CPU is, we call this mechanism a <em>context switch</em>. With these definitions let’s jump into the mechanism first.</p>
+<section id="the-process-life-cycle">
+<h2><span class="section-number">8.1. </span>The Process Life Cycle<a class="headerlink" href="#the-process-life-cycle" title="Permalink to this headline">#</a></h2>
+<p>Processes are created in one of two ways: the operating system creates the first process (called init in UNIX-like systems) during boot up, or any process can use a system call (e.g., <code class="docutils literal notranslate"><span class="pre">fork()</span></code>, <code class="docutils literal notranslate"><span class="pre">clone()</span></code>, <code class="docutils literal notranslate"><span class="pre">NtCreateProcess()</span></code>, etc). Processes can also be terminated in three ways: by itself by calling <code class="docutils literal notranslate"><span class="pre">exit()</span></code>, <code class="docutils literal notranslate"><span class="pre">ExitProcess()</span></code>, or equivalent, due to an error (e.g., segmentation fault, division by zero, etc.), or by another process calling (<code class="docutils literal notranslate"><span class="pre">kill()</span></code>, <code class="docutils literal notranslate"><span class="pre">TerminateProcess()</span></code>, or similar).</p>
+<p>Once created, a process has the following life cycle.</p>
+<figure class="align-default" id="lifecycle">
+<img alt="../_images/ProcessLifecycle.png" src="../_images/ProcessLifecycle.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 8.1 </span><span class="caption-text">The process life cycle showing the possible transitions between the states.</span><a class="headerlink" href="#lifecycle" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>As shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a>, there are 3 possible states for a process and all the valid stat transitions are represented by the arrows. A running process is one that is currently active on a CPU. A running process can move to either the ‘Ready’ or ‘Blocked’ state. To move to the Blocked state (labeled 1), a process must take an action that will require ‘significant’. Some examples of blocking operations are: issuing a read from disk or from a network socket that does not have data ready, trying to acquire certain kinds of locks that are already owned by another process or thread, etc. A Running process that takes an action that will block immediately moves to the Blocked state, allowing another process to use the CPU while it waits To move to Ready from Running (labeled 2), the running process has to either yield the remainder of its allotted time slice, or be stopped by the OS after exhausting its slice. Moving from Ready to Running (labeled 3) requires that the OS to select the process as the next to execute and place it on a processor. The final transition we have not discussed is from Blocked to Ready (labeled 4), this transition happens when the blocking request is now complete or ready.</p>
+</section>
+<section id="performing-a-context-switch">
+<h2><span class="section-number">8.2. </span>Performing a Context Switch<a class="headerlink" href="#performing-a-context-switch" title="Permalink to this headline">#</a></h2>
+<p><a class="reference internal" href="process.html#cont-scheduling-process-abstraction"><span class="std std-ref">Earlier</span></a> we described the data structures used to hold process information, now we need a way to change the active process on a CPU. When the OS decides to change the active process all of the state associated with the outgoing process is cached in its PCB. Next the OS selects a new process to take the CPU and loads the incoming process state from its PCB and sets the CPU to run the incoming state from where it last left off. Note that each of the state transitions shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a> are context switches. At each of these points an outgoing process is taken off a CPU and an incoming one is placed on it and resumed. This transition is an expensive one, even though we are saving all the state needed to resume a process, modern processors have several caches (data and instruction caches, the translation look aside buffer, etc.) used to help a process run more quickly that are tied to the executing process. When a new process is placed on a CPU, the contents of these caches are not related and either cleared or need to be replaced by the new process.</p>
+</section>
+<section id="batch-versus-preemptive">
+<h2><span class="section-number">8.3. </span>Batch versus Preemptive<a class="headerlink" href="#batch-versus-preemptive" title="Permalink to this headline">#</a></h2>
+<p>Batch scheduling is a ‘run to completion’ model which means that once a job starts, it remains the active job on a CPU until it has completed. This mode of scheduling was used in early computers and is still used for some high-performance computing or HPC systems. Preemptive scheduling is more familiar to the modern computer user because all consumer OS’s use this model. In a preemptive scheduling system we use the notion of the time slice and a process is only active on a CPU while it is not blocked and it has not exhausted its time slice. This allows us to build interactive systems that can respond to user input and can handle jobs with unbounded run time.</p>
+</section>
+<section id="factors-in-process-selection">
+<h2><span class="section-number">8.4. </span>Factors in Process Selection<a class="headerlink" href="#factors-in-process-selection" title="Permalink to this headline">#</a></h2>
+<p>With all the parts in place to move processes on and off a CPU we are only missing a method for choosing what the next process to run on a CPU will be. Selecting the next process requires that the OS developer consider a number of possible criterion to optimize and to balance against each other. We must weigh things like responsiveness, turnaround time, throughput, predictability, fairness, and load on other parts of the system in making this decision, so let’s take a look at what each of these considerations are.</p>
+<section id="responsiveness">
+<h3><span class="section-number">8.4.1. </span>Responsiveness<a class="headerlink" href="#responsiveness" title="Permalink to this headline">#</a></h3>
+<p>Responsiveness is the amount of time required for the system to respond to an event or a request. If a user is interacting with the system, they will likely notice if the scheduler is not prioritizing responsiveness if they have to wait for key strokes or other input to have their effect.</p>
+</section>
+<section id="turnaround-time">
+<h3><span class="section-number">8.4.2. </span>Turnaround Time<a class="headerlink" href="#turnaround-time" title="Permalink to this headline">#</a></h3>
+<p>Turnaround time is the amount of time between a job submission and its termination. Minimizing this time often helps with throughput.</p>
+</section>
+<section id="throughput">
+<h3><span class="section-number">8.4.3. </span>Throughput<a class="headerlink" href="#throughput" title="Permalink to this headline">#</a></h3>
+<p>We define throughput as maximizing the number of processes completed per unit of time. To optimize for throughput we want to ensure that the active process stays on the CPU for as long as it isn’t blocked.</p>
+</section>
+<section id="predictability">
+<h3><span class="section-number">8.4.4. </span>Predictability<a class="headerlink" href="#predictability" title="Permalink to this headline">#</a></h3>
+<p>We are not going to dive deeply into real time computing, but there are classes of application which need to be certain of regular and predictable performance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Real time scheduling is used in a wide class of applications from industrial controls to vehicle management to robotics. Predictability is a key requirement in each of these cases. Think of the program or programs responsible for managing an airplane in flight, the developers make decisions for the software with a guarantee that certain calculations can be made at least N times a second. If this requirement is not met, we start seeing bad and possibly dangerous behavior.</p>
+</div>
+</section>
+<section id="fairness">
+<h3><span class="section-number">8.4.5. </span>Fairness<a class="headerlink" href="#fairness" title="Permalink to this headline">#</a></h3>
+<p>Starvation in the context of scheduling is defined as a process never getting access to a CPU (for what ever reason). A functioning scheduler should not starve any process indefinitely.</p>
+<p>These requirements are often in tension with each other and designing a scheduling algorithm is an act of balancing trade offs for the requirements of the OS.</p>
+</section>
+</section>
+<section id="simple-examples">
+<h2><span class="section-number">8.5. </span>Simple Examples<a class="headerlink" href="#simple-examples" title="Permalink to this headline">#</a></h2>
+<p>Now that we have a collection of requirements, let’s look at a few simple possibilities and see which of our requirements they meet well and which ones they fail. Our first two examples are for batch system scheduling, which means that each job runs to completion before a new job is selected. The remaining examples will change to preemptive scheduling.</p>
+<section id="first-come-first-served">
+<h3><span class="section-number">8.5.1. </span>First Come, First Served<a class="headerlink" href="#first-come-first-served" title="Permalink to this headline">#</a></h3>
+<p>Just like waiting in line at the local government office, each process gets into a queue and the processor executes the first process in that queue until it completes. Then we repeat the same. This method is really simple and it meets our fairness requirement as we can prove that no process will be stalled indefinitely. However, this breaks down when we mix short, CPU intensive jobs with longer or I/O bound jobs. If a terminal has to wait in a queue behind a long compilation task, it could look to the user as if the terminal is not responding to key strokes. Also, turnaround time for a job in this scheduler is entirely based on the length of the jobs preceding it in the queue.</p>
+<p>First come, first served meets our fairness requirement well, but it falls down on almost all the others.</p>
+</section>
+<section id="shortest-job-first">
+<h3><span class="section-number">8.5.2. </span>Shortest Job First<a class="headerlink" href="#shortest-job-first" title="Permalink to this headline">#</a></h3>
+<p>Instead of using arrival time for selecting the next process, we sort the queue of processes by the amount of time they will take to run and we keep the queue sorted by inserting processes by run time. This algorithm improves turnaround time and throughput over first come, first served but we can construct scenarios where long running jobs are stalled indefinitely by having short job continually arriving on the system.</p>
+<p>Shortest job first gives excellent throughput and can yield good turnaround time and responsiveness for systems with only short jobs. However, it totally fails on fairness and predictability.</p>
+</section>
+<section id="round-robin">
+<h3><span class="section-number">8.5.3. </span>Round Robin<a class="headerlink" href="#round-robin" title="Permalink to this headline">#</a></h3>
+<p>Our first preemptive scheduling model is just like first come, first served but we have added the time slice so processes are no longer run to completion. In this model we still have a single queue and processes can be added to it. When a process becomes active it is given a fixed amount of time to run and when this time expires the OS interrupts the process and puts it at the back of the queue.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The preemptive scheduling models introduces a new parameter we need to set: the length of the time slice. We have to weigh the cost of changing processes against the interactivity requirements when deciding on the length of a time slice. Later on we will see systems that change the length based on usage patterns.</p>
+</div>
+</section>
+<section id="priority">
+<h3><span class="section-number">8.5.4. </span>Priority<a class="headerlink" href="#priority" title="Permalink to this headline">#</a></h3>
+<p>The core idea behind priority scheduling is that some processes may be more important than others and should be given access to the CPU first. To implement this the OS maintains two or more priority queues which hold processes assigned to that each priority. Runnable processes in a higher priority queue are run before runnable processes in lower priority queues. In general we assign higher priorities to I/O bound processes and lower priorities to CPU bound ones. Figure <a class="reference internal" href="#priority-sched"><span class="std std-numref">Fig. 8.2</span></a> shows a simple example of a system with 4 priority queues. In this snap shot, the next process to be given CPU time will be the first process in the priority 4 queue. Assuming no additions, the processes in queue 3 will not run until all of the ones in 4 have completed.</p>
+<figure class="align-default" id="priority-sched">
+<img alt="../_images/priority-sched.png" src="../_images/priority-sched.png" />
+<figcaption>
+<p><span class="caption-number">Fig. 8.2 </span><span class="caption-text">A simple example of a system with 4 priority queues and runnable processes in several of the queues.</span><a class="headerlink" href="#priority-sched" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It may seem counter-intuitive to assign high priority to I/O bound processes because they often do not make use of their full time slice. We do this because a process that is frequently blocking on I/O is more like to be interactive and therefore have a user who will notice latency when the scheduler ignores the process for several periods.</p>
+</div>
+</section>
+<section id="lottery">
+<h3><span class="section-number">8.5.5. </span>Lottery<a class="headerlink" href="#lottery" title="Permalink to this headline">#</a></h3>
+<p>As the name suggests, in lottery scheduling the OS gives ‘tickets’ to each runnable process. When the scheduler needs to select a new process to run, it picks a ticket at random and the process holding that ticket runs. With a small modification, we can express priority in this method by assigning more tickets to high priority processes than low.</p>
+<p>These examples are not exhaustive, there are other algorithms for selecting the next runnable process, however these examples are meant to illustrate that there are a number of ways to approach this problem and this is an active area of research today.</p>
+</section>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -427,17 +922,17 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../proc_threads/proc_threads.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="process.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title">Processes and Threads</p>
+            <p class="prev-next-title"><span class="section-number">7. </span>Virtualizing a CPU</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="../sync/sync.html" title="next page">
+    <a class='right-next' id="next-link" href="real_sched.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Synchronization and Deadlock</p>
+        <p class="prev-next-title"><span class="section-number">9. </span>A Look at the Linux Scheduler</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
@@ -448,7 +943,7 @@ title="Print to PDF"
     <div class="footer-content row">
         <footer class="col footer"><p>
   
-    By Angela Demke Brown, Orran Krieger & Larry Woodman<br/>
+    By (see contributing chapter book)<br/>
   
       &copy; Copyright 2022.<br/>
 </p>

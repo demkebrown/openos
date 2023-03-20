@@ -1,0 +1,1049 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>2. Purpose of operating systems &#8212; Introduction to Operating Systems</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Operating System Structure &amp; Unix/Linux" href="structure.html" />
+    <link rel="prev" title="1. Introduction" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Operating Systems</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="pref.html">
+                    Preface
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   2. Purpose of operating systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="structure.html">
+   3. Operating System Structure &amp; Unix/Linux
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="abstractions.html">
+   4. Operating System Abstractions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="tools.html">
+   5. Tools
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Processor
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/intro.html">
+   6. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/process.html">
+   7. Virtualizing a CPU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/scheduling.html">
+   8. Scheduling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/real_sched.html">
+   9. A Look at the Linux Scheduler
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  File Systems
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/intro.html">
+   10. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/interface.html">
+   11. File System Abstraction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/diskhw.html">
+   12. A bit about Disks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/disklayout.html">
+   13. File System Layout
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_used.html">
+   14. Disk Layout:Tracking Used Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_track_free.html">
+   15. Disk Layout:Tracking Free Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_name.html">
+   16. Disk Layout:Implementing Name Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_failures.html">
+   17. Disk Layout:Dealing with Failures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/dl_ex_exx.html">
+   18. Disk Layout:Examples of Real World File Systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../fs/kernelimp.html">
+   19. Kernel implementation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Memory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/intro.html">
+   20. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/phys-and-seg.html">
+   21. Memory management before paged virtual memory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/virt-paging.html">
+   22. Paging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-tables.html">
+   23. Page Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/reclamation.html">
+   24. Memory reclaiming algorithms.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-size.html">
+   25. Page Sizes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/misc.html">
+   26. Other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/buffer-cache.html">
+   27. Buffer Cache
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/pagefaults.html">
+   28. Memory Management Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/realworld.html">
+   29. Memory management in the real world
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/concl.html">
+   30. Conclusion
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Concurrency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sync.html">
+   31. Intro Concurrency Synchronization and Deadlock
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sharing.html">
+   32. Cooperating Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/locking.html">
+   33. Synchronization Primitives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/deadlock.html">
+   34. Deadlocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/hardware_challenges.html">
+   35. Challenges of Modern Hardware
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/linux_locking.html">
+   36. Locking in the Linux Kernel
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other Topics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/OtherInro.html">
+   37. Overview of other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../virt/virt.html">
+   38. Virtualization and Cloud computing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="other.html">
+   39. Other OS structures
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendices
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/howto.html">
+   40. How to read this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing/Contributing.html">
+   41. Contributing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/bib.html">
+   42. Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/intro/purpose.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/intro/purpose.ipynb&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/okrieg/openos"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Fintro/purpose.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/edit/main/content/intro/purpose.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/intro/purpose.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-simple-model-of-hardware">
+   2.1. A simple model of hardware
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-fundamental-platform">
+   2.2. The fundamental platform
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#abstracting-hardware">
+     2.2.1. Abstracting Hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enabling-diverse-hardware">
+     2.2.2. Enabling diverse hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sharing-the-hardware">
+     2.2.3. Sharing the hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#supporting-many-users">
+     2.2.4. Supporting many users
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#protecting-from-external-attacks">
+     2.2.5. Protecting from external attacks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#management">
+     2.2.6. Management
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#supporting-devices">
+     2.2.7. Supporting devices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#putting-it-together">
+     2.2.8. Putting it together
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-why-do-we-care">
+   2.3. So why do we care
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-the-fun-over">
+   2.4. Is the fun over?
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>Purpose of operating systems</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#a-simple-model-of-hardware">
+   2.1. A simple model of hardware
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#the-fundamental-platform">
+   2.2. The fundamental platform
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#abstracting-hardware">
+     2.2.1. Abstracting Hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#enabling-diverse-hardware">
+     2.2.2. Enabling diverse hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#sharing-the-hardware">
+     2.2.3. Sharing the hardware
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#supporting-many-users">
+     2.2.4. Supporting many users
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#protecting-from-external-attacks">
+     2.2.5. Protecting from external attacks
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#management">
+     2.2.6. Management
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#supporting-devices">
+     2.2.7. Supporting devices
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#putting-it-together">
+     2.2.8. Putting it together
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#so-why-do-we-care">
+   2.3. So why do we care
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#is-the-fun-over">
+   2.4. Is the fun over?
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <section class="tex2jax_ignore mathjax_ignore" id="purpose-of-operating-systems">
+<span id="cont-gs-purpose"></span><h1><span class="section-number">2. </span>Purpose of operating systems<a class="headerlink" href="#purpose-of-operating-systems" title="Permalink to this headline">#</a></h1>
+<p>The purpose of an operating system is to provide everything needed to enable applications to run on computers.  We <a class="reference internal" href="#cont-gs-purpose-hw"><span class="std std-ref">first</span></a> present a simple model of hardware and why the OS is needed, then discuss how operating systems are the <a class="reference internal" href="#cont-gs-purpose-platform"><span class="std std-ref">fundamental platform</span></a> that all computing depends on.  We then discuss why developing a fundamental understanding of operating systems is <a class="reference internal" href="#cont-gs-purpose-care"><span class="std std-ref">important</span></a> and how now is such an <a class="reference internal" href="#cont-gs-purpose-care"><span class="std std-ref">exciting time</span></a> to be doing research or development in operating systems.</p>
+<p>We understand that studying operating systems is hard.  Our hope is that at the end of this chapter you will realize why this course is so important for you as a computer scientist or engineer.  Also, we hope a few of you will get excited about the area and consider joining our community of OS developers and researchers.  Consider that today’s dominant operating systems are open source and rely on 1000s of contributors from all over the world, many of whom volunteer their time.</p>
+<section id="a-simple-model-of-hardware">
+<span id="cont-gs-purpose-hw"></span><h2><span class="section-number">2.1. </span>A simple model of hardware<a class="headerlink" href="#a-simple-model-of-hardware" title="Permalink to this headline">#</a></h2>
+<p>The fundamental job of the operating system is to enable applications to run on a computer.  To understand why this is complicated, consider the very simple model of a computer depicted in <a class="reference internal" href="#simplecomputer-fig"><span class="std std-numref">Fig. 2.1</span></a>.  We briefly describe each of the key components of this computer, and what you need to know for now.</p>
+<figure class="align-default" id="simplecomputer-fig">
+<a class="reference internal image-reference" href="../_images/hardware.png"><img alt="../_images/hardware.png" src="../_images/hardware.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.1 </span><span class="caption-text">A simple model of a computer.  The CPU is connected to high speed memory, and through a lower speed bus to a network controller and disk controller that are in turn connected to a network (ethernet in this case) and a disk.</span><a class="headerlink" href="#simplecomputer-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<ul class="simple">
+<li><p><strong>Central Processing Unit (CPU)</strong>:  The smart part that executes instructions is called the Central Processing Unit (CPU) or <strong>processor</strong>.  In our simple model, these instructions operate by modifying the contents of various processor registers, loading new register contents from memory, or storing register contents into memory.</p></li>
+<li><p><strong>Memory:</strong> Also referred to as <strong>Random Access Memory (RAM)</strong>, holds the instructions and data that applications require as they execute.  It is physically connected to the CPU via direct wiring.  Random access here refers to the fact that the processor can directly load or store any memory location (addressed as an 8-bit byte) in the same amount of time.   Memory today is normally volatile, meaning that its contents are lost when the computer is powered off.</p></li>
+<li><p><strong>I/O bus:</strong> If the CPU wasn’t connected to anything but RAM, you couldn’t do much with it.  All computers have some form of Input/Output (or I/O) bus that connects the CPU and RAM to different devices.  While there are many kinds of I/O devices, for now we will ignore everything but: 1) storage, and 2) networks.   The processor typically talks to an I/O device by loading and storing registers on a controller specific to the device, and that controller in turn communicates with the corresponding device(s) and transfers data between the device and memory.</p></li>
+<li><p><strong>Storage:</strong> Since the memory is typically volatile, computers have to have some form of storage that is non-volatile or <em>persistent</em>.  This may include hard disk drives (HDDs), solid state drives (SSDs), optical drives, usb sticks, etc.  Most storage devices are accessed at a block granularity (e.g., 512 or 4096 bytes), meaning that entire blocks are transferred between storage and memory. Most storage devices are not <strong>Random Access</strong>, for example, technologies like a hard disk drive require the disk head to physically move to the storage location on the disk before reading or writing the data.  When the processor wants to read or write a block of disk, it tells the storage controller the block of disk to transfer to or from memory, and the storage controller notifies the processor when the operation is complete.</p></li>
+<li><p><strong>Networking:</strong> To talk to the outside world computers are normally connected to some network, typically ethernet today, where data is transferred between memory and the network in some form of packet as shown in <a class="reference internal" href="#ethernet-packet"><span class="std std-numref">Fig. 2.2</span></a>.  When the processor wants to send a message over the network, it first prepares a packet in memory, and then tells the network controller to send it.  When new packets arrive over the network, the controller copies them into memory, and then tells the processor (in some fashion) that a new packet is available to be processed.</p></li>
+</ul>
+<figure class="align-default" id="ethernet-packet">
+<a class="reference internal image-reference" href="../_images/ethernet-frame.png"><img alt="../_images/ethernet-frame.png" src="../_images/ethernet-frame.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.2 </span><span class="caption-text">A ethernet packet is organized into a frame, which includes the destination of the frame, the address of the sender, the length of the entire frame, the data or payload, and a 32-bit hash (the CRC) of the rest of the contents that can be used to check if the packet has been corrupted in transit.</span><a class="headerlink" href="#ethernet-packet" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Note this model is highly abstracted and very simple.  As we will learn later in the course:</p>
+<ul class="simple">
+<li><p>modern processors can execute hundreds of instructions in parallel, and modern computers can be composed of many processors;</p></li>
+<li><p>memory today is organized in Non-Uniform Memory Access (NUMA) where some memory is closer to some processors; so it is not really random access;</p></li>
+<li><p>memory today is very slow compared to the processor, and normally there are multiple layers of <strong>cache</strong> so that the CPU doesn’t have to wait for the slow memory every time it needs to fetch an instruction to execute;</p></li>
+<li><p>and other examples that may arise.</p></li>
+</ul>
+</div>
+</section>
+<section id="the-fundamental-platform">
+<span id="cont-gs-purpose-platform"></span><h2><span class="section-number">2.2. </span>The fundamental platform<a class="headerlink" href="#the-fundamental-platform" title="Permalink to this headline">#</a></h2>
+<p>What makes operating systems so interesting is that they are the fundamental platform on which all other software is written. We briefly discuss each of their core tasks.</p>
+<figure class="margin align-default" id="mappingint-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-03.drawio.png"><img alt="../_images/purpose-OS-source-03.drawio.png" src="../_images/purpose-OS-source-03.drawio.png" style="width: 200pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.3 </span><span class="caption-text">Providing interfaces that applications can use on top of the complicated interfaces of today’s hardware.</span><a class="headerlink" href="#mappingint-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<section id="abstracting-hardware">
+<span id="cont-gs-purpose-platform-abs"></span><h3><span class="section-number">2.2.1. </span>Abstracting Hardware<a class="headerlink" href="#abstracting-hardware" title="Permalink to this headline">#</a></h3>
+<p>If applications needed to understand all the complicated hardware described <a class="reference internal" href="#cont-gs-purpose-hw"><span class="std std-ref">above</span></a>, many fewer applications would  be written.  Consider, for example, storage: the abstraction provided by the hardware is disk blocks, while applications that persist data want to work with higher-level abstractions like directories and files.</p>
+<p>As shown in <a class="reference internal" href="#mappingint-fig"><span class="std std-numref">Fig. 2.3</span></a>, the most important job of the operating system is to enable a set of higher level abstractions, often called <strong>“virtual abstractions”</strong> on top of the low-level primitive “physical abstractions” provided by the hardware.  That is, the operating system  translates physical abstractions to virtual/clean ones that applications can be written to.  Key virtual abstractions we will discuss include:</p>
+<ul class="simple">
+<li><p><strong>Process:</strong> An abstraction of computer, where every time a <strong>program</strong> is started it executes as a separate process.</p></li>
+<li><p><strong>Files:</strong> An abstraction of I/O, enabling processes to persist data in non-volatile storage and communicate with different processes.</p></li>
+<li><p><strong>Virtual memory:</strong> An abstraction of the memory that a process can access.</p></li>
+</ul>
+<div class="cell tag_hide-input tag_margin docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;ps -e&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition-process-versus-program admonition">
+<p class="admonition-title">Process versus Program</p>
+<p>It is important to understand the difference between programs and processes.  When a user wants to run an application, or <strong>program</strong>, the operating system creates a new process and loads the program instructions from storage into memory for the process to execute.  There can be multiple processes executing the same program that are running at the same time.  For example, while I am writing this book, when I type “ps -e” to tell me all the processes currently running, (see margin) I find that I have multiple “bash” shells running at the same time, a large number of “python” programs, and of course the “ps” program itself. We will describe this Unix command more later.</p>
+</div>
+<figure class="margin align-default" id="hw-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-06.drawio.png"><img alt="../_images/purpose-OS-source-06.drawio.png" src="../_images/purpose-OS-source-06.drawio.png" style="width: 200pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.4 </span><span class="caption-text">Different kinds of computers</span><a class="headerlink" href="#hw-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="enabling-diverse-hardware">
+<span id="cont-gs-purpose-platform-hwdiv"></span><h3><span class="section-number">2.2.2. </span>Enabling diverse hardware<a class="headerlink" href="#enabling-diverse-hardware" title="Permalink to this headline">#</a></h3>
+<p>Operating systems must support diverse computer systems (<a class="reference internal" href="#hw-fig"><span class="std std-numref">Fig. 2.4</span></a>), ranging from tiny embedded systems in a smart fridge to massive high-performance computing systems that occupy large portions of a data center. Systems differ in the type of processors (e.g. x86, Power, ARM, RISC6), the devices, and the scale of resources like processors, memory and storage.  For example, a <a class="reference external" href="https://www.pcmag.com/news/pine64s-30-linux-smartwatch-launches">smart watch</a> may have just 64 kilobytes of memory whereas a set of new servers just obtained by the Mass Open Cloud have four terabytes of memory, where a terabyte is  1,073,741,824 kilobytes (<span class="math notranslate nohighlight">\(2^{40}\)</span>).</p>
+<aside class="sidebar">
+<p class="sidebar-title">Abbreviations, Definitions and Notation:</p>
+<p>Remember that numbers in computer systems are typically presented as a power of two, for example 1 kilobyte = <span class="math notranslate nohighlight">\(2^{10}\)</span> bytes = 1024 bytes. We will be using the common abbreviations for units as shown in the table below:</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="text-align:left head"><p>Value</p></th>
+<th class="text-align:center head"><p>Binary Prefix</p></th>
+<th class="text-align:center head"><p>Abbreviation</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-align:left"><p><span class="math notranslate nohighlight">\(1024 = 2^{10}\)</span></p></td>
+<td class="text-align:center"><p>kilo</p></td>
+<td class="text-align:center"><p>K</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><span class="math notranslate nohighlight">\(1024^2 = 2^{20}\)</span></p></td>
+<td class="text-align:center"><p>mega</p></td>
+<td class="text-align:center"><p>M</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><span class="math notranslate nohighlight">\(1024^3 = 2^{30}\)</span></p></td>
+<td class="text-align:center"><p>giga</p></td>
+<td class="text-align:center"><p>G</p></td>
+</tr>
+<tr class="row-odd"><td class="text-align:left"><p><span class="math notranslate nohighlight">\(1024^4 = 2^{40}\)</span></p></td>
+<td class="text-align:center"><p>tera</p></td>
+<td class="text-align:center"><p>T</p></td>
+</tr>
+<tr class="row-even"><td class="text-align:left"><p><span class="math notranslate nohighlight">\(1024^5 = 2^{50}\)</span></p></td>
+<td class="text-align:center"><p>peta</p></td>
+<td class="text-align:center"><p>P</p></td>
+</tr>
+</tbody>
+</table>
+<p>In units, “bytes” are abbreviated with an upper-case B and “bits” with a lower-case b, so 1 kilobyte = 1 KB = 8 Kb.</p>
+</aside>
+<p>Operating systems provide the same (or similar) <a class="reference internal" href="#cont-gs-purpose-platform-abs"><span class="std std-ref">virtual abstractions</span></a> across these very different systems, enabling many of their differences to be hidden from most applications.  This makes it easy to write libraries and applications (e.g., Netflix) that can run on systems as diverse as PCs, phones, ipads, and smart cars.  This, in turn, makes it possible for hardware designers to innovate, introducing new computers and even processors, while knowing that many applications will be able to use their systems.</p>
+<p>In fact, today, the same open source Linux OS runs on cell phones, massive High Performance Computing systems, and drones delivering Amazon packages.  As we will discuss, the open source nature of the system enables companies that want to innovate to make changes to the operating system to support their hardware.</p>
+<p>While the OS enables applications to be easily ported from one hardware platform to another, the OS is also responsible for meeting the fundamental requirements of the systems it supports.  In a cell phone, the OS needs to ensure that everything works in a tiny amount of memory, with limited energy use, while the OS for a server may use terabytes of memory to cache storage and allow many programs to be resident simultaneously.  In a drone, one probably wants to make sure that a non-critical program can’t impact the hard real-time programs controlling the propellers.</p>
+</section>
+<section id="sharing-the-hardware">
+<span id="cont-gs-purpose-platform-multi"></span><h3><span class="section-number">2.2.3. </span>Sharing the hardware<a class="headerlink" href="#sharing-the-hardware" title="Permalink to this headline">#</a></h3>
+<figure class="align-right" id="multipleapps-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-04.drawio.png"><img alt="../_images/purpose-OS-source-04.drawio.png" src="../_images/purpose-OS-source-04.drawio.png" style="width: 200pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.5 </span><span class="caption-text">Multiple processes.</span><a class="headerlink" href="#multipleapps-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Modern operating systems enable many (thousands) of processes running different programs/applications to run at the same time (<a class="reference internal" href="#multipleapps-fig"><span class="std std-numref">Fig. 2.5</span></a>).   The operating system needs to ensure that processes can’t break each other.   For example, the operating system must guarantee that a bug in an application, or even an application written by a malicious programmer, can’t modify the memory of other processes.</p>
+<p>The OS should also ensure that each process gets its fair share of the different resources of the computer consistent with their requirements.  To understand what we mean by different requirements, consider two programs: an editor needs to be responsive to you as you type characters, while a compiler tries to use as much processing and disk as possible to get its work done quickly.  The OS should ensure that the compiler gets to use most of the resources of the computer while reserving the limited resources that the editor requires and prioritizing the editor whenever you type a character.  It has to do that without typically knowing what the requirements of the applications are.</p>
+<p>To share the resources of the computer, the operating system multiplexes the resources in space, time or both.  An example of space multiplexing is using different disk blocks to store the contents of different files.  An example of time multiplexing is changing which process is running on a processor.  In many cases, both are used to manage the same type of resource. For example, at a given time different processes are given access to different regions of the memory (space multiplexing), but over time a given region of memory may be used by different processes as their needs for memory change (time multiplexing).</p>
+</section>
+<section id="supporting-many-users">
+<span id="cont-gs-purpose-platform-security"></span><h3><span class="section-number">2.2.4. </span>Supporting many users<a class="headerlink" href="#supporting-many-users" title="Permalink to this headline">#</a></h3>
+<figure class="align-right" id="sec-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-05.drawio.png"><img alt="../_images/purpose-OS-source-05.drawio.png" src="../_images/purpose-OS-source-05.drawio.png" style="width: 200pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.6 </span><span class="caption-text">Multiple users</span><a class="headerlink" href="#sec-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Normally, operating systems are designed to support different users running processes at the same time.  The OS must make sure that one user can’t run processes that change, or even read, the files of another user.  Moreover, the OS may need to make sure that each user gets their fair share of the computer; for example, ensuring that a student can’t launch 1000 processes after they are done an assignment to keep classmates from successfully submitting theirs.</p>
+<p>This protection is part of the security policies and mechanisms of the operating system.  Attacks may try to violate confidentiality (one can see another user’s information), integrity (one can change state of another user), or availability (one can deny other users the ability to run their programs).  While OS developers have put enormous work into designing secure systems, the complexity of modern systems give operating system researchers strong job security.</p>
+</section>
+<section id="protecting-from-external-attacks">
+<span id="cont-gs-purpose-platform-sec-outside"></span><h3><span class="section-number">2.2.5. </span>Protecting from external attacks<a class="headerlink" href="#protecting-from-external-attacks" title="Permalink to this headline">#</a></h3>
+<p>The best way to keep users from attacking each other is to make sure that they can’t run on the same computer.  In fact, in the good old days, we used to make sure that computers were disconnected from each other. For example, professors had their accounts on computers that students had no access to.</p>
+<figure class="align-right" id="secoutside-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-07.drawio.png"><img alt="../_images/purpose-OS-source-07.drawio.png" src="../_images/purpose-OS-source-07.drawio.png" style="width: 300pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.7 </span><span class="caption-text">Protecting users from outside world.</span><a class="headerlink" href="#secoutside-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Today we do all our work connected to the network, and we log into our machines remotely.  In fact, right now I am typing this sentence on a laptop that is connected to a network; every key stroke I type is being sent over a network to a cloud service running containers reserved by me on a computer in a datacenter 100 miles away from my laptop.  The operating system implements firewalls and security policies that make sure that only I can change this book.</p>
+<p>While we work hard to protect computers from external attacks, new attacks are always being developed, there are always bugs in the operating system, and humans often expose passwords or make mistakes that render the computers they work on open to attacks.  The OS is responsible for logging all the information needed so that we can later figure out who hacked the system, and what changes they made.</p>
+<figure class="align-right" id="mgment-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-08.drawio.png"><img alt="../_images/purpose-OS-source-08.drawio.png" src="../_images/purpose-OS-source-08.drawio.png" style="width: 300pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.8 </span><span class="caption-text">Enabling management.</span><a class="headerlink" href="#mgment-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="management">
+<span id="cont-gs-purpose-platform-mgmt"></span><h3><span class="section-number">2.2.6. </span>Management<a class="headerlink" href="#management" title="Permalink to this headline">#</a></h3>
+<p>There is a huge diversity of systems, from embedded devices to personal computers, cloud data centers, and HPC environments.  If a human being was responsible for manually configuring, upgrading, and patching all these systems (which used to be the case), we wouldn’t have enough people in the world.</p>
+<p>The tools and capabilities provided in the OS give the mechanism for administrators to automate these activities at massive scale. These mechanisms also allow the operating system to be customized and even specialized to the workload it is expected to run.</p>
+<figure class="align-right" id="devs-fig">
+<a class="reference internal image-reference" href="../_images/purpose-OS-source-12.drawio.png"><img alt="../_images/purpose-OS-source-12.drawio.png" src="../_images/purpose-OS-source-12.drawio.png" style="width: 300pt;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 2.9 </span><span class="caption-text">Supporting devices</span><a class="headerlink" href="#devs-fig" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="supporting-devices">
+<span id="cont-gs-purpose-platform-devs"></span><h3><span class="section-number">2.2.7. </span>Supporting devices<a class="headerlink" href="#supporting-devices" title="Permalink to this headline">#</a></h3>
+<p>Last, but certainly not least, the OS not only directly manages the hardware of a computer, but also a massive number of peripheral devices, including  disks, monitors, keyboards, network connections, cameras and more.  Often when a new device is developed, the developers need to provide some way to plumb it through the operating system so that applications will be able to take advantage of it.  As we will discuss, *<strong>device drivers</strong> are the vast majority of software in today’s operating system.</p>
+</section>
+<section id="putting-it-together">
+<span id="cont-gs-purpose-platform-together"></span><h3><span class="section-number">2.2.8. </span>Putting it together<a class="headerlink" href="#putting-it-together" title="Permalink to this headline">#</a></h3>
+<p>So, to summarize, the operating system is responsible for:</p>
+<ul class="simple">
+<li><p>Creating the fundamental <strong>virtual</strong> abstractions that applications are written to use on top of the primitive abstractions provided by hardware.   This enable applications to be written without detailed understanding of the hardware, which in turn enables computer system and device developers to develop new hardware that applications can just use.</p></li>
+<li><p>Managing and multiplexing the hardware resources to support diverse workloads by many users across a broad set of use cases from supercomputers to cell phones. This includes providing the interfaces and tools that operators use to manage their systems.</p></li>
+<li><p>Protecting processes/users from both internal and external attacks and keeping activity logs.</p></li>
+</ul>
+<p>In other words, operating systems are the fundamental platforms that all other software and hardware relies on and that people use to interact with the software and hardware.</p>
+</section>
+</section>
+<section id="so-why-do-we-care">
+<span id="cont-gs-purpose-care"></span><h2><span class="section-number">2.3. </span>So why do we care<a class="headerlink" href="#so-why-do-we-care" title="Permalink to this headline">#</a></h2>
+<p>In all fields, if you control the platform that others need to use, you have an enormous advantage.  For example, if you control the exchange that others use for trading stocks, <a class="reference external" href="https://www.investopedia.com/what-went-wrong-with-ftx-6828447">cryptocurrency</a> or goods (e.g., <a class="reference external" href="https://www.amazon.com">Amazon</a> and <a class="reference external" href="https://www.etsy.com">etsy</a>) you are in a position to (properly or not) gain something from every use of the platform, and you have a special responsibility to all the users.   As the fundamental platform in computing, we see that operating systems have played a huge role.  For example:</p>
+<ol class="simple">
+<li><p>Operating systems have been the focus, and responsible for the success, of some of the world’s largest companies, e.g. Microsoft, VMware, Red Hat.</p></li>
+<li><p>Operating system people play a key role in every major technology company.</p></li>
+<li><p>Every major change in technology requires innovation or at least changes at the operating system level.</p></li>
+<li><p>Operating system researchers, and their venues (e.g., SOSP, OSDI, Eurosys, Usenix) are responsible for the major distributed system innovations.</p></li>
+<li><p>The world of open source, that has impacted all elements of society, started with operating systems.</p></li>
+</ol>
+<p>Fundamentally, if you care about computing, you better care about operating systems and have some idea of how they work. If you want to develop applications, you need to understand the OS abstractions, and good performance often relies on understanding something about the policies and implementation of the OS you are using.  If you want to develop new hardware, you need to understand how to expose that hardware through the OS to the applications that want to use it. If you just want to use computers, you need to understanding the fundamental capabilities and protections that the operating can provide to secure and manage the hardware.</p>
+</section>
+<section id="is-the-fun-over">
+<span id="cont-gs-purpose-fun"></span><h2><span class="section-number">2.4. </span>Is the fun over?<a class="headerlink" href="#is-the-fun-over" title="Permalink to this headline">#</a></h2>
+<p>We have been working on operating systems for as long as we have had computers.  In many fields, innovation happens rapidly for a while, and then the excitement moves to another area.  With operating systems, not only do they continue to be a major area of innovation, but we expect that the need for innovation in operating systems, and even development of new ones, will continue and accelerate.</p>
+<p>Fundamentally, OS innovation is needed for any major change in application requirements, hardware capabilities, or new use cases.  Consider some of the major changes that are happening now:</p>
+<ul class="simple">
+<li><p>The rise of cloud computing is resulting in new models of OS for services and functions that require “logical” computers to be instantiated in seconds, and demand strong guarantees on tail latency (i.e., most requests finish in some guaranteed time).</p></li>
+<li><p>Fundamental change in security requirements; provider/tenant</p></li>
+<li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Dennard_scaling">Denard scaling</a> is over; but network and storage keep getting faster…</p></li>
+<li><p><a class="reference external" href="https://www.equinix.com/resources/analyst-reports/gartner-distributed-enterprise-predictions-2022?ls=Advertising%20-%20Web&amp;lsd=22q1_enterprise_digital-infrastructure--not-applicable_/resources/analyst-reports/gartner-distributed-enterprise-predictions-2022_dm_obility_paid-search_google_us-en_AMER_digital-edge_demand-gen&amp;utm_campaign=us-en_google_paid-search_digital-edge_dm&amp;utm_source=google&amp;utm_medium=paid-search&amp;utm_content=digital-infrastructure--not-applicable_gartner-distributed-enterprise-predictions-2022&amp;gclid=CjwKCAiAzKqdBhAnEiwAePEjkjhC-gGejQAFyu-KiGw3oeqhkMvU9hfJkoBx5hH9hdT_rArJOehavxoC8nYQAvD_BwE">Edge computing</a> &amp; <a class="reference external" href="https://www.sciencedirect.com/topics/computer-science/cloudlet">Cloudlets</a> driven by the emergence of high bandwidth low latency <a class="reference external" href="https://www.qualcomm.com/5g/what-is-5g">5G</a> will drive a whole new model of compute.</p></li>
+<li><p>While persistent memory has been promised for decades a few years ago the first products became available.  (and <a class="reference external" href="https://www.forbes.com/sites/tomcoughlin/2022/07/28/intel-winding-down-its-optane-memory-business/?sh=37b8653345b8">just got cancelled</a>)</p></li>
+<li><p>Rise of smart NICs where intelligence is embedded into the devices, enabling new models to offload computation to the network; e.g. high speed trading, security, accounting cloud…</p></li>
+<li><p>100 GB networks spanning the world..</p></li>
+<li><p>Rise of AI…</p></li>
+</ul>
+<p>Unfortunately, for some reason many engineers and computer scientists are intimidated to work at the operating system level, and many think of the OS as underlying plumbing with the fun stuff around it.  We hope that this chapter has motivated you to understand why operating systems are not only historically interesting, but will continue to be a major area of innovation, and that this this course will start you on the path to mastering this exciting and important topic.</p>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./intro"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">1. </span>Introduction</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="structure.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Operating System Structure &amp; Unix/Linux</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By (see contributing chapter book)<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>

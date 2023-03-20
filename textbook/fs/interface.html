@@ -1,0 +1,1138 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>11. File System Abstraction &#8212; Introduction to Operating Systems</title>
+    
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
+
+    
+  <link rel="stylesheet"
+    href="../_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" href="../_static/styles/sphinx-book-theme.css?digest=5115cc725059bd94278eecd172e13a965bf8f5a9" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/design-style.b7bb847fb20b106c3d81b95245e65545.min.css" />
+    
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf">
+
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/clipboard.min.js"></script>
+    <script src="../_static/copybutton.js"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?digest=9c920249402e914e316237a7dbc6769907cce411"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js"></script>
+    <script async="async" kind="hypothesis" src="https://hypothes.is/embed.js"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="../_static/design-tabs.js"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"
+const thebe_selector = ".thebe,.cell"
+const thebe_selector_input = "pre"
+const thebe_selector_output = ".output, .cell_output"
+</script>
+    <script async="async" src="../_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="12. A bit about Disks" href="diskhw.html" />
+    <link rel="prev" title="10. Introduction" href="intro.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="None">
+    
+
+    <!-- Google Analytics -->
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="60">
+<!-- Checkboxes to toggle the left sidebar -->
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle navigation sidebar">
+<label class="overlay overlay-navbar" for="__navigation">
+    <div class="visually-hidden">Toggle navigation sidebar</div>
+</label>
+<!-- Checkboxes to toggle the in-page toc -->
+<input type="checkbox" class="sidebar-toggle" name="__page-toc" id="__page-toc" aria-label="Toggle in-page Table of Contents">
+<label class="overlay overlay-pagetoc" for="__page-toc">
+    <div class="visually-hidden">Toggle in-page Table of Contents</div>
+</label>
+<!-- Headers at the top -->
+<div class="announcement header-item noprint"></div>
+<div class="header header-item noprint"></div>
+
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<!-- Sidebar -->
+<div class="bd-sidebar noprint" id="site-navigation">
+    <div class="bd-sidebar__content">
+        <div class="bd-sidebar__top"><div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="../index.html">
+      
+        <!-- `logo` is deprecated in Sphinx 4.0, so remove this when we stop supporting 3 -->
+        
+      
+      
+      <img src="../_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">Introduction to Operating Systems</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="../search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="../intro/pref.html">
+                    Preface
+                </a>
+            </li>
+        </ul>
+        <p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Getting started
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/intro.html">
+   1. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/purpose.html">
+   2. Purpose of operating systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/structure.html">
+   3. Operating System Structure &amp; Unix/Linux
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/abstractions.html">
+   4. Operating System Abstractions
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/tools.html">
+   5. Tools
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Processor
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/intro.html">
+   6. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/process.html">
+   7. Virtualizing a CPU
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/scheduling.html">
+   8. Scheduling
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../scheduling/real_sched.html">
+   9. A Look at the Linux Scheduler
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  File Systems
+ </span>
+</p>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="intro.html">
+   10. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
+   11. File System Abstraction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="diskhw.html">
+   12. A bit about Disks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="disklayout.html">
+   13. File System Layout
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_track_used.html">
+   14. Disk Layout:Tracking Used Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_track_free.html">
+   15. Disk Layout:Tracking Free Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_name.html">
+   16. Disk Layout:Implementing Name Space
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_failures.html">
+   17. Disk Layout:Dealing with Failures
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_ex_exx.html">
+   18. Disk Layout:Examples of Real World File Systems
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="kernelimp.html">
+   19. Kernel implementation
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Virtual Memory
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/intro.html">
+   20. Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/phys-and-seg.html">
+   21. Memory management before paged virtual memory
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/virt-paging.html">
+   22. Paging
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-tables.html">
+   23. Page Tables
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/reclamation.html">
+   24. Memory reclaiming algorithms.
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/page-size.html">
+   25. Page Sizes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/misc.html">
+   26. Other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/buffer-cache.html">
+   27. Buffer Cache
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/pagefaults.html">
+   28. Memory Management Dynamics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/realworld.html">
+   29. Memory management in the real world
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../mm/concl.html">
+   30. Conclusion
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Concurrency
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sync.html">
+   31. Intro Concurrency Synchronization and Deadlock
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/sharing.html">
+   32. Cooperating Processes
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/locking.html">
+   33. Synchronization Primitives
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/deadlock.html">
+   34. Deadlocks
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/hardware_challenges.html">
+   35. Challenges of Modern Hardware
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../sync/linux_locking.html">
+   36. Locking in the Linux Kernel
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Other Topics
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/OtherInro.html">
+   37. Overview of other topics
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../virt/virt.html">
+   38. Virtualization and Cloud computing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../intro/other.html">
+   39. Other OS structures
+  </a>
+ </li>
+</ul>
+<p aria-level="2" class="caption" role="heading">
+ <span class="caption-text">
+  Appendices
+ </span>
+</p>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/howto.html">
+   40. How to read this book
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../contributing/Contributing.html">
+   41. Contributing
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/bib.html">
+   42. Bibliography
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav></div>
+        <div class="bd-sidebar__bottom">
+             <!-- To handle the deprecated key -->
+            
+            <div class="navbar_extra_footer">
+            Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+            </div>
+            
+        </div>
+    </div>
+    <div id="rtd-footer-container"></div>
+</div>
+
+
+          
+
+
+          
+<!-- A tiny helper pixel to detect if we've scrolled -->
+<div class="sbt-scroll-pixel-helper"></div>
+<!-- Main content -->
+<div class="col py-0 content-container">
+    
+    <div class="header-article row sticky-top noprint">
+        
+
+
+
+<div class="col py-1 d-flex header-article-main">
+    <div class="header-article__left">
+        
+        <label for="__navigation"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="right"
+title="Toggle navigation"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-bars"></i>
+  </span>
+
+</label>
+
+        
+    </div>
+    <div class="header-article__right">
+<div class="menu-dropdown menu-dropdown-launch-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Launch interactive content">
+      <i class="fas fa-rocket"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/fs/interface.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on Binder"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_binder.svg">
+  </span>
+<span class="headerbtn__text-container">Binder</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/fs/interface.ipynb&branch=main"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Launch on JupyterHub"
+>
+  
+
+<span class="headerbtn__icon-container">
+  
+    <img src="../_static/images/logo_jupyterhub.svg">
+  </span>
+<span class="headerbtn__text-container">JupyterHub</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<button onclick="toggleFullScreen()"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="bottom"
+title="Fullscreen mode"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+<div class="menu-dropdown menu-dropdown-repository-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Source repositories">
+      <i class="fab fa-github"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="https://github.com/okrieg/openos"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Source repository"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="headerbtn__text-container">repository</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Ffs/interface.html&body=Your%20issue%20content%20here."
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Open an issue"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="headerbtn__text-container">open issue</span>
+</a>
+
+      </li>
+      
+      <li>
+        <a href="https://github.com/okrieg/openos/edit/main/content/fs/interface.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Edit this page"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-pencil-alt"></i>
+  </span>
+<span class="headerbtn__text-container">suggest edit</span>
+</a>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+
+<div class="menu-dropdown menu-dropdown-download-buttons">
+  <button class="headerbtn menu-dropdown__trigger"
+      aria-label="Download this page">
+      <i class="fas fa-download"></i>
+  </button>
+  <div class="menu-dropdown__content">
+    <ul>
+      <li>
+        <a href="../_sources/fs/interface.ipynb"
+   class="headerbtn"
+   data-toggle="tooltip"
+data-placement="left"
+title="Download source file"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="headerbtn__text-container">.ipynb</span>
+</a>
+
+      </li>
+      
+      <li>
+        
+<button onclick="printPdf(this)"
+  class="headerbtn"
+  data-toggle="tooltip"
+data-placement="left"
+title="Print to PDF"
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="headerbtn__text-container">.pdf</span>
+</button>
+
+      </li>
+      
+    </ul>
+  </div>
+</div>
+<label for="__page-toc"
+  class="headerbtn headerbtn-page-toc"
+  
+>
+  
+
+<span class="headerbtn__icon-container">
+  <i class="fas fa-list"></i>
+  </span>
+
+</label>
+
+    </div>
+</div>
+
+<!-- Table of contents -->
+<div class="col-md-3 bd-toc show noprint">
+    <div class="tocsection onthispage pt-5 pb-3">
+        <i class="fas fa-list"></i> Contents
+    </div>
+    <nav id="bd-toc-nav" aria-label="Page">
+        <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naming">
+   11.1. Naming
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objects">
+   11.2. Objects
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#files">
+     11.2.1. Files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#directory">
+     11.2.2. Directory
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#symbolic-links">
+     11.2.3. Symbolic links
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-system-operations">
+   11.3. File System Operations:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-close">
+     11.3.1. Open/close
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#read-write-operations">
+     11.3.2. Read/Write operations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naming-and-directories">
+     11.3.3. Naming and Directories
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#some-examples">
+   11.4. Some examples
+  </a>
+ </li>
+</ul>
+
+    </nav>
+</div>
+    </div>
+    <div class="article row">
+        <div class="col pl-md-3 pl-lg-5 content-container">
+            <!-- Table of contents that is only displayed when printing the page -->
+            <div id="jb-print-docs-body" class="onlyprint">
+                <h1>File System Abstraction</h1>
+                <!-- Table of contents -->
+                <div id="print-main-content">
+                    <div id="jb-print-toc">
+                        
+                        <div>
+                            <h2> Contents </h2>
+                        </div>
+                        <nav aria-label="Page">
+                            <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#naming">
+   11.1. Naming
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#objects">
+   11.2. Objects
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#files">
+     11.2.1. Files
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#directory">
+     11.2.2. Directory
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#symbolic-links">
+     11.2.3. Symbolic links
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#file-system-operations">
+   11.3. File System Operations:
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#open-close">
+     11.3.1. Open/close
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#read-write-operations">
+     11.3.2. Read/Write operations
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#naming-and-directories">
+     11.3.3. Naming and Directories
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#some-examples">
+   11.4. Some examples
+  </a>
+ </li>
+</ul>
+
+                        </nav>
+                    </div>
+                </div>
+            </div>
+            <main id="main-content" role="main">
+                
+              <div>
+                
+  <div class="cell tag_remove-input tag_hide-output docutils container">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="file-system-abstraction">
+<span id="cont-fs-interface"></span><h1><span class="section-number">11. </span>File System Abstraction<a class="headerlink" href="#file-system-abstraction" title="Permalink to this headline">#</a></h1>
+<p>From a user perspective, file systems support:</p>
+<ul class="simple">
+<li><p>a <em>name space</em>, the set of names that identify objects;</p></li>
+<li><p><em>objects</em> such as the files themselves as well as directories and other supporting objects;</p></li>
+<li><p><em>operations</em> on these objects.</p></li>
+</ul>
+<p>We first describe how naming works in a Unix file system, then some of the core objects and how they are identified, and then the operations a process can perform on those objects.</p>
+<section id="naming">
+<h2><span class="section-number">11.1. </span>Naming<a class="headerlink" href="#naming" title="Permalink to this headline">#</a></h2>
+<p>Most file systems today support a
+tree-structured namespace<a class="footnote-reference brackets" href="#hier" id="id1">1</a>, as shown in <a class="reference internal" href="#fs-tree-logical"><span class="std std-numref">Fig. 11.1</span></a>.
+This tree is constructed via the use of
+<em>directories</em>, or objects in the namespace which map strings to further
+file system objects. A full filename thus specifies a <em>path</em> from the
+root, through the tree, to the object (a file or directory) itself.
+(Hence the use of the term “path” to mean “filename” in Unix
+documentation)</p>
+<figure class="align-default" id="fs-tree-logical">
+<a class="reference internal image-reference" href="../_images/filesys-tree.png"><img alt="../_images/filesys-tree.png" src="../_images/filesys-tree.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11.1 </span><span class="caption-text">Logical view: hierarchical file system name space</span><a class="headerlink" href="#fs-tree-logical" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Each process has an associated <em>current directory</em>, which may be changed via the <code class="docutils literal notranslate"><span class="pre">chdir</span></code> system call. File names beginning in ‘<code class="docutils literal notranslate"><span class="pre">/</span></code>’ are termed <em>absolute</em> names, and are interpreted relative to the root of the naming tree, while <em>relative</em> names are
+interpreted beginning at the current directory. Thus in the file system in
+<a class="reference internal" href="#fs-tree-logical"><span class="std std-numref">Fig. 11.1</span></a>, if the current directory were <code class="docutils literal notranslate"><span class="pre">/home</span></code>,
+the the paths <code class="docutils literal notranslate"><span class="pre">pjd/.profile</span></code> and <code class="docutils literal notranslate"><span class="pre">/home/pjd/.profile</span></code> refer to the same
+file, and <code class="docutils literal notranslate"><span class="pre">../bin/cat</span></code> and <code class="docutils literal notranslate"><span class="pre">/bin/cat</span></code> refer to the same file.</p>
+<p>Each directory also contains two special files <code class="docutils literal notranslate"><span class="pre">.</span></code> and <code class="docutils literal notranslate"><span class="pre">..</span></code>, where <code class="docutils literal notranslate"><span class="pre">d/..</span></code>  identifies the parent directory of <code class="docutils literal notranslate"><span class="pre">d</span></code>, and <code class="docutils literal notranslate"><span class="pre">d/.</span></code> identifies <code class="docutils literal notranslate"><span class="pre">d</span></code>
+itself.</p>
+<p>A typical system may provide access to
+several file systems at once, e.g. a local disk and an external USB
+drive or network volume. In order to unambiguously specify a file we
+thus need to both identify the file within possibly nested directories
+in a single file system, as well as identifying the file system itself.
+Unix enables a file system to be <em>mounted</em> onto a directory in
+another file system, giving a single uniform namespace.  For example, on the systems you are using, there is an <em>ext4</em> file system mounted in the root file system at <code class="docutils literal notranslate"><span class="pre">/opt/app-root/src</span></code>, which you can see if you use the mount command to list all the file systems mounted on this computer.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>The actual implementation of mounting in Linux and other Unix-like
+systems is implemented via a <em>mount table</em>, a small table in the kernel
+mapping directories to directories on other file systems. As the
+kernel translates a pathname it checks each directory in this table; if
+found, it substitutes the mapped file system and directory before
+searching for an entry. Thus before searching “/opt/app-root/src” on  for the entry “foo”, the kernel will substitute the
+top-level directory on the mounted ext4 files system then search for “foo”.</p>
+<p>For a more thorough explanation of path translation in Linux and other
+Unix systems see the <code class="docutils literal notranslate"><span class="pre">path_resolution(7)</span></code> man page, i.e. type <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">path_resolution</span></code>.</p>
+</section>
+<section id="objects">
+<h2><span class="section-number">11.2. </span>Objects<a class="headerlink" href="#objects" title="Permalink to this headline">#</a></h2>
+<p>Once you use a pathname to find an object in the file system, you need to find out what kind of an object you have found.  Each file is identified in the file system by a unique <strong>inode number</strong> that references an <strong>inode</strong><a class="footnote-reference brackets" href="#inode" id="id2">2</a> that maintains all kind of information, or <em>meta-data</em> about the file (try <code class="docutils literal notranslate"><span class="pre">man</span> <span class="pre">inode</span></code> for more information).   While the inode itself is internal to the file system, and contains additional information, generic information can be obtained for any file as described <a class="reference internal" href="#cont-fs-calls-naming"><span class="std std-ref">below</span></a>.  The types of objects that can be referenced by inode are show in <a class="reference internal" href="#file-types"><span class="std std-numref">Table 11.1</span></a>.</p>
+<table class="colwidths-given table" id="file-types">
+<caption><span class="caption-number">Table 11.1 </span><span class="caption-text">Types of objects in a file system. </span><a class="headerlink" href="#file-types" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 29%" />
+<col style="width: 24%" />
+<col style="width: 48%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Name</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Purpose</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>regular file</p></td>
+<td><p>S_IFREG</p></td>
+<td><p>A regular file normally used to store data</p></td>
+</tr>
+<tr class="row-odd"><td><p>directory</p></td>
+<td><p>S_IFDIR</p></td>
+<td><p>A special file used to contain files or other directories</p></td>
+</tr>
+<tr class="row-even"><td><p>symbolic link</p></td>
+<td><p>S_IFLNK</p></td>
+<td><p>A kind of “file” that is essentially a pointer to another file name</p></td>
+</tr>
+<tr class="row-odd"><td><p>block device</p></td>
+<td><p>S_IFBLK</p></td>
+<td><p>A device that like a disk that is accessed by reading and writing blocks</p></td>
+</tr>
+<tr class="row-even"><td><p>character device</p></td>
+<td><p>S_IFCHR</p></td>
+<td><p>A charter device like a <code class="docutils literal notranslate"><span class="pre">tty</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p>FIFO</p></td>
+<td><p>S_IFIFO</p></td>
+<td><p>A pipe</p></td>
+</tr>
+<tr class="row-even"><td><p>socket</p></td>
+<td><p>S_IFSOCK</p></td>
+<td><p>A socket used for networking</p></td>
+</tr>
+</tbody>
+</table>
+<p>The last four are special files that you can connect into a file system.  The first three are core objects for all file systems.</p>
+<section id="files">
+<h3><span class="section-number">11.2.1. </span>Files<a class="headerlink" href="#files" title="Permalink to this headline">#</a></h3>
+<p>In keeping with the idea that everything is a file, Unix made all files just a sequence of 8-bit bytes<a class="footnote-reference brackets" href="#eff" id="id3">5</a><a class="footnote-reference brackets" href="#simple" id="id4">6</a> Any
+structure to the file (such as a JPEG image, an executable program, or a
+database) is the responsibility of applications which read and write the
+file. The file format is commonly indicated by a file extension like
+.jpg or .xml, but this is just a convention followed by applications and
+users. You can do things like rename file.pdf to file.jpg, which will
+confuse some applications and users, but have no effect on the file
+contents.</p>
+<p>Data in a byte-sequence file is identified by the combination of the
+file and its offset (in bytes) within the file. Unlike in-memory objects
+in an application, where a reference (pointer) to a component of an
+object may be passed around independently, a portion of a file cannot be
+named without identifying the file it is contained in. Data in a file
+can be created by a write which appends more data to the end of a
+shorter file, and modified by over-writing in the middle of a file.
+However, it can’t be “moved” from one offset to another: if you use a
+text editor to add or delete text in the middle of a file, the editor
+must re-write the entire file (or at least from the modified part to the
+end).</p>
+<figure class="align-default" id="fs-tree-imp">
+<a class="reference internal image-reference" href="../_images/filesys-tree2.png"><img alt="../_images/filesys-tree2.png" src="../_images/filesys-tree2.png" style="width: 70%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 11.2 </span><span class="caption-text">Implementation view: hierarchical file system name space. Gray blocks are directories that contain entries with strings and corresponding inode numbers that identify the files.</span><a class="headerlink" href="#fs-tree-imp" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+</section>
+<section id="directory">
+<span id="cont-fs-interface-dir"></span><h3><span class="section-number">11.2.2. </span>Directory<a class="headerlink" href="#directory" title="Permalink to this headline">#</a></h3>
+<p>As shown in <a class="reference internal" href="#fs-tree-imp"><span class="std std-numref">Fig. 11.2</span></a>, a directory contains entries with strings that identify objects contained in the directory, and for each the inode numbers that can then be used to find out more information about the corresponding object.   The same inode can be referenced by multiple directories, with potentially different names.  For example, <code class="docutils literal notranslate"><span class="pre">..</span></code> is a hard link to the parent directory, as we can see by creating a directory <code class="docutils literal notranslate"><span class="pre">/tmp/foo</span></code> the reference count (second entry) for <code class="docutils literal notranslate"><span class="pre">.</span></code> is 2 before we create a subdirectory bar in it, and 3 after.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+</section>
+<section id="symbolic-links">
+<h3><span class="section-number">11.2.3. </span>Symbolic links<a class="headerlink" href="#symbolic-links" title="Permalink to this headline">#</a></h3>
+<p>The third file system object is a
+<em>symbolic link</em>. This holds a text string which is interpreted as a
+“pointer” to another location in the file system. When the kernel is
+searching for a file and encounters a symbolic link, it substitutes this
+text into the current portion of the path, and continues the translation
+process.</p>
+<p>This can be very useful</p>
+<pre>
+directory: /usr/program-1.0.1
+  file:      /usr/program-1.0.1/file.txt
+  sym link:  /usr/program-current -> "program-1.0.1"
+</pre>
+<p>and if the OS is looking up the file <code class="docutils literal notranslate"><span class="pre">/usr/program-current/file.txt</span></code>, it
+will:</p>
+<ol class="simple">
+<li><p>look up <code class="docutils literal notranslate"><span class="pre">usr</span></code> in the root directory, finding a pointer to the <code class="docutils literal notranslate"><span class="pre">/usr</span></code>
+directory</p></li>
+<li><p>look up <code class="docutils literal notranslate"><span class="pre">program-current</span></code> in <code class="docutils literal notranslate"><span class="pre">/usr</span></code>, finding the link with contents
+<code class="docutils literal notranslate"><span class="pre">program-1.0.1</span></code></p></li>
+<li><p>look up <code class="docutils literal notranslate"><span class="pre">program-1.0.1</span></code> and use this result instead of the result from
+looking up <code class="docutils literal notranslate"><span class="pre">program-current</span></code>, getting a pointer to the
+<code class="docutils literal notranslate"><span class="pre">/usr/program-1.0.1</span></code> directory.</p></li>
+<li><p>look up <code class="docutils literal notranslate"><span class="pre">file.txt</span></code> in this directory, and find it.</p></li>
+</ol>
+<p>Note that unlike hard links, a symbolic link may be “broken”—i.e. if
+the file it points to does not exist. This can happen if the link was
+created in error, or the file or directory it points to is deleted
+later. In that case path translation will fail with an error:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>Finally, to prevent loops there is a limit on how many levels of
+symbolic link may be traversed in a single path translation:</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+</section>
+</section>
+<section id="file-system-operations">
+<h2><span class="section-number">11.3. </span>File System Operations:<a class="headerlink" href="#file-system-operations" title="Permalink to this headline">#</a></h2>
+<p>There are several common types of file operations supported by Linux
+(and with slight differences, Windows). They can be classified into
+three main categories: open/close, read/write, and naming and
+directories.</p>
+<section id="open-close">
+<h3><span class="section-number">11.3.1. </span>Open/close<a class="headerlink" href="#open-close" title="Permalink to this headline">#</a></h3>
+<p>In order to access a file in Linux (or most operating
+systems) you first need to open the file, passing the file name and
+other parameters and receiving a <em>handle</em> (called a <em>file descriptor</em> in
+Unix) which may be used for further operations. The corresponding system
+calls are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">desc</span> <span class="pre">=</span> <span class="pre">open(name,</span> <span class="pre">O_READ)</span></code>: Verify that file <code class="docutils literal notranslate"><span class="pre">name</span></code> exists and may
+be read, and then return a <em>descriptor</em> which may be used to refer to
+that file when reading it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">desc</span> <span class="pre">=</span> <span class="pre">open(name,</span> <span class="pre">O_WRITE</span> <span class="pre">|</span> <span class="pre">flags,</span> <span class="pre">mode)</span></code>: Verify permissions and
+open <code class="docutils literal notranslate"><span class="pre">name</span></code> for writing, creating it (or erasing existing contents) if
+necessary as specified in <code class="docutils literal notranslate"><span class="pre">flags</span></code>. Returns a descriptor which may be
+used for writing to that file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">close(desc)</span></code>: stop using this descriptor, and free any resources
+allocated for it.</p></li>
+</ul>
+<p>Note that application programs rarely use the system calls themselves to
+access files, but instead use higher-level frameworks, ranging from Unix
+Standard I/O to high-level application frameworks.</p>
+</section>
+<section id="read-write-operations">
+<h3><span class="section-number">11.3.2. </span>Read/Write operations<a class="headerlink" href="#read-write-operations" title="Permalink to this headline">#</a></h3>
+<p>To get a file with data in it, you need to write it; to use that data you need to read it. To enable files to be accessed as a <em>stream</em> just like from a terminal or pipe, UNIX uses the concept of a <em>current position</em>
+associated with a file descriptor. When you read 100 bytes (i.e. bytes 0
+to 99) from a file this pointer advances by 100 bytes, so that the next
+read will start at byte 100, and similarly for write. When a file is
+opened for reading the pointer starts at 0; when open for writing the
+application writer can choose to start at the beginning (default) and
+overwrite old data, or start at the end (<code class="docutils literal notranslate"><span class="pre">O_APPEND</span></code> flag) to append new
+data to the file.</p>
+<p>The read and write routines are the same we described before, but, for , they:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">read(desc,</span> <span class="pre">buffer,</span> <span class="pre">max)</span></code>: Read <code class="docutils literal notranslate"><span class="pre">max</span></code> bytes (or fewer if the end of
+the file is reached) into <code class="docutils literal notranslate"><span class="pre">buffer</span></code>, starting at the current position,
+and returning the actual number of bytes <code class="docutils literal notranslate"><span class="pre">n</span></code> read; the current position
+is then incremented by <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">write(desc,</span> <span class="pre">buffer,</span> <span class="pre">len)</span></code>: Write <code class="docutils literal notranslate"><span class="pre">len</span></code> bytes from <code class="docutils literal notranslate"><span class="pre">buffer</span></code> into
+the file, starting at the current position, and incrementing the current
+position by <code class="docutils literal notranslate"><span class="pre">len</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">lseek(desc,</span> <span class="pre">offset,</span> <span class="pre">flag)</span></code>: Set an open file’s current position to that
+specified by <code class="docutils literal notranslate"><span class="pre">offset</span></code> and <code class="docutils literal notranslate"><span class="pre">flag</span></code>, which specifies whether <code class="docutils literal notranslate"><span class="pre">offset</span></code> is
+relative to the beginning, end, or current position in the file.</p></li>
+</ul>
+<p>Note that in the basic Unix interface (unlike e.g. Windows) there is no
+way to specify a particular location in a file to read or write
+from<a class="footnote-reference brackets" href="#id7" id="id5">3</a>. Programs like databases (e.g. SQLite, MySQL) which need to
+write to and read from arbitrary file locations must instead move the
+current position by using <code class="docutils literal notranslate"><span class="pre">lseek</span></code> before a read or write. However most
+programs either read or write a file from the beginning to the end
+(especially when written for an OS that makes it easier to do things
+that way), and thus don’t really need to perform seeks. Because most
+Unix programs use simple “stream” input and output, these may be
+re-directed so that the same program can—without any special
+programming—read from or write to a terminal, a network connection, a
+file, or a pipe from or to another program.</p>
+</section>
+<section id="naming-and-directories">
+<span id="cont-fs-calls-naming"></span><h3><span class="section-number">11.3.3. </span>Naming and Directories<a class="headerlink" href="#naming-and-directories" title="Permalink to this headline">#</a></h3>
+<p>In Unix there is a difference between a name
+(a directory entry) and the object (file or directory) that the name
+points to. The naming and directories operations are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">rename(path1,</span> <span class="pre">path2)</span></code> - Rename an object (i.e. file or directory) by
+either changing the name in its directory entry (if the destination is
+in the same directory) or creating a new entry and deleting the old one
+(if moving into a new directory).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">link(path1,</span> <span class="pre">path2)</span></code>: Add a <em>hard link</em> to a file<a class="footnote-reference brackets" href="#id8" id="id6">4</a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">unlink(path)</span></code>: Decrement the reference count to a file, if it goes to zero, delete the file.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">desc</span> <span class="pre">=</span> <span class="pre">opendir(path)</span></code>, <code class="docutils literal notranslate"><span class="pre">readdir(desc,</span> <span class="pre">dirent*),</span> <span class="pre">dirent=(name,type,length)</span></code>: This interface allows a program to enumerate names in a directory, and determine their type. (i.e. file, directory, symbolic link, or special-purpose file)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stat(file,</span> <span class="pre">statbuf)</span></code>, <code class="docutils literal notranslate"><span class="pre">fstat(desc,</span> <span class="pre">statbuf)</span></code>:  returns information about the file such as  size, owner, permissions, modification time, etc. These are attributes of the file itself, residing in the inode and returned in the following structure.</p></li>
+</ul>
+<div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">stat</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="kt">dev_t</span><span class="w">     </span><span class="n">st_dev</span><span class="p">;</span><span class="w">         </span><span class="cm">/* ID of device containing file */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">ino_t</span><span class="w">     </span><span class="n">st_ino</span><span class="p">;</span><span class="w">         </span><span class="cm">/* Inode number */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">mode_t</span><span class="w">    </span><span class="n">st_mode</span><span class="p">;</span><span class="w">        </span><span class="cm">/* File type and mode */</span><span class="w"></span>
+<span class="w">  </span><span class="n">nlink_t</span><span class="w">   </span><span class="n">st_nlink</span><span class="p">;</span><span class="w">       </span><span class="cm">/* Number of hard links */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">uid_t</span><span class="w">     </span><span class="n">st_uid</span><span class="p">;</span><span class="w">         </span><span class="cm">/* User ID of owner */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">gid_t</span><span class="w">     </span><span class="n">st_gid</span><span class="p">;</span><span class="w">         </span><span class="cm">/* Group ID of owner */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">dev_t</span><span class="w">     </span><span class="n">st_rdev</span><span class="p">;</span><span class="w">        </span><span class="cm">/* Device ID (if special file) */</span><span class="w"></span>
+<span class="w">  </span><span class="kt">off_t</span><span class="w">     </span><span class="n">st_size</span><span class="p">;</span><span class="w">        </span><span class="cm">/* Total size, in bytes */</span><span class="w"></span>
+<span class="w">  </span><span class="n">blksize_t</span><span class="w"> </span><span class="n">st_blksize</span><span class="p">;</span><span class="w">     </span><span class="cm">/* Block size for filesystem I/O */</span><span class="w"></span>
+<span class="w">  </span><span class="n">blkcnt_t</span><span class="w">  </span><span class="n">st_blocks</span><span class="p">;</span><span class="w">      </span><span class="cm">/* Number of 512B blocks allocated */</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="n">st_atim</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Time of last access */</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="n">st_mtim</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Time of last modification */</span><span class="w"></span>
+<span class="w">  </span><span class="k">struct</span><span class="w"> </span><span class="nc">timespec</span><span class="w"> </span><span class="n">st_ctim</span><span class="p">;</span><span class="w">  </span><span class="cm">/* Time of last status change */</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">mkdir(path)</span></code>, <code class="docutils literal notranslate"><span class="pre">rmdir(path)</span></code>: directory operations: create a new, empty directory, or delete an empty directory.</p></li>
+</ul>
+</section>
+</section>
+<section id="some-examples">
+<h2><span class="section-number">11.4. </span>Some examples<a class="headerlink" href="#some-examples" title="Permalink to this headline">#</a></h2>
+<p>Consider the following file that copies one file to another.  After opening the input file (line 25) we stat the input file to get the permissions (i.e., the mode), create a file with that mode (line 36), and then go into a loop reading data from the input file into a buffer, and then writing the buffer to the output file.</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<p>To prove these are the same, lets append a string to the end (i.e., echo “Hello class”&gt; rm2) and use the diff program to compare them. We can see that there is no diff on the first</p>
+<div class="cell tag_remove-input docutils container">
+</div>
+<hr class="footnotes docutils" />
+<dl class="footnote brackets">
+<dt class="label" id="hier"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Very early file systems sometimes had a single flat directory per user, or like MS-DOS 1.0, a single directory per floppy disk</p>
+</dd>
+<dt class="label" id="inode"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>So, why is it called an inode, Dennis Ritchie, who was one of the authors of Unix gave this enlightened answer to the Linux kernel mailing list in <a class="reference external" href="https://lkml.indiana.edu/hypermail/linux/kernel/0207.2/1182.html">2002</a>
+In truth, I don’t know either. It was just a term that we started to use. “Index” is my best guess, because of the slightly unusual file system structure that stored the access information of files as a flat array on the disk, with all the hierarchical directory information living aside from this. Thus the i-number is an index in this array, the i-node is the selected element of the array.</p>
+</dd>
+<dt class="label" id="eff"><span class="brackets"><a class="fn-backref" href="#id3">5</a></span></dt>
+<dd><p>it is probably not a
+coincidence that Unix arrived at the same time as computers which dealt
+only with multiples of 8-bit bytes (e.g. 16 and 32-bit words), replacing
+older systems which frequently used odd word sizes such as 36 bits.
+(Note that a machine with 36-bit instructions already needs two
+incompatible types of files, one for text and one for executable code)</p>
+</dd>
+<dt class="label" id="simple"><span class="brackets"><a class="fn-backref" href="#id4">6</a></span></dt>
+<dd><p>This is the case for almost all operating systems today, but… of course there are exceptions.  Apple OSX uses resource forks to store information associated with a file (HFS and HFS+ file systems only), Windows NTFS provides for multiple data streams in single file, although they were never put to use, and several file systems support file attributes, small tags associated with a file.</p>
+</dd>
+<dt class="label" id="id7"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
+<dd><p>On Linux the <code class="docutils literal notranslate"><span class="pre">pread</span></code> and <code class="docutils literal notranslate"><span class="pre">pwrite</span></code> system calls allow specifying an
+offset for the read or write; other UNIX-derived operating systems
+have their own extensions for this purpose.</p>
+</dd>
+<dt class="label" id="id8"><span class="brackets"><a class="fn-backref" href="#id6">4</a></span></dt>
+<dd><p>A hard link is an additional directory entry pointing to the same
+file, giving the file two (or more) names. Hard links are peculiar
+to Unix, and in modern systems have mostly been replaced with
+symbolic links (covered above); however Apple’s Time Machine makes
+very good use of them: multiple backups can point to the same single
+copy of an un-modified file using hard links.</p>
+</dd>
+</dl>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./fs"
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+            </main>
+            <footer class="footer-article noprint">
+                
+    <!-- Previous / next buttons -->
+<div class='prev-next-area'>
+    <a class='left-prev' id="prev-link" href="intro.html" title="previous page">
+        <i class="fas fa-angle-left"></i>
+        <div class="prev-next-info">
+            <p class="prev-next-subtitle">previous</p>
+            <p class="prev-next-title"><span class="section-number">10. </span>Introduction</p>
+        </div>
+    </a>
+    <a class='right-next' id="next-link" href="diskhw.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">12. </span>A bit about Disks</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
+    </a>
+</div>
+            </footer>
+        </div>
+    </div>
+    <div class="footer-content row">
+        <footer class="col footer"><p>
+  
+    By (see contributing chapter book)<br/>
+  
+      &copy; Copyright 2022.<br/>
+</p>
+        </footer>
+    </div>
+    
+</div>
+
+
+      </div>
+    </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="../_static/scripts/pydata-sphinx-theme.js?digest=1999514e3f237ded88cf"></script>
+
+
+  </body>
+</html>
