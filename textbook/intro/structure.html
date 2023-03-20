@@ -53,8 +53,6 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="4. Operating System Abstractions" href="abstractions.html" />
@@ -731,7 +729,7 @@ UNIX and its children literally make our digital world go around and will likely
 </figure>
 <p>As stated <a class="reference internal" href="purpose.html#cont-gs-purpose-platform-abs"><span class="std std-ref">earlier</span></a>, operating systems provide a set of virtual abstractions on top of the primitive capabilities provided by hardware.  Most operating systems today, and Linux in particular, provide these abstractions in the OS <em>kernel</em> (see <a class="reference internal" href="#def-kernel"><span class="std std-numref">Fig. 3.1</span></a>).  The kernel runs at the highest permission level in the hardware, and can access any memory or device.  All untrusted application code runs in <em>processes</em>, where any access to the real computer is controlled by the kernel.</p>
 <p>The kernel controls the computer and provides the abstraction of <em>processes</em> for application code.
-You can think of a process as a virtual computer that uses unprivileged computer instructions and a set of <a class="reference internal" href="abstractions.html#cont-gs-abstractions"><span class="std std-ref">abstractions</span></a> provided by the kernel. The kernel provides each process: 1) an abstraction of an isolated CPU (while multiplexing it between different processes), 2) a <em>virtual memory</em> abstraction of massive contiguous memory that starts at address <span class="math notranslate nohighlight">\(0x0\)</span>, and 3) a set of file abstractions that allow the process to persist data and communicate with other processes.</p>
+You can think of a process as a virtual computer that uses unprivileged computer instructions and a set of <a class="reference internal" href="abstractions.html#cont-gs-abstractions"><span class="std std-ref">abstractions</span></a> provided by the kernel. The kernel provides each process: 1) an abstraction of an isolated CPU (while multiplexing it between different processes), 2) a <em>virtual memory</em> abstraction of massive contiguous memory that starts at address <code class="docutils literal notranslate"><span class="pre">0x0</span></code>, and 3) a set of file abstractions that allow the process to persist data and communicate with other processes.</p>
 <figure class="align-default" id="os-struc">
 <a class="reference internal image-reference" href="../_images/osstructure.syscall.drawio.png"><img alt="../_images/osstructure.syscall.drawio.png" src="../_images/osstructure.syscall.drawio.png" style="width: 600pt;" /></a>
 <figcaption>
