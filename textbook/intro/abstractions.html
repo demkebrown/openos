@@ -1009,18 +1009,6 @@ main(int argc, char* argv[])
 {"model_id": "fb08a6748bcb4716b72555ef7e08d768", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TermShellCmd</span><span class="p">(</span><span class="s2">&quot;[[ -a testfork ]] &amp;&amp; rm testfork;make testfork&quot;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">appdir</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">noposttext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">TermShellCmd</span><span class="p">(</span><span class="s2">&quot;./testfork&quot;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">appdir</span><span class="p">,</span> <span class="n">noposttext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "e0b51469d2d54f49b485d82283f5d63c", "version_major": 2, "version_minor": 0}
-</script></div>
-</div>
 <div class="literal-block-wrapper docutils container" id="mycodetest">
 <div class="code-block-caption"><span class="caption-number">Listing 4.1 </span><span class="caption-text">testing</span><a class="headerlink" href="#mycodetest" title="Permalink to this code">#</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
@@ -1051,6 +1039,18 @@ main(int argc, char* argv[])
 </div>
 </div>
 <p>The result of running the code in Listing <a class="reference internal" href="#mycodetest"><span class="std std-numref">Listing 4.1</span></a> is:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">TermShellCmd</span><span class="p">(</span><span class="s2">&quot;[[ -a testfork ]] &amp;&amp; rm testfork;make testfork&quot;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">appdir</span><span class="p">,</span> <span class="n">prompt</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">noposttext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">TermShellCmd</span><span class="p">(</span><span class="s2">&quot;./testfork&quot;</span><span class="p">,</span> <span class="n">cwd</span><span class="o">=</span><span class="n">appdir</span><span class="p">,</span> <span class="n">noposttext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "e0b51469d2d54f49b485d82283f5d63c", "version_major": 2, "version_minor": 0}
+</script></div>
+</div>
 <p>The parent prints out the child <code class="docutils literal notranslate"><span class="pre">pid</span></code> that it gets from <code class="docutils literal notranslate"><span class="pre">fork</span></code>, and then its <code class="docutils literal notranslate"><span class="pre">pid</span></code> (from calling <code class="docutils literal notranslate"><span class="pre">getpid()</span></code>).  You can see that these values match the pid that the child gets from <code class="docutils literal notranslate"><span class="pre">getppid()</span></code>. Again, please use man to find out about any of these system calls.</p>
 <aside class="sidebar">
 <p>While it seems important to explain <code class="docutils literal notranslate"><span class="pre">fork</span></code> as <strong>the</strong> system call that Unix has been designed around, as some of the authors have <a class="reference external" href="https://www.bu.edu/rhcollab/files/2019/04/fork-in-the-road.pdf">written in the past</a>, it is a highly flawed interface.  Note, when you question religious dogma, be prepared for the <a class="reference external" href="https://lwn.net/Articles/785430/">abuse</a>, and, if you can, find a member in good standing of the religion to have a reasoned <a class="reference external" href="https://www.bu.edu/rhcollab/2019/04/11/a-fork-in-the-road/">debate</a>.</p>
