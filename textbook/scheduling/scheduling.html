@@ -640,31 +640,6 @@ title="Print to PDF"
      8.3.2. Factors in Process Selection
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#responsiveness">
-     8.3.3. Responsiveness
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#turnaround-time">
-     8.3.4. Turnaround Time
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#throughput">
-     8.3.5. Throughput
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#predictability">
-     8.3.6. Predictability
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#fairness">
-     8.3.7. Fairness
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -743,31 +718,6 @@ title="Print to PDF"
      8.3.2. Factors in Process Selection
     </a>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#responsiveness">
-     8.3.3. Responsiveness
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#turnaround-time">
-     8.3.4. Turnaround Time
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#throughput">
-     8.3.5. Throughput
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#predictability">
-     8.3.6. Predictability
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#fairness">
-     8.3.7. Fairness
-    </a>
-   </li>
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -817,7 +767,7 @@ title="Print to PDF"
 <p>The scheduler is responsible for managing the entirety of the process life cycle and for selecting the next process to run. In the next few sections we will describe the process life cycle and several methods for ordering runnable processes. Before we discuss details, we need to define a few new terms. Earlier we described how we virtualize the CPU, by allowing a process to run for some amount of time and then switching to another process, and then repeating these steps as long as there are processes that need to run. We allot a bounded amount of time for a process to run in a given turn and this bounded time is called a <em>time slice</em>. In <em>batch scheduling</em>, this time slice is the entire time needed to execute the job, while in <em>preemptive scheduling</em> the time slice is typically much shorter than the time to run a process to completion (though not necessarily static, as we will see). We need a mechanism for changing what the active process on a CPU is, we call this mechanism a <em>context switch</em>. We also need policies for deciding how long a process should be allowed to run and policies for choosing the next process to run from a set of runnable processes. With these definitions, let’s first understand the <a class="reference internal" href="#cont-scheduling-scheduling-lifecycle"><span class="std std-ref">process life cycle</span></a>, before jumping into the <a class="reference internal" href="#cont-scheduling-scheduling-switch"><span class="std std-ref">context switch mechanism</span></a> and exploring <a class="reference internal" href="#cont-scheduling-scheduling-factors"><span class="std std-ref">considerations for scheduling policies</span></a>. We conclude this chapter with a look at several <a class="reference internal" href="#cont-scheduling-scheduling-policies"><span class="std std-ref">example scheduling policies</span></a>.</p>
 <section id="the-process-life-cycle">
 <span id="cont-scheduling-scheduling-lifecycle"></span><h2><span class="section-number">8.1. </span>The Process Life Cycle<a class="headerlink" href="#the-process-life-cycle" title="Permalink to this headline">#</a></h2>
-<p>Processes are created in one of two ways: the operating system creates the first process (called init in UNIX-like systems) during boot up, or any process can use a system call (e.g., <code class="docutils literal notranslate"><span class="pre">fork()</span></code>, <code class="docutils literal notranslate"><span class="pre">clone()</span></code>, <code class="docutils literal notranslate"><span class="pre">NtCreateProcess()</span></code>, etc). Processes can also be terminated in three ways: by itself by calling <code class="docutils literal notranslate"><span class="pre">exit()</span></code>, <code class="docutils literal notranslate"><span class="pre">ExitProcess()</span></code>, or equivalent, due to an error (e.g., segmentation fault, division by zero, etc.), or by another process calling (<code class="docutils literal notranslate"><span class="pre">kill()</span></code>, <code class="docutils literal notranslate"><span class="pre">TerminateProcess()</span></code>, or similar).</p>
+<p>Processes are created in one of two ways: (1) the operating system creates the first process (called <code class="docutils literal notranslate"><span class="pre">init</span></code> in UNIX-like systems) during boot up; or (2) any process can use a system call (e.g., <code class="docutils literal notranslate"><span class="pre">fork()</span></code>, <code class="docutils literal notranslate"><span class="pre">clone()</span></code>, <code class="docutils literal notranslate"><span class="pre">NtCreateProcess()</span></code>, etc). Processes can be terminated in three ways: (1) by the process itself calling <code class="docutils literal notranslate"><span class="pre">exit()</span></code>, <code class="docutils literal notranslate"><span class="pre">ExitProcess()</span></code>, or equivalent; (2) by the OS due to an error (e.g., segmentation fault, division by zero, etc.); or (3) by another process calling <code class="docutils literal notranslate"><span class="pre">kill()</span></code>, <code class="docutils literal notranslate"><span class="pre">TerminateProcess()</span></code>, or similar system calls.</p>
 <p>Once created, a process has the following life cycle.</p>
 <figure class="align-default" id="lifecycle">
 <img alt="../_images/ProcessLifecycle.png" src="../_images/ProcessLifecycle.png" />
@@ -825,45 +775,42 @@ title="Print to PDF"
 <p><span class="caption-number">Fig. 8.1 </span><span class="caption-text">The process life cycle showing the possible transitions between the states.</span><a class="headerlink" href="#lifecycle" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>As shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a>, there are 3 possible states for a process and all the valid stat transitions are represented by the arrows. A running process is one that is currently active on a CPU. A running process can move to either the ‘Ready’ or ‘Blocked’ state. To move to the Blocked state (labeled 1), a process must take an action that will require ‘significant’. Some examples of blocking operations are: issuing a read from disk or from a network socket that does not have data ready, trying to acquire certain kinds of locks that are already owned by another process or thread, etc. A Running process that takes an action that will block immediately moves to the Blocked state, allowing another process to use the CPU while it waits To move to Ready from Running (labeled 2), the running process has to either yield the remainder of its allotted time slice, or be stopped by the OS after exhausting its slice. Moving from Ready to Running (labeled 3) requires that the OS to select the process as the next to execute and place it on a processor. The final transition we have not discussed is from Blocked to Ready (labeled 4), this transition happens when the blocking request is now complete or ready.</p>
+<p>As shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a>, there are three possible states for a process, and all the valid state transitions are represented by the arrows. A running process is one that is currently active on a CPU. A running process can move to either the ‘Ready’ or ‘Blocked’ state. To move to the Blocked state (labeled 1), a process must take an action that cannot be completed immediately. Some examples of blocking operations are: issuing a read from disk or from a network socket that does not have data ready, issuing a write to a pipe that has no more space to buffer data, trying to acquire certain kinds of resources that are already owned by another process or thread, etc. In these situations, the process must wait for something external itself to happen before it can make progress (e.g., data arrives over the network, another process reads some data out of the pipe, the requested resource is released by another process, etc.), and is unable to make use of the CPU until that event occurs. We would be wasting the limited CPU resource if we left such a process on the CPU, and there is no point considering it among the set of runnable processes that we might want to choose next either. Thus, a Running process that takes an action that will block is immediately moved to the Blocked state, allowing another process to use the CPU while it waits. The other transition out of the Running state is to the Ready state (labeled 2), which happens when the running process either voluntarily yields the remainder of its allotted time slice, or is forcibly removed from the CPU by the OS after exhausting its time slice (called <em>preemption</em>). Moving from Ready to Running (labeled 3) requires the OS to select the process as the next to execute and place it on a processor. The final transition is from Blocked to Ready (labeled 4), which happens when the blocking request is now complete or ready.</p>
 </section>
 <section id="performing-a-context-switch">
 <span id="cont-scheduling-scheduling-switch"></span><h2><span class="section-number">8.2. </span>Performing a Context Switch<a class="headerlink" href="#performing-a-context-switch" title="Permalink to this headline">#</a></h2>
-<p><a class="reference internal" href="process.html#cont-scheduling-process-abstraction"><span class="std std-ref">Earlier</span></a> we described the data structures used to hold process information, now we need a way to change the active process on a CPU. When the OS decides to change the active process all of the state associated with the outgoing process is cached in its PCB. Next the OS selects a new process to take the CPU and loads the incoming process state from its PCB and sets the CPU to run the incoming state from where it last left off. Note that each of the state transitions shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a> are context switches. At each of these points an outgoing process is taken off a CPU and an incoming one is placed on it and resumed. This transition is an expensive one, even though we are saving all the state needed to resume a process, modern processors have several caches (data and instruction caches, the translation look aside buffer, etc.) used to help a process run more quickly that are tied to the executing process. When a new process is placed on a CPU, the contents of these caches are not related and either cleared or need to be replaced by the new process.</p>
+<p><a class="reference internal" href="process.html#cont-scheduling-process-abstraction"><span class="std std-ref">Earlier</span></a> we described the data structures used to hold process information; now we need a way to change the active process on a CPU. When the OS decides to change the active process, all of the state associated with the outgoing process is cached in its PCB. Next the OS selects a new process to take the CPU and loads the incoming process state from its PCB and sets the CPU to run the incoming process from where it last left off.</p>
+<p>Note that each context switch involves one of the state transitions shown in <a class="reference internal" href="#lifecycle"><span class="std std-numref">Fig. 8.1</span></a> for <em>two</em> processes: the currently executing process transitions out of the Running state, and the next process selected to execute transitions from Ready into Running.</p>
+<p>Context switches are expensive for two reasons. First, there is CPU overhead to save the state (i.e., CPU registers) of the outgoing process, select the next process to run, and load the state of the incoming process. Second, even though we are saving all the state needed to resume a process, modern processors have several caches (e.g., data and instruction caches, the translation look aside buffer, etc.) that help a process run more quickly. As a process runs, these caches are filled with instructions or data that are related to the executing process. When a new process is placed on a CPU, the contents of these caches are no longer related to the running process, and either need to be cleared by the OS, or need to be replaced by the new process as it executes.</p>
 </section>
 <section id="considerations-for-scheduling-policies">
 <span id="cont-scheduling-scheduling-factors"></span><h2><span class="section-number">8.3. </span>Considerations for Scheduling Policies<a class="headerlink" href="#considerations-for-scheduling-policies" title="Permalink to this headline">#</a></h2>
+<p>As we will see, a large number of scheduling policies have been developed over the years. Some of these are specialized for particular types of computing systems, while others aim to support more general-purpose systems. In this section, we will look at two broad categories of schedulers, and then discuss the different factors that the OS designer should take into consideration when developing a scheduling policy.</p>
 <section id="batch-versus-preemptive">
 <h3><span class="section-number">8.3.1. </span>Batch versus Preemptive<a class="headerlink" href="#batch-versus-preemptive" title="Permalink to this headline">#</a></h3>
-<p>Batch scheduling is a ‘run to completion’ model which means that once a job starts, it remains the active job on a CPU until it has completed. This mode of scheduling was used in early computers and is still used for some high-performance computing or HPC systems. Preemptive scheduling is more familiar to the modern computer user because all consumer OS’s use this model. In a preemptive scheduling system we use the notion of the time slice and a process is only active on a CPU while it is not blocked and it has not exhausted its time slice. This allows us to build interactive systems that can respond to user input and can handle jobs with unbounded run time.</p>
+<p>Batch scheduling is a ‘run to completion’ model which means that once a job starts, it remains the active job on a CPU until it has completed. This mode of scheduling was used in early computers and is still used for some high-performance computing, or <em>HPC</em>, systems. Preemptive scheduling is more familiar to the modern computer user because all consumer OS’s use this model. In a preemptive scheduling system we use the notion of the time slice and a process is only active on a CPU while it is not blocked and it has not exhausted its time slice. This allows us to build interactive systems that can respond to user input and can handle jobs with unbounded run time.</p>
 </section>
 <section id="factors-in-process-selection">
 <h3><span class="section-number">8.3.2. </span>Factors in Process Selection<a class="headerlink" href="#factors-in-process-selection" title="Permalink to this headline">#</a></h3>
-<p>With all the parts in place to move processes on and off a CPU we are only missing a method for choosing what the next process to run on a CPU will be. Selecting the next process requires that the OS developer consider a number of possible criterion to optimize and to balance against each other. We must weigh things like responsiveness, turnaround time, throughput, predictability, fairness, and load on other parts of the system in making this decision, so let’s take a look at what each of these considerations are.</p>
-</section>
-<section id="responsiveness">
-<h3><span class="section-number">8.3.3. </span>Responsiveness<a class="headerlink" href="#responsiveness" title="Permalink to this headline">#</a></h3>
-<p>Responsiveness is the amount of time required for the system to respond to an event or a request. If a user is interacting with the system, they will likely notice if the scheduler is not prioritizing responsiveness if they have to wait for key strokes or other input to have their effect.</p>
-</section>
-<section id="turnaround-time">
-<h3><span class="section-number">8.3.4. </span>Turnaround Time<a class="headerlink" href="#turnaround-time" title="Permalink to this headline">#</a></h3>
-<p>Turnaround time is the amount of time between a job submission and its termination. Minimizing this time often helps with throughput.</p>
-</section>
-<section id="throughput">
-<h3><span class="section-number">8.3.5. </span>Throughput<a class="headerlink" href="#throughput" title="Permalink to this headline">#</a></h3>
-<p>We define throughput as maximizing the number of processes completed per unit of time. To optimize for throughput we want to ensure that the active process stays on the CPU for as long as it isn’t blocked.</p>
-</section>
-<section id="predictability">
-<h3><span class="section-number">8.3.6. </span>Predictability<a class="headerlink" href="#predictability" title="Permalink to this headline">#</a></h3>
-<p>We are not going to dive deeply into real time computing, but there are classes of application which need to be certain of regular and predictable performance.</p>
+<p>With all the parts in place to move processes on and off a CPU (i.e., the mechanism), we are only missing a method for choosing the next process to run on a CPU (i.e., the policy). Selecting the next process requires that the OS developer consider a number of possible criterion to optimize and to balance against each other. We must weigh things like responsiveness, turnaround time, throughput, predictability, fairness, and load on other parts of the system in making this decision, so let’s take a look at what each of these considerations are.</p>
+<dl class="simple myst">
+<dt>Responsiveness</dt><dd><p>Responsiveness is the amount of time required for the system to respond to an event or a request. If a user is interacting with the system, they will likely notice if the scheduler is not prioritizing responsiveness if they have to wait for key strokes or other input to have their effect.</p>
+</dd>
+<dt>Turnaround Time</dt><dd><p>Turnaround time is the amount of time between a job submission and its termination. Minimizing this time often helps with throughput.</p>
+</dd>
+<dt>Throughput</dt><dd><p>We define throughput as maximizing the number of processes completed per unit of time. To optimize for throughput we want to ensure that the active process stays on the CPU for as long as it isn’t blocked.</p>
+</dd>
+<dt>Predictability</dt><dd><p>We are not going to dive deeply into real time computing, but there are classes of application which need to be certain of regular and predictable performance.</p>
+</dd>
+</dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Real time scheduling is used in a wide class of applications from industrial controls to vehicle management to robotics. Predictability is a key requirement in each of these cases. Think of the program or programs responsible for managing an airplane in flight, the developers make decisions for the software with a guarantee that certain calculations can be made at least N times a second. If this requirement is not met, we start seeing bad and possibly dangerous behavior.</p>
 </div>
-</section>
-<section id="fairness">
-<h3><span class="section-number">8.3.7. </span>Fairness<a class="headerlink" href="#fairness" title="Permalink to this headline">#</a></h3>
-<p>Starvation in the context of scheduling is defined as a process never getting access to a CPU (for what ever reason). A functioning scheduler should not starve any process indefinitely.</p>
+<dl class="simple myst">
+<dt>Fairness</dt><dd><p>Starvation in the context of scheduling is defined as a process never getting access to a CPU (for what ever reason). A functioning scheduler should not starve any process indefinitely.</p>
+</dd>
+</dl>
 <p>These requirements are often in tension with each other and designing a scheduling algorithm is an act of balancing trade offs for the requirements of the OS.</p>
 </section>
 </section>
