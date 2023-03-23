@@ -648,13 +648,13 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#first-come-first-served">
-     8.4.1. First Come, First Served
+    <a class="reference internal nav-link" href="#first-come-first-served-fcfs">
+     8.4.1. First Come, First Served (FCFS)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#shortest-job-first">
-     8.4.2. Shortest Job First
+    <a class="reference internal nav-link" href="#shortest-job-first-sjf">
+     8.4.2. Shortest Job First (SJF)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -726,13 +726,13 @@ title="Print to PDF"
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#first-come-first-served">
-     8.4.1. First Come, First Served
+    <a class="reference internal nav-link" href="#first-come-first-served-fcfs">
+     8.4.1. First Come, First Served (FCFS)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#shortest-job-first">
-     8.4.2. Shortest Job First
+    <a class="reference internal nav-link" href="#shortest-job-first-sjf">
+     8.4.2. Shortest Job First (SJF)
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -794,21 +794,21 @@ title="Print to PDF"
 <h3><span class="section-number">8.3.2. </span>Factors in Process Selection<a class="headerlink" href="#factors-in-process-selection" title="Permalink to this headline">#</a></h3>
 <p>With all the parts in place to move processes on and off a CPU (i.e., the mechanism), we are only missing a method for choosing the next process to run on a CPU (i.e., the policy). Selecting the next process requires that the OS developer consider a number of possible criterion to optimize and to balance against each other. We must weigh things like responsiveness, turnaround time, throughput, predictability, fairness, and load on other parts of the system in making this decision, so let’s take a look at what each of these considerations are.</p>
 <dl class="simple myst">
-<dt>Responsiveness</dt><dd><p>Responsiveness is the amount of time required for the system to respond to an event or a request. If a user is interacting with the system, they will likely notice if the scheduler is not prioritizing responsiveness if they have to wait for key strokes or other input to have their effect.</p>
+<dt>Responsiveness</dt><dd><p>Responsiveness is the amount of time required for the system to respond to an event or a request. If a user is interacting with the system, they will likely notice if the scheduler is not prioritizing responsiveness because they have to wait for key strokes or other input to have their effect.</p>
 </dd>
 <dt>Turnaround Time</dt><dd><p>Turnaround time is the amount of time between a job submission and its termination. Minimizing this time often helps with throughput.</p>
 </dd>
-<dt>Throughput</dt><dd><p>We define throughput as maximizing the number of processes completed per unit of time. To optimize for throughput we want to ensure that the active process stays on the CPU for as long as it isn’t blocked.</p>
+<dt>Throughput</dt><dd><p>We define throughput as the number of processes completed per unit of time. To optimize for throughput, we want to ensure that the active process stays on the CPU as long as it isn’t blocked.</p>
 </dd>
-<dt>Predictability</dt><dd><p>We are not going to dive deeply into real time computing, but there are classes of application which need to be certain of regular and predictable performance.</p>
+<dt>Predictability</dt><dd><p>We are not going to dive deeply into real-time computing, but there are classes of application which need to be certain of regular and predictable performance.</p>
 </dd>
 </dl>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Real time scheduling is used in a wide class of applications from industrial controls to vehicle management to robotics. Predictability is a key requirement in each of these cases. Think of the program or programs responsible for managing an airplane in flight, the developers make decisions for the software with a guarantee that certain calculations can be made at least N times a second. If this requirement is not met, we start seeing bad and possibly dangerous behavior.</p>
+<p>Real-time scheduling is used in a wide class of applications from industrial controls to vehicle management to robotics. Predictability is a key requirement in each of these cases. Think of the program or programs responsible for managing an airplane in flight. The developers make decisions for the software with a guarantee that certain calculations can be made at least N times a second. If this requirement is not met, we start seeing bad and possibly dangerous behavior.</p>
 </div>
 <dl class="simple myst">
-<dt>Fairness</dt><dd><p>Starvation in the context of scheduling is defined as a process never getting access to a CPU (for what ever reason). A functioning scheduler should not starve any process indefinitely.</p>
+<dt>Fairness</dt><dd><p>Starvation in the context of scheduling is defined as a process never getting access to a CPU (for whatever reason). A functioning scheduler should not starve any process indefinitely. Achieving fairness may require more than simply not starving any process, however, we will use starvation-freedom as our fairness criteria.</p>
 </dd>
 </dl>
 <p>These requirements are often in tension with each other and designing a scheduling algorithm is an act of balancing trade offs for the requirements of the OS.</p>
@@ -816,20 +816,21 @@ title="Print to PDF"
 </section>
 <section id="simple-examples-of-scheduling-policies">
 <span id="cont-scheduling-scheduling-policies"></span><h2><span class="section-number">8.4. </span>Simple Examples of Scheduling Policies<a class="headerlink" href="#simple-examples-of-scheduling-policies" title="Permalink to this headline">#</a></h2>
-<p>Now that we have a collection of requirements, let’s look at a few simple possibilities and see which of our requirements they meet well and which ones they fail. Our first two examples are for batch system scheduling, which means that each job runs to completion before a new job is selected. The remaining examples will change to preemptive scheduling.</p>
-<section id="first-come-first-served">
-<h3><span class="section-number">8.4.1. </span>First Come, First Served<a class="headerlink" href="#first-come-first-served" title="Permalink to this headline">#</a></h3>
-<p>Just like waiting in line at the local government office, each process gets into a queue and the processor executes the first process in that queue until it completes. Then we repeat the same. This method is really simple and it meets our fairness requirement as we can prove that no process will be stalled indefinitely. However, this breaks down when we mix short, CPU intensive jobs with longer or I/O bound jobs. If a terminal has to wait in a queue behind a long compilation task, it could look to the user as if the terminal is not responding to key strokes. Also, turnaround time for a job in this scheduler is entirely based on the length of the jobs preceding it in the queue.</p>
+<p>Now that we have a collection of requirements, let’s look at a few simple possibilities and see which of our requirements they meet well and which ones they fail. Our first two examples are for batch system scheduling, which means that each job runs to completion before a new job is selected. We assume that batch jobs are finite, and will eventually complete. All batch scheduling scheduling policies are optimized for throughput, since the CPU time spent on context switches is minimized and the time to complete each job is minimized.</p>
+<p>The remaining examples are intended for preemptive scheduling.</p>
+<section id="first-come-first-served-fcfs">
+<h3><span class="section-number">8.4.1. </span>First Come, First Served (FCFS)<a class="headerlink" href="#first-come-first-served-fcfs" title="Permalink to this headline">#</a></h3>
+<p>Just like waiting in line at the local government office, each process gets into a queue and the processor executes the first process in that queue until it completes. Then we repeat the same. This method is really simple and it meets our fairness requirement as we can prove that no process will be stalled indefinitely. However, this policy has poor behavior when we mix short, CPU intensive jobs with longer or I/O bound jobs. If a terminal process has to wait in a queue behind a long compilation task, it could look to the user as if the terminal is not responding to key strokes. Also, turnaround time for a job in this scheduler is entirely based on the length of the jobs preceding it in the queue.</p>
 <p>First come, first served meets our fairness requirement well, but it falls down on almost all the others.</p>
 </section>
-<section id="shortest-job-first">
-<h3><span class="section-number">8.4.2. </span>Shortest Job First<a class="headerlink" href="#shortest-job-first" title="Permalink to this headline">#</a></h3>
-<p>Instead of using arrival time for selecting the next process, we sort the queue of processes by the amount of time they will take to run and we keep the queue sorted by inserting processes by run time. This algorithm improves turnaround time and throughput over first come, first served but we can construct scenarios where long running jobs are stalled indefinitely by having short job continually arriving on the system.</p>
+<section id="shortest-job-first-sjf">
+<h3><span class="section-number">8.4.2. </span>Shortest Job First (SJF)<a class="headerlink" href="#shortest-job-first-sjf" title="Permalink to this headline">#</a></h3>
+<p>Instead of using arrival time for selecting the next process, we sort the queue of processes by the amount of time they will take to run, and we keep the queue sorted by inserting processes by run time. This algorithm improves turnaround time and throughput over first come, first served but we can construct scenarios where long-running jobs are stalled indefinitely by having short jobs continually arriving on the system. Knowing how long a job will take to run when it first arrives is an additional complication for shortest job first scheduling.</p>
 <p>Shortest job first gives excellent throughput and can yield good turnaround time and responsiveness for systems with only short jobs. However, it totally fails on fairness and predictability.</p>
 </section>
 <section id="round-robin">
 <h3><span class="section-number">8.4.3. </span>Round Robin<a class="headerlink" href="#round-robin" title="Permalink to this headline">#</a></h3>
-<p>Our first preemptive scheduling model is just like first come, first served but we have added the time slice so processes are no longer run to completion. In this model we still have a single queue and processes can be added to it. When a process becomes active it is given a fixed amount of time to run and when this time expires the OS interrupts the process and puts it at the back of the queue.</p>
+<p>Our first preemptive scheduling algorithm is just like first come, first served but we have added the time slice so processes are no longer run to completion. In this model, we still have a single queue of processes in the Ready state, and processes can be added to it upon creation or when leaving the Blocked state. When a process becomes active, it is given a fixed amount of time to run, and when this time slice expires the OS interrupts the process and puts it at the back of the queue.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The preemptive scheduling models introduces a new parameter we need to set: the length of the time slice. We have to weigh the cost of changing processes against the interactivity requirements when deciding on the length of a time slice. Later on we will see systems that change the length based on usage patterns.</p>
@@ -837,7 +838,7 @@ title="Print to PDF"
 </section>
 <section id="priority">
 <h3><span class="section-number">8.4.4. </span>Priority<a class="headerlink" href="#priority" title="Permalink to this headline">#</a></h3>
-<p>The core idea behind priority scheduling is that some processes may be more important than others and should be given access to the CPU first. To implement this the OS maintains two or more priority queues which hold processes assigned to that each priority. Runnable processes in a higher priority queue are run before runnable processes in lower priority queues. In general we assign higher priorities to I/O bound processes and lower priorities to CPU bound ones. Figure <a class="reference internal" href="#priority-sched"><span class="std std-numref">Fig. 8.2</span></a> shows a simple example of a system with 4 priority queues. In this snap shot, the next process to be given CPU time will be the first process in the priority 4 queue. Assuming no additions, the processes in queue 3 will not run until all of the ones in 4 have completed.</p>
+<p>The core idea behind priority scheduling is that some processes may be more important than others and should be given access to the CPU first. To implement this policy, the OS maintains two or more priority queues which hold processes assigned to the corresponding priority. Runnable processes in a higher priority queue are run before runnable processes in lower priority queues. In general we assign higher priorities to I/O bound processes and lower priorities to CPU bound ones. Figure <a class="reference internal" href="#priority-sched"><span class="std std-numref">Fig. 8.2</span></a> shows a simple example of a system with 4 priority queues. In this snapshot, the next process to be given CPU time will be the first process in the priority 4 queue. Assuming no additions, the processes in queue 3 will not run until all of the ones in 4 have completed.</p>
 <figure class="align-default" id="priority-sched">
 <img alt="../_images/priority-sched.png" src="../_images/priority-sched.png" />
 <figcaption>
@@ -846,7 +847,7 @@ title="Print to PDF"
 </figure>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>It may seem counter-intuitive to assign high priority to I/O bound processes because they often do not make use of their full time slice. We do this because a process that is frequently blocking on I/O is more like to be interactive and therefore have a user who will notice latency when the scheduler ignores the process for several periods.</p>
+<p>It may seem counter-intuitive to assign high priority to I/O bound processes because they often do not make use of their full time slice. We do this because a process that is frequently blocking on I/O is more likely to be interactive and therefore have a user who will notice latency when the scheduler ignores the process for several periods.</p>
 </div>
 </section>
 <section id="lottery">
