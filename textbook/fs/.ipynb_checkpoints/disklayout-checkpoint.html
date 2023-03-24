@@ -619,36 +619,36 @@ title="Print to PDF"
                 
   <section class="tex2jax_ignore mathjax_ignore" id="file-system-layout">
 <span id="cont-fs-layout"></span><h1><span class="section-number">13. </span>File System Layout<a class="headerlink" href="#file-system-layout" title="Permalink to this headline">#</a></h1>
-<p>To store a file system on a real disk, the high-level objects (directories, files, symbolic links) must be translated into read and write operations on disk blocks identified by logical block addresses. How do we do that?  How do we even know what file system should be used to understand the blocks on the disk? How do we load the operating system in the first place off of the disk?</p>
+<p>To store a file system on a real disk, the high-level objects (directories, files, symbolic links) must be translated into read and write on blocks blocks identified by logical block addresses, how do we do that?  How do we even know what file system should be used to understand the blocks on the disk? How do we load the operating system in the first place off of the disk?</p>
 <figure class="align-default" id="fs-disklayout">
 <a class="reference internal image-reference" href="../_images/disklayout-partitions.png"><img alt="../_images/disklayout-partitions.png" src="../_images/disklayout-partitions.png" style="width: 70%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 13.1 </span><span class="caption-text">Base disk layout with partition table</span><a class="headerlink" href="#fs-disklayout" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>As shown in <a class="reference internal" href="#fs-disklayout"><span class="std std-numref">Fig. 13.1</span></a> the operating system normally writes a partition table at the beginning of the disk that can be used to divide the disk into <em>partitions</em>, each potentially containing a different file system. For each partition, the table indicates the range of blocks in it, whether the partition contains an operating system that could be executed, and the type of file system that should be used to interpret the blocks.</p>
-<p>When a system starts up, the firmware will read the partition table, look at which partitions contain operating systems, and decide which one to boot (potentially asking the user).  It then reads the boot block of that partition, and starts executing code from that block that will in turn read other blocks…</p>
+<p>As shown in <a class="reference internal" href="#fs-disklayout"><span class="std std-numref">Fig. 13.1</span></a> the operating system normally writes a partition table at the beginning of the disk that can be used the divide the disk into <em>partitions</em> each potentially containing a different file system. For each partition, the table indicates the range of blocks in it, indicate if the partition contains an operating system that could be executed, and the type of file system that should be used to interpret the blocks.</p>
+<p>When a system starts up, the firmware will read the partition table, look at which partitions contain operating systems, and (potentially asking user) decide which one to boot.  It then reads the boot block of that partition, and start executing code from that block that will in turn read other blocks…</p>
 <figure class="align-default" id="fs-disklayout-withfs">
 <a class="reference internal image-reference" href="../_images/disklayout-withexfs.png"><img alt="../_images/disklayout-withexfs.png" src="../_images/disklayout-withexfs.png" style="width: 70%;" /></a>
 <figcaption>
 <p><span class="caption-number">Fig. 13.2 </span><span class="caption-text">Example of a file system that might be in a partition.</span><a class="headerlink" href="#fs-disklayout-withfs" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p><a class="reference internal" href="#fs-disklayout-withfs"><span class="std std-numref">Fig. 13.2</span></a> shows example contents of a partition.  After the boot block, all the information is specific to the particular file system on that partition.  Once the operating system kernel is started, it will use the file system type information from the partition table to figure out if it understands that kind of file system.
+<p><a class="reference internal" href="#fs-disklayout-withfs"><span class="std std-numref">Fig. 13.2</span></a> shows example contents of a partition.  After the boot block, all the information is specific to the file system.  Once the operating system kernel is started, it will use the type of file system information from the partition table to figure out if it understands that kind of file system.
 Recall, there are hundreds and hundreds of file systems, and operating systems like Linux have file system code specific to each one.  When we talked about <a class="reference internal" href="../intro/structure.html#cont-gs-structure-struc"><span class="std std-ref">operating system structure</span></a> we talked about how the file system code is normally dynamically loaded (see <a class="reference internal" href="../intro/structure.html#os-struc-services"><span class="std std-numref">Fig. 3.3</span></a>); if the operating system had all the file systems it could possibly understand loaded, it would be huge.</p>
 <p>While every file system does it differently, <a class="reference internal" href="#fs-disklayout-withfs"><span class="std std-numref">Fig. 13.2</span></a> shows on example organization for a simple file system. Key elements on disk are:</p>
 <ul class="simple">
-<li><p><strong>Superblock</strong>: describes the overall file system, including where the inodes are, where free block information is kept, the block size, the inode number for the root directory, … and all kinds of information for how to recover the file system if failures occur.</p></li>
-<li><p><strong>Free info</strong>: some data structure to describe which blocks in the partition or disk are free.</p></li>
-<li><p><strong>Inodes</strong>: an array of inode information indexed by inode number.</p></li>
+<li><p><strong>Superblock</strong>: that describes where the inodes are, where free block information is kept, the block size, the, the inode number for the root directory, … and all kinds of information for how to recover the file system if failures occur.</p></li>
+<li><p><strong>Free info</strong>: some data structure to describe which blocks in the partition/disk are free.</p></li>
+<li><p><strong>Inodes</strong>: an array of inode information indexed by inode number
+where the remainder of the partition is just disk blocks.</p></li>
 </ul>
-<p>The remainder of the partition is just disk blocks, which are used by the file system to store files and directories.</p>
 <aside class="sidebar">
 <p>Note that instead of 512-byte sectors, file systems traditionally use
 <em>disk blocks</em>, which are some small power-of-two multiple of the sector
 size, typically 1KB, 2KB, or 4KB. Reading and writing is performed in
-units of complete blocks, and file system addresses are stored as disk block numbers
-rather than LBAs. These disk block numbers must be multiplied by the appropriate value
+units of complete blocks, and addresses are stored as disk block numbers
+rather than LBAs, and are then multiplied by the appropriate value
 before being passed to the disk. Since modern disk drives have an
 internal sector size of 4 KB (despite pretending to support 512-byte
 sectors) and the virtual memory page size is 4 KB on most systems today,
