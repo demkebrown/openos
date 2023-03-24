@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>14. Disk Layout:Tracking Used Space &#8212; Introduction to Operating Systems</title>
+    <title>15. Disk Layout:Tracking Free Space &#8212; Introduction to Operating Systems</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -53,12 +53,10 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
-    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="15. Disk Layout:Tracking Free Space" href="dl_track_free.html" />
-    <link rel="prev" title="13. File System Layout" href="disklayout.html" />
+    <link rel="next" title="16. Disk Layout:Implementing Name Space" href="dl_name.html" />
+    <link rel="prev" title="14. Disk Layout:Tracking Used Space" href="dl_track_used.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -203,13 +201,13 @@ const thebe_selector_output = ".output, .cell_output"
    13. File System Layout
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="dl_track_used.html">
    14. Disk Layout:Tracking Used Space
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="dl_track_free.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    15. Disk Layout:Tracking Free Space
   </a>
  </li>
@@ -435,7 +433,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/fs/dl_track_used.ipynb"
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/fs/dl_track_free.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -453,7 +451,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/fs/dl_track_used.ipynb&branch=main"
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/fs/dl_track_free.ipynb&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -513,7 +511,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Ffs/dl_track_used.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Ffs/dl_track_free.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -530,7 +528,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/okrieg/openos/edit/main/content/fs/dl_track_used.ipynb"
+        <a href="https://github.com/okrieg/openos/edit/main/content/fs/dl_track_free.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -558,7 +556,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/fs/dl_track_used.ipynb"
+        <a href="../_sources/fs/dl_track_free.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -595,90 +593,23 @@ title="Print to PDF"
     </ul>
   </div>
 </div>
-<label for="__page-toc"
-  class="headerbtn headerbtn-page-toc"
-  
->
-  
-
-<span class="headerbtn__icon-container">
-  <i class="fas fa-list"></i>
-  </span>
-
-</label>
 
     </div>
 </div>
 
 <!-- Table of contents -->
 <div class="col-md-3 bd-toc show noprint">
-    <div class="tocsection onthispage pt-5 pb-3">
-        <i class="fas fa-list"></i> Contents
-    </div>
-    <nav id="bd-toc-nav" aria-label="Page">
-        <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#contiguous">
-   14.1. Contiguous
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#linked-list">
-   14.2. Linked list
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inode">
-   14.3. Inode
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extents">
-   14.4. Extents
-  </a>
- </li>
-</ul>
-
-    </nav>
 </div>
     </div>
     <div class="article row">
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Disk Layout:Tracking Used Space</h1>
+                <h1>Disk Layout:Tracking Free Space</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
                         
-                        <div>
-                            <h2> Contents </h2>
-                        </div>
-                        <nav aria-label="Page">
-                            <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#contiguous">
-   14.1. Contiguous
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#linked-list">
-   14.2. Linked list
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#inode">
-   14.3. Inode
-  </a>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#extents">
-   14.4. Extents
-  </a>
- </li>
-</ul>
-
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -686,121 +617,34 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="disk-layout-tracking-used-space">
-<span id="fs-dl-track-used"></span><h1><span class="section-number">14. </span>Disk Layout:Tracking Used Space<a class="headerlink" href="#disk-layout-tracking-used-space" title="Permalink to this headline">#</a></h1>
-<p>The main job of the file system is to use the blocks on the disk to store persistent data for users in files, and to support the organization of those files into directories. Clearly, we will need a way for the file system to keep track of which blocks are being used for each file. In this Chapter, we will explore several options for this important design decision.</p>
-<p>Note that in many (most? all?) file systems, directory objects (which hold file system metadata about the files in that directory) are stored exactly like files. Part of the information the file system keeps about each object is a type field, which allows the file system to distinguish file objects from directory objects. While the content of file objects is only understood by the applications that use them (above the file system), the content of directory objects is understood and managed by the file system itself. Everything we say here about techniques for keeping track of the blocks used by files also applies to the task of tracking blocks used by directories.</p>
-<section id="contiguous">
-<span id="fs-dl-track-used-contig"></span><h2><span class="section-number">14.1. </span>Contiguous<a class="headerlink" href="#contiguous" title="Permalink to this headline">#</a></h2>
-<p>The simplest organization of a file system is to just have each file or directory occupy a contiguous set of blocks on the disk.  For example, <a class="reference internal" href="#fs-cd-rom"><span class="std std-numref">Fig. 14.1</span></a> shows a structure similar to early versions of the ISO-9660 file system for CD-ROM disks. Objects on disk are either files or
-directories, each composed of one or more 2048-byte <em>blocks</em>; all
-pointers in the file system are in terms of <em>block numbers</em>, with blocks
-numbered from block 0 at the beginning of the disk or partition. Note that the <code class="docutils literal notranslate"><span class="pre">len</span></code> field in <a class="reference internal" href="#fs-cd-rom"><span class="std std-numref">Fig. 14.1</span></a> gives the file length in <em>bytes</em>, not blocks, but space in the file system must be allocated in block-sized chunks. The number of blocks used by the file can be calculated as the ceiling of the file size divided by the block size, i.e., <span class="math notranslate nohighlight">\(\ceil{len / 2048}\)</span> in this example.</p>
-<figure class="align-default" id="fs-cd-rom">
-<a class="reference internal image-reference" href="../_images/filesys-cdrom.png"><img alt="../_images/filesys-cdrom.png" src="../_images/filesys-cdrom.png" style="width: 40%;" /></a>
+  <section class="tex2jax_ignore mathjax_ignore" id="disk-layout-tracking-free-space">
+<span id="fs-dl-track-free"></span><h1><span class="section-number">15. </span>Disk Layout:Tracking Free Space<a class="headerlink" href="#disk-layout-tracking-free-space" title="Permalink to this headline">#</a></h1>
+<p>So, we know how to keep track of blocks used in a file, how do we represent blocks that are free?</p>
+<p>If you recall the approach used in <a class="reference internal" href="dl_track_used.html#fs-dl-track-used-ll"><span class="std std-ref">FAT file system</span></a> to represent used blocks, the same data structure was also used to represent used blocks.  When allocating a block the file system needed to search through the linked list until it found an entry marked as free; an extreemly inefficient approach.</p>
+<figure class="align-default" id="fs-free-ll">
+<a class="reference internal image-reference" href="../_images/free_linkedlist.png"><img alt="../_images/free_linkedlist.png" src="../_images/free_linkedlist.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.1 </span><span class="caption-text">Simpliﬁed ISO-9660 (CDROM) ﬁle layout for tree in <a class="reference internal" href="interface.html#fs-tree-logical"><span class="std std-numref">Fig. 11.1</span></a>, 2 KB blocks</span><a class="headerlink" href="#fs-cd-rom" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.1 </span><span class="caption-text">Free list as a linked list of blocks</span><a class="headerlink" href="#fs-free-ll" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The advantages of this approach are:</p>
-<ul class="simple">
-<li><p>Very dense meta-data, you can represent all the blocks used by a file system with one record having a starting block number and a length.</p></li>
-<li><p>Very fast reads, you only need to do one seek operation to get to all the blocks of any file on the disk.</p></li>
-</ul>
-<p>Contiguous organization works fine for a read-only file system, where all files (and their sizes) are available when the file system is created. It, however, works poorly for writable file systems because:</p>
-<ul class="simple">
-<li><p>File system space becomes rapidly <em>fragmented</em>, making it impossible to create large files.</p></li>
-<li><p>There is no way to add information to a file without reading it and writing it as a new file. Appending to a file <em>may</em> be possible, if the blocks that follow the end of the file are not being used by another file, but in general this will not be the case.</p></li>
-</ul>
-</section>
-<section id="linked-list">
-<span id="fs-dl-track-used-ll"></span><h2><span class="section-number">14.2. </span>Linked list<a class="headerlink" href="#linked-list" title="Permalink to this headline">#</a></h2>
-<p>Another approach to keep track of the blocks used in a file is to maintain a linked list as shown in <a class="reference internal" href="#fig-filesys-linked"><span class="std std-numref">Fig. 14.2</span></a>. This approach doesn’t have the external fragmentation challenge of contiguous files, because any available block can be used to add more data to any file by simply adding the block to the list.</p>
-<p>The top part of <a class="reference internal" href="#fig-filesys-linked"><span class="std std-numref">Fig. 14.2</span></a> uses internal pointers in a block, where each block stores slightly less than a full block of data to make room for the pointer metadata.  This approach might seem attractive, however, it is not practical for several reasons. First, to read the block containing data at a particular offset in a file, one has to read blocks sequentially through the entire linked list up to the required block. Second, mixing file data with file system metadata in the same block would add complexity to operating system features like memory-mapped files. We won’t be in a position to explain why this is the case until we cover memory management, however. Finally, because the amount of data stored in a block is no longer a power of 2, calculating the block that contains a given offset will require integer division operations, rather than cheaper right-shift operations.</p>
-<figure class="align-default" id="fig-filesys-linked">
-<a class="reference internal image-reference" href="../_images/filesys-linked.png"><img alt="../_images/filesys-linked.png" src="../_images/filesys-linked.png" style="width: 40%;" /></a>
+<p>The original Unix file system used a free list to store a list of unused blocks (see <code class="xref std std-numref docutils literal notranslate"><span class="pre">fs:fs:free:ll</span></code>);  blocks were allocated from the head of this list for new files, and returned to the head when freed. Implementing this results in a large initialization cost; if you have a 1TB drive, it means you will start off by having 4M 4KB blocks to hold the free list to start off with, however, it compresses to a small number of blocks for the free list when the disk becomes full.</p>
+<p>The bigger disadvantage of this approach is that, as files were created and deleted this list became randomized, so that blocks allocated for a file are rarely sequential and disk seeks were needed for nearly every block read from or written to disk. Originally this wasn’t a significant problem, because early Unix systems ran on machines with fast disks and excruciatingly slow CPUs.</p>
+<figure class="align-default" id="fs-free-bv">
+<a class="reference internal image-reference" href="../_images/free_bitvector.png"><img alt="../_images/free_bitvector.png" src="../_images/free_bitvector.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 14.2 </span><span class="caption-text">Linked list organization with in-object pointers (typical for in-memory structures) and external pointers, as used in MS-DOS File Allocation Table.</span><a class="headerlink" href="#fig-filesys-linked" title="Permalink to this image">#</a></p>
+<p><span class="caption-number">Fig. 15.2 </span><span class="caption-text">Free blocks recorded as bits</span><a class="headerlink" href="#fs-free-bv" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>An alternative (shown in the bottom of <a class="reference internal" href="#fig-filesys-linked"><span class="std std-numref">Fig. 14.2</span></a>) would store the pointers of the linked list in a separate array from the disk blocks themselves.  This is used in the MS-DOS (or FAT, File Allocation
-Table) file system. Block numbers are kept in a separate array,
-with an entry corresponding to each disk block, in what is called the
-File Allocation Table.</p>
-<p>Entries in this table can indicate (a) the number of the next block in
-the file or directory, (b) that the block is the last one in a file or (c) the block is free. The FAT is thus used for free space
-management as well as file organization; when a block is needed the
-table may be searched for a free entry which can then be allocated.</p>
-<p>Access to a file incurs overhead to fetch file allocation table entries, although since these are
-frequently used they may be cached in memory; random access to a file, however, requires walking the linked list to find the corresponding entry, which can be slow even when cached in memory.  However, if a file is distributed across the disk performance can be terrible.  Consider random I/O within a
-1 GB virtual disk image with 4 KB blocks—the linked list will have 256 K entries, and on average each I/O will require searching halfway through the
-list.</p>
-</section>
-<section id="inode">
-<h2><span class="section-number">14.3. </span>Inode<a class="headerlink" href="#inode" title="Permalink to this headline">#</a></h2>
-<p>File systems derived from the original Unix file system use a per-file structure called an inode to not only keep track of attributes, but also block locations. The inode uses an asymmetric tree, or actually a series of
-trees of increasing height with the root of each tree stored in the
-inode.</p>
-<p>As seen in <a class="reference internal" href="#filesys-inode"><span class="std std-numref">Fig. 14.3</span></a> the inode contains N <em>direct</em> block
-pointers (12 in ext2/ext3), so that files of N blocks or less need no
-indirect blocks. A single <em>indirect pointer</em> specifies an <em>indirect
-block</em>, holding pointers to blocks <span class="math notranslate nohighlight">\(N, N+1, ... N+N_1-1\)</span> where <span class="math notranslate nohighlight">\(N_1\)</span> is
-the number of block numbers that fit in a file system block (1024 for
-ext2 with a 4 KB blocksize).</p>
-<p>If necessary, the <em>double-indirect pointer</em> specifies a block holding pointers to <span class="math notranslate nohighlight">\(N_1\)</span> indirect blocks, which in turn hold pointers to blocks <span class="math notranslate nohighlight">\(N+N_1 ... N+N_1+N_1^2-1\)</span>—i.e. an
-<span class="math notranslate nohighlight">\(N_1\)</span>-ary tree of height 2; a triple indirect block in turn points to a
-tree of height 3.</p>
-<p>For ext2 with 4-byte block numbers, if we use 4K
-blocks this gives a maximum file size of <span class="math notranslate nohighlight">\((4096/4)^3\)</span> 4 KB blocks,
-or 4.004 TB. This organization allows random access within a file with
-overhead <span class="math notranslate nohighlight">\(O(logN)\)</span> where <span class="math notranslate nohighlight">\(N\)</span> is the file size, which is vastly better
-than the <span class="math notranslate nohighlight">\(O(N)\)</span> overhead of the MS-DOS File Access Table system.</p>
-<figure class="align-default" id="filesys-inode">
-<a class="reference internal image-reference" href="../_images/filesys-inode.png"><img alt="../_images/filesys-inode.png" src="../_images/filesys-inode.png" style="width: 80%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 14.3 </span><span class="caption-text">Inode-type file organization as found in many Unix file systems (e.g.
-Linux ext2, ext3)</span><a class="headerlink" href="#filesys-inode" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>Inode structures are a reasonable compromise, they have (a) low overhead for small files, in terms of both disk seeks and allocated blocks, and (b) ability to represent sufficiently large files
-without excessive storage space or performance overhead.</p>
-<figure class="align-right" id="fig-fs-ext2layout">
-<a class="reference internal image-reference" href="../_images/files-pointers.png"><img alt="../_images/files-pointers.png" src="../_images/files-pointers.png" style="width: 200pt;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 14.4 </span><span class="caption-text">File structure—pointers</span><a class="headerlink" href="#fig-fs-ext2layout" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="extents">
-<h2><span class="section-number">14.4. </span>Extents<a class="headerlink" href="#extents" title="Permalink to this headline">#</a></h2>
-<p>The ext2 and MS-DOS file systems use separate pointers to every data
-block in a file, located in inodes and indirect blocks in the case of
-ext2, and in the File Allocation Table in MS-DOS. However, a well-designed file system will attempt to allocate blocks to files sequentially to avoid disk seeks —if the
-first block in a file is block 100, it’s highly likely that the second
-will be 101, the third 102, etc.</p>
-<figure class="align-left" id="fig-filesys-extent">
-<a class="reference internal image-reference" href="../_images/files-extent.png"><img alt="../_images/files-extent.png" src="../_images/files-extent.png" style="width: 200pt;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 14.5 </span><span class="caption-text">File structure— extents</span><a class="headerlink" href="#fig-filesys-extent" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>We can take advantage of this to greatly compress the information needed
-to identify the blocks in a file - rather than having separate pointers
-to blocks 100,101,…120 we just need to identify the starting block
-(100) and the length (21 blocks). This is shown in <a class="reference internal" href="#fig-fs-ext2layout"><span class="std std-numref">Fig. 14.4</span></a>, where five data blocks are identified
-by direct pointers in an inode. In <a class="reference internal" href="#fig-filesys-extent"><span class="std std-numref">Fig. 14.5</span></a>, the same five data
-blocks are identified by a single extent. Why would we want to compress
-the information needed to organize the blocks in a file? Mostly for
-performance—although the code is more complicated, it will require
-fewer disk seeks to read from disk.</p>
-<p>This organization is the basis of <em>extent-based</em> file systems, where
-blocks in a file are identified via one or more <em>extents</em>, or
-(start,length) pairs. The inode (or equivalent) can contain space for a
-small number of extents; if the file grows too big, then you add the
-equivalent of indirect blocks - extents pointing to blocks holding more
-extents. Both Microsoft NTFS and Linux ext4 use this sort of extent
-structure.</p>
-</section>
+<p>As computers got faster and users started noticing that seek times where killing performance, file systems started using an <em>allocation bitmap</em> as shown in <a class="reference internal" href="#fs-free-bv"><span class="std std-numref">Fig. 15.2</span></a>. It
+keeeps a boolean array with one bit for each disk block; if the block is
+allocated the corresponding bit is set to ‘1’, and cleared to ‘0’ if it
+is freed. To allocate a block you read a portion of this bitmap into
+memory and scan for a ‘0’ bit, changing it to ‘1’ and writing it back.
+When you extend a file you begin the search at the bit corresponding to
+the last block in the file; in this way if a sequential block is
+available it will be allocated. This method results in files being
+allocated in a mostly sequential fashion, reducing disk seeks and
+greatly improving performance. Note, when disk is fragmented, each block may have just a few bits available, so this approach becomes expensive to find a block.  However, since a single page of 4096 bytes can represent 132MB ($4096<em>8</em>4096), you can efficiently cache these blocks in memory.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -830,17 +674,17 @@ structure.</p>
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="disklayout.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="dl_track_used.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">13. </span>File System Layout</p>
+            <p class="prev-next-title"><span class="section-number">14. </span>Disk Layout:Tracking Used Space</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="dl_track_free.html" title="next page">
+    <a class='right-next' id="next-link" href="dl_name.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">15. </span>Disk Layout:Tracking Free Space</p>
+        <p class="prev-next-title"><span class="section-number">16. </span>Disk Layout:Implementing Name Space</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
