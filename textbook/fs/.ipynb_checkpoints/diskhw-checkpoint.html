@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>42. Bibliography &#8212; Introduction to Operating Systems</title>
+    <title>12. A bit about Disks &#8212; Introduction to Operating Systems</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -53,9 +53,12 @@ const thebe_selector_output = ".output, .cell_output"
     <script async="async" src="../_static/sphinx-thebe.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="41. Contributing" href="../contributing/Contributing.html" />
+    <link rel="next" title="13. File System Layout" href="disklayout.html" />
+    <link rel="prev" title="11. File System Abstraction" href="interface.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
     
@@ -179,54 +182,54 @@ const thebe_selector_output = ".output, .cell_output"
   File Systems
  </span>
 </p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/intro.html">
+  <a class="reference internal" href="intro.html">
    10. Introduction
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/interface.html">
+  <a class="reference internal" href="interface.html">
    11. File System Abstraction
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="../fs/diskhw.html">
+ <li class="toctree-l1 current active">
+  <a class="current reference internal" href="#">
    12. A bit about Disks
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/disklayout.html">
+  <a class="reference internal" href="disklayout.html">
    13. File System Layout
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/dl_track_used.html">
+  <a class="reference internal" href="dl_track_used.html">
    14. Disk Layout:Tracking Used Space
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/dl_track_free.html">
+  <a class="reference internal" href="dl_track_free.html">
    15. Disk Layout:Tracking Free Space
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/dl_name.html">
+  <a class="reference internal" href="dl_name.html">
    16. Disk Layout:Implementing Name Space
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/dl_failures.html">
+  <a class="reference internal" href="dl_failures.html">
    17. Disk Layout:Dealing with Failures
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/dl_ex_exx.html">
+  <a class="reference internal" href="dl_ex_exx.html">
    18. Disk Layout:Examples of Real World File Systems
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="../fs/kernelimp.html">
+  <a class="reference internal" href="kernelimp.html">
    19. Kernel implementation
   </a>
  </li>
@@ -337,7 +340,7 @@ const thebe_selector_output = ".output, .cell_output"
 </p>
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="OtherInro.html">
+  <a class="reference internal" href="../misc/OtherInro.html">
    37. Overview of other topics
   </a>
  </li>
@@ -357,9 +360,9 @@ const thebe_selector_output = ".output, .cell_output"
   Appendices
  </span>
 </p>
-<ul class="current nav bd-sidenav">
+<ul class="nav bd-sidenav">
  <li class="toctree-l1">
-  <a class="reference internal" href="howto.html">
+  <a class="reference internal" href="../misc/howto.html">
    40. How to read this book
   </a>
  </li>
@@ -368,8 +371,8 @@ const thebe_selector_output = ".output, .cell_output"
    41. Contributing
   </a>
  </li>
- <li class="toctree-l1 current active">
-  <a class="current reference internal" href="#">
+ <li class="toctree-l1">
+  <a class="reference internal" href="../misc/bib.html">
    42. Bibliography
   </a>
  </li>
@@ -432,7 +435,7 @@ title="Toggle navigation"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/misc/bib.ipynb"
+        <a href="https://mybinder.org/v2/gh/okrieg/openos/main?urlpath=lab/tree/content/fs/diskhw.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -450,7 +453,7 @@ title="Launch on Binder"
       </li>
       
       <li>
-        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/misc/bib.ipynb&branch=main"
+        <a href="https://jupyterhub-redhat-ods-applications.apps.buaws-dev.idu6.p1.openshiftapps.com/hub/user-redirect/git-pull?repo=https%3A//github.com/okrieg/openos&urlpath=lab/tree/openos/content/fs/diskhw.ipynb&branch=main"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -510,7 +513,7 @@ title="Source repository"
       </li>
       
       <li>
-        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Fmisc/bib.html&body=Your%20issue%20content%20here."
+        <a href="https://github.com/okrieg/openos/issues/new?title=Issue%20on%20page%20%2Ffs/diskhw.html&body=Your%20issue%20content%20here."
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -527,7 +530,7 @@ title="Open an issue"
       </li>
       
       <li>
-        <a href="https://github.com/okrieg/openos/edit/main/content/misc/bib.ipynb"
+        <a href="https://github.com/okrieg/openos/edit/main/content/fs/diskhw.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -555,7 +558,7 @@ title="Edit this page"
   <div class="menu-dropdown__content">
     <ul>
       <li>
-        <a href="../_sources/misc/bib.ipynb"
+        <a href="../_sources/fs/diskhw.ipynb"
    class="headerbtn"
    data-toggle="tooltip"
 data-placement="left"
@@ -604,7 +607,7 @@ title="Print to PDF"
         <div class="col pl-md-3 pl-lg-5 content-container">
             <!-- Table of contents that is only displayed when printing the page -->
             <div id="jb-print-docs-body" class="onlyprint">
-                <h1>Bibliography</h1>
+                <h1>A bit about Disks</h1>
                 <!-- Table of contents -->
                 <div id="print-main-content">
                     <div id="jb-print-toc">
@@ -616,19 +619,57 @@ title="Print to PDF"
                 
               <div>
                 
-  <section class="tex2jax_ignore mathjax_ignore" id="bibliography">
-<h1><span class="section-number">42. </span>Bibliography<a class="headerlink" href="#bibliography" title="Permalink to this headline">#</a></h1>
-<div class="docutils container" id="id1">
-<dl class="citation">
-<dt class="label" id="id3"><span class="brackets">ABDL07</span></dt>
-<dd><p>Nitin Agrawal, William J. Bolosky, John R. Douceur, and Jacob R. Lorch. A five-year study of file-system metadata. <em>ACM Trans. Storage</em>, 3(3):9–es, oct 2007. URL: <a class="reference external" href="https://doi.org/10.1145/1288783.1288788">https://doi.org/10.1145/1288783.1288788</a>, <a class="reference external" href="https://doi.org/10.1145/1288783.1288788">doi:10.1145/1288783.1288788</a>.</p>
-</dd>
-<dt class="label" id="id2"><span class="brackets">ADAD18</span></dt>
-<dd><p>Remzi H Arpaci-Dusseau and Andrea C Arpaci-Dusseau. <em>Operating systems: Three easy pieces</em>. Arpaci-Dusseau Books LLC Boston, 2018. URL: <a class="reference external" href="https://pages.cs.wisc.edu/~remzi/OSTEP/">https://pages.cs.wisc.edu/~remzi/OSTEP/</a>.</p>
-</dd>
-</dl>
+  <section class="tex2jax_ignore mathjax_ignore" id="a-bit-about-disks">
+<span id="cont-fs-disks"></span><h1><span class="section-number">12. </span>A bit about Disks<a class="headerlink" href="#a-bit-about-disks" title="Permalink to this headline">#</a></h1>
+<p>We will talk more about disks when we discuss devices later.  However, most file systems have been designed to work on <strong>hard disk drives</strong> (often abbreviated as just <strong>hard drives</strong> or <strong>HDDs</strong>), and understanding a bit about them is important to understand how file systems work.  Hard drives record data magnetically on one or more spinning platters in concentric circular tracks (<a class="reference internal" href="#fig-cylinders"><span class="std std-numref">Fig. 12.1</span></a>).</p>
+<figure class="align-default" id="fig-cylinders">
+<a class="reference internal image-reference" href="../_images/disk-chs.png"><img alt="../_images/disk-chs.png" src="../_images/disk-chs.png" style="width: 50%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.1 </span><span class="caption-text">A disk drive contains some number of platters, where the collection of the same track on different platters is called a cylinder.</span><a class="headerlink" href="#fig-cylinders" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>Data on a drive can be identified by the platter surface it is on, the track on that surface, and finally the position on that track. Reading
+data from a disk (or writing to it) requires the following steps:</p>
+<ol class="simple">
+<li><p>Switching the electronics to communicate with the appropriate head; in terms of performance, one can generally ignore this step, because it is fast.</p></li>
+<li><p>Performing a <strong>seek</strong> that moves the head assembly until the head is positioned over the target track; the time spent to do this is called the <strong>seek time</strong></p></li>
+<li><p>Waiting for the platter to rotate until the first bit of the target data is passing under the head; this time is called <strong>rotational latency</strong></p></li>
+<li><p>Reading or writing until the last bit has passed under the head; this is called the <strong>transfer time</strong></p></li>
+</ol>
+<figure class="align-default" id="fig-latency">
+<a class="reference internal image-reference" href="../_images/disk-latency.png"><img alt="../_images/disk-latency.png" src="../_images/disk-latency.png" style="width: 80%;" /></a>
+<figcaption>
+<p><span class="caption-number">Fig. 12.2 </span><span class="caption-text">Operations to read a disk sector.</span><a class="headerlink" href="#fig-latency" title="Permalink to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The seek and rotational latency have a major effect on disk performance. To give an example, consider randomly accessing 4 KB data blocks on a 7200 RPM (i.e., a disk that rotates 7200 times per minute).  The average rotational latency would be 4 ms, i.e., 1/2 the time for a 7200 RPM drive to complete one full rotation.  A typical transfer rate might be around 200 MB/s, so to transfer a 4 KB block it would take <span class="math notranslate nohighlight">\((4/1000)/200 = 0.0002\)</span> seconds = 0.02 ms.  A common seek time for a drive might be around 8 ms. We can see that the transfer time for a small 4 KB block is two orders of magnitude smaller than the positioning delays (seek and rotational latency).</p>
+<p>Therefore, a file system that resulted in random reads (or writes) across the whole disk, would end up taking <span class="math notranslate nohighlight">\(8 + 4 + 0.02 ~= 12 ms\)</span> for each block, or having an average throughput of 333 KB/s (i.e., <span class="math notranslate nohighlight">\(4/(12/1000)\)</span> ).  If you use the minimum sector size of many disks, at 512 B, you would get only around 41 KB per second, while if you used a 16 KB block, your throughput would go up to around 1.3 MB per second.</p>
+<p>If, on the other hand, the file system always transferred a 5 MB block, it would require <span class="math notranslate nohighlight">\(8 + 4 + 25 = 37\)</span> ms for an average throughput of <span class="math notranslate nohighlight">\(134\)</span> MB/s.</p>
+<p>So, when designing a file system, for performance you want to (1) read relatively big disk blocks, and 2) have data frequently accessed together on the same tracks/cylinder, since seeking to nearby tracks is much faster.</p>
+<p>Studies of file systems have shown that most files are 4KB or smaller, but most of the storage space is used by small number of very big files <span id="id1">[]</span>.</p>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function matplotlib.pyplot.show(close=None, block=None)&gt;
+</pre></div>
+</div>
+<img alt="../_images/diskhw_3_1.png" src="../_images/diskhw_3_1.png" />
+</div>
+</div>
+<div class="cell tag_remove-input docutils container">
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;function matplotlib.pyplot.show(close=None, block=None)&gt;
+</pre></div>
+</div>
+<img alt="../_images/diskhw_4_1.png" src="../_images/diskhw_4_1.png" />
+</div>
 </div>
 </section>
+
+
+<script type="application/vnd.jupyter.widget-state+json">
+{"state": {"71ff8dfa179848ac98d137a554102dd5": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d505f15f6f3048629a7d7af109f5f37d": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_71ff8dfa179848ac98d137a554102dd5", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ [[ -d mydir ]] && rm -rf mydir\r\n$     [[ -a myfile ]] && rm myfile\r\n$     [[ -a errors ]] && rm errors \r\n$     [[ -a mydate ]] && rm mydate\r\n$     [[ -a mynewdir ]] && rm -rf mynewdir\r\n$     [[ -a anotherfile ]] && rm anotherfile\r\n$     [[ -a mybin ]] && rm -rf  mybin\r\n$     [[ -a myinfo ]] && rm myinfo\r\n$ "}]}}}, "version_major": 2, "version_minor": 0}
+</script>
+
 
     <script type="text/x-thebe-config">
     {
@@ -643,7 +684,7 @@ title="Print to PDF"
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./misc"
+            path: "./fs"
         },
         predefinedOutput: true
     }
@@ -657,12 +698,19 @@ title="Print to PDF"
                 
     <!-- Previous / next buttons -->
 <div class='prev-next-area'>
-    <a class='left-prev' id="prev-link" href="../contributing/Contributing.html" title="previous page">
+    <a class='left-prev' id="prev-link" href="interface.html" title="previous page">
         <i class="fas fa-angle-left"></i>
         <div class="prev-next-info">
             <p class="prev-next-subtitle">previous</p>
-            <p class="prev-next-title"><span class="section-number">41. </span>Contributing</p>
+            <p class="prev-next-title"><span class="section-number">11. </span>File System Abstraction</p>
         </div>
+    </a>
+    <a class='right-next' id="next-link" href="disklayout.html" title="next page">
+    <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">13. </span>File System Layout</p>
+    </div>
+    <i class="fas fa-angle-right"></i>
     </a>
 </div>
             </footer>
