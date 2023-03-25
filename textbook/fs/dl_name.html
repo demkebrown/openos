@@ -673,7 +673,7 @@ title="Print to PDF"
 <p><span class="caption-number">Fig. 16.2 </span><span class="caption-text">Structure of a simplified directory with fixed-size file names where attributes are stored in the directory or in an external inode</span><a class="headerlink" href="#directory1" title="Permalink to this image">#</a></p>
 </figcaption>
 </figure>
-<p>The directory structure above could be implemented with the following data structure in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fs:simple_dirent</span></code>:</p>
+<p>The directory structure above could be implemented with the following data structure in <a class="reference internal" href="#fs-simple-dirent"><span class="std std-numref">Listing 16.1</span></a>:</p>
 <div class="literal-block-wrapper docutils container" id="fs-simple-dirent">
 <div class="code-block-caption"><span class="caption-number">Listing 16.1 </span><span class="caption-text">Simple data structure for a directory entry.</span><a class="headerlink" href="#fs-simple-dirent" title="Permalink to this code">#</a></div>
 <div class="highlight-c notranslate"><div class="highlight"><pre><span></span><span class="k">struct</span><span class="w"> </span><span class="nc">dentry</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
