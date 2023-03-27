@@ -838,9 +838,9 @@ case Thread 1 is interrupted after it has read the current value of
 result is that the update performed by Thread 2 is lost, being
 over-written by Thread 1’s computation. After depositing a total of
 $150 to the account we have a final balance of $50. Context switches are unpredictable, however, and other interleavings of the thread executions are also possible. In <a class="reference internal" href="#fig-sync-badbank"><span class="std std-numref">Fig. 32.1</span></a>(c) we see another possible schedule, where Thread 1’s update to the account balance is overwritten by Thread 2.</p>
-<p>Let’s try running the bank deposit program a few times and see what happens.
-(The hidden block below will show you the full source code of this program.)</p>
-<div class="toggle docutils container">
+<p>Let’s try running the bank deposit program a few times and see what happens.</p>
+<div class="dropdown admonition">
+<p class="admonition-title">Click to show the full source code of the bank balance program.</p>
 <p>Here is the complete code for the bank balance example, including the creation of two threads to run the deposit function on the same account with different amounts.</p>
 <div class="literal-block-wrapper docutils container" id="listing-sync-bank-full">
 <div class="code-block-caption"><span class="caption-number">Listing 32.3 </span><span class="caption-text">bank_deposit.c - Full source code for simple bank account example</span><a class="headerlink" href="#listing-sync-bank-full" title="Permalink to this code">#</a></div>
