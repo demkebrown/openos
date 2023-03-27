@@ -713,7 +713,6 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <section id="multi-threaded-processes">
 <h2><span class="section-number">32.2. </span>Multi-threaded Processes<a class="headerlink" href="#multi-threaded-processes" title="Permalink to this headline">#</a></h2>
 <p>Recall from <a class="reference internal" href="../scheduling/process.html#cont-scheduling-process-threads"><span class="std std-numref">Section 7.3</span></a> that a process can have multiple <em>threads</em>, and that all threads in a process share the same virtual address space. This means that multi-threaded processes do not need to do any extra work to communicate using shared memory. The operating system itself is multi-threaded: every user-level process has at least one thread in the kernel, and other threads carry out asynchronous operating system activities, such as writing dirty file system blocks back to the disk. All of these kernel threads share the same operating system code and data structures. We will see later how user-level communication through pipes is implemented in the operating system by threads writing to, and reading from, a shared buffer of memory. In our discussion of concurrency and synchronization, we will use examples in multi-threaded user-level processes, since they can be presented as simple, stand-alone programs. Keep in mind that everything we say about multi-threaded processes also applies to the implementation of the operating system.</p>
-<p>Since each thread is an independent execution entity, they need to have their own execution state. This includes a per-thread execution stack to hold local variables. In contrast, global variables and heap-allocated variables are shared by all threads in a process. Note that although each thread has its own execution stack, these are still all part of the same virtual address space, and threads in the same process are not protected from each other by the operating system. Thus, it is possible for a buggy thread to accidentally scribble on another thread’s stack space, leading to bizarre behavior.</p>
 </section>
 <section id="coordinating-thread-or-process-activities">
 <h2><span class="section-number">32.3. </span>Coordinating Thread or Process Activities<a class="headerlink" href="#coordinating-thread-or-process-activities" title="Permalink to this headline">#</a></h2>
@@ -755,33 +754,35 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <span class="linenos">29</span>      
 <span class="linenos">30</span>    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">strlen</span><span class="p">(</span><span class="n">mystr</span><span class="p">);</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 <span class="linenos">31</span>        <span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mystr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">1</span><span class="p">);</span> 
-<span class="linenos">32</span>        <span class="n">waste_cpu</span><span class="p">();</span>
+<span class="linenos">32</span>	<span class="n">waste_cpu</span><span class="p">();</span>
 <span class="linenos">33</span>    <span class="p">}</span>
 <span class="linenos">34</span>  
-<span class="linenos">35</span>    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>       
-<span class="linenos">36</span><span class="p">}</span>
-<span class="linenos">37</span><span class="o">/*</span> <span class="n">End</span> <span class="n">of</span> <span class="n">function</span> <span class="n">executed</span> <span class="n">by</span> <span class="n">each</span> <span class="n">thread</span><span class="o">.</span> <span class="o">*/</span>
-<span class="linenos">38</span>
+<span class="linenos">35</span>    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos">36</span>		        
+<span class="linenos">37</span><span class="p">}</span>
+<span class="linenos">38</span><span class="o">/*</span> <span class="n">End</span> <span class="n">of</span> <span class="n">function</span> <span class="n">executed</span> <span class="n">by</span> <span class="n">each</span> <span class="n">thread</span><span class="o">.</span> <span class="o">*/</span>
 <span class="linenos">39</span>
-<span class="linenos">40</span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-<span class="linenos">41</span><span class="p">{</span>
-<span class="linenos">42</span>    <span class="n">pthread_t</span> <span class="n">tid1</span><span class="p">,</span> <span class="n">tid2</span><span class="p">;</span>
-<span class="linenos">43</span>    <span class="n">char</span> <span class="o">*</span><span class="n">str1</span> <span class="o">=</span> <span class="s2">&quot;Hello&quot;</span><span class="p">;</span>
-<span class="linenos">44</span>    <span class="n">char</span> <span class="o">*</span><span class="n">str2</span> <span class="o">=</span> <span class="s2">&quot;Goodbye&quot;</span><span class="p">;</span>
-<span class="linenos">45</span>
-<span class="linenos">46</span>    <span class="o">/*</span> <span class="n">Normally</span> <span class="n">we</span><span class="s1">&#39;d want to test the return value of pthread_create. */</span>
+<span class="linenos">40</span>
+<span class="linenos">41</span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="linenos">42</span><span class="p">{</span>
+<span class="linenos">43</span>    <span class="n">pthread_t</span> <span class="n">tid1</span><span class="p">,</span> <span class="n">tid2</span><span class="p">;</span>
+<span class="linenos">44</span>    <span class="n">char</span> <span class="o">*</span><span class="n">str1</span> <span class="o">=</span> <span class="s2">&quot;Hello&quot;</span><span class="p">;</span>
+<span class="linenos">45</span>    <span class="n">char</span> <span class="o">*</span><span class="n">str2</span> <span class="o">=</span> <span class="s2">&quot;Goodbye&quot;</span><span class="p">;</span>
+<span class="linenos">46</span>	
 <span class="linenos">47</span>
-<span class="linenos">48</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">write_one_by_one</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">str1</span> <span class="p">);</span>
-<span class="linenos">49</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">write_one_by_one</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">str2</span> <span class="p">);</span>
-<span class="linenos">50</span>
-<span class="linenos">51</span>    <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
-<span class="linenos">52</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="linenos">53</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="linenos">54</span>
-<span class="linenos">55</span>    <span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    
-<span class="linenos">56</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="linenos">57</span><span class="p">}</span>
-<span class="linenos">58</span>
+<span class="linenos">48</span>    <span class="o">/*</span> <span class="n">Normally</span> <span class="n">we</span><span class="s1">&#39;d want to test the return value of pthread_create. */</span>
+<span class="linenos">49</span>
+<span class="linenos">50</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">write_one_by_one</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">str1</span> <span class="p">);</span>
+<span class="linenos">51</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">write_one_by_one</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">str2</span> <span class="p">);</span>
+<span class="linenos">52</span>
+<span class="linenos">53</span>    <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
+<span class="linenos">54</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos">55</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos">56</span>
+<span class="linenos">57</span>    <span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    
+<span class="linenos">58</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">59</span><span class="p">}</span>
+<span class="linenos">60</span>
 </pre></div>
 </div>
 </div>
@@ -790,58 +791,32 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span><span class="o">.</span><span class="n">runNoOutput</span><span class="p">(</span><span class="s2">&quot;[[ -a output_example ]] &amp;&amp; rm output_example;make output_example&quot;</span><span class="p">)</span>
-<span class="n">cmds</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;./output_example</span>
-<span class="s1">./output_example</span>
-<span class="s1">./output_example</span>
-<span class="s1">./output_example&#39;&#39;&#39;</span>
-
-<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span>
+<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./output_example&quot;</span><span class="p">)</span>
+<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./output_example&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "83b067b1d2a64790a0e22990cea9fc13", "version_major": 2, "version_minor": 0}
+{"model_id": "fa375f54913b470999790d165e809ff2", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<p>The output doesn’t look great. Not only is the output unreadable, it is also different from one run to the next. (And each time we build this book, we don’t know exactly what output you will be seeing! Maybe some of the runs even produce something reasonable.) What we want to see is either “HelloGoodbye” or “GoodbyeHello” — by adding synchronization, we can restrict the interleavings of the output to just these two possibilities. And, if we wanted to ensure that “Hello” always appeared on the terminal before “Goodbye”, another form of synchronization would allow us to enforce that ordering as well. In fact, the C library <code class="docutils literal notranslate"><span class="pre">printf()</span></code> family of functions, and the internal implementation of the <code class="docutils literal notranslate"><span class="pre">write()</span></code> system call, contain synchronization to ensure that output from one call is not interleaved with another, but if we wanted to ensure that “Hello” is displayed before “Goodbye”, we would still need to add more synchronization on top of the <code class="docutils literal notranslate"><span class="pre">write()</span></code> or <code class="docutils literal notranslate"><span class="pre">printf()</span></code> functions.</p>
+<p>The output doesn’t look great. What we want to see is either “HelloGoodbye” or “GoodbyeHello” — by adding synchronization, we can restrict the interleavings of the output to just these two possibilities. And, if wanted to ensure that “Hello” always appeared on the terminal before “Goodbye”, another form of synchronization would allow us to enforce that ordering as well. In fact, the C library <code class="docutils literal notranslate"><span class="pre">printf()</span></code> family of functions, and the internal implementation of the <code class="docutils literal notranslate"><span class="pre">write()</span></code> system call, contain synchronization to ensure that output from one call is not interleaved with another.</p>
 <p>Let’s look at another illustrative example of the problems that can arise when we don’t control concurrent execution.</p>
-<div class="literal-block-wrapper docutils container" id="listing-sync-bank">
-<div class="code-block-caption"><span class="caption-number">Listing 32.2 </span><span class="caption-text">deposit function from bank_deposit.c - Simple bank account example.</span><a class="headerlink" href="#listing-sync-bank" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="n">static</span> <span class="n">void</span> <span class="n">deposit</span><span class="p">(</span><span class="nb">int</span> <span class="n">account</span><span class="p">,</span> <span class="n">money_t</span> <span class="n">amount</span><span class="p">)</span>
-<span class="linenos">2</span><span class="p">{</span>
-<span class="linenos">3</span>    <span class="n">money_t</span> <span class="n">balance</span> <span class="o">=</span> <span class="n">get_balance</span><span class="p">(</span><span class="n">account</span><span class="p">);</span>
-<span class="linenos">4</span>    <span class="n">balance</span> <span class="o">+=</span> <span class="n">amount</span><span class="p">;</span>
-<span class="linenos">5</span>    <span class="n">put_balance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">balance</span><span class="p">);</span>
-<span class="linenos">6</span>
-<span class="linenos">7</span>    <span class="k">return</span><span class="p">;</span>        
-<span class="linenos">8</span><span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<p>In <a class="reference internal" href="#listing-sync-bank"><span class="std std-numref">Listing 32.2</span></a> we see a simplified example of a function that is part of a program to
+<p>In <a class="reference internal" href="#listing-sync-bank"><span class="std std-numref">Listing 32.2</span></a> we see a simplified example of a program to
 maintain a bank account balance at the Bank of Lost Funds. When running
 on a single thread, the <code class="docutils literal notranslate"><span class="pre">deposit</span></code> function is trivially correct: after it
-completes execution, the value of <code class="docutils literal notranslate"><span class="pre">balance</span></code> stored back to the <code class="docutils literal notranslate"><span class="pre">account</span></code> will be <code class="docutils literal notranslate"><span class="pre">amount</span></code> greater than
+completes execution, the value of <code class="docutils literal notranslate"><span class="pre">balance</span></code> will be <code class="docutils literal notranslate"><span class="pre">amount</span></code> greater than
 it was before the function was invoked.</p>
-<figure class="align-default" id="fig-sync-badbank">
-<a class="reference internal image-reference" href="../_images/bank_deposit_interleaving.drawio.png"><img alt="../_images/bank_deposit_interleaving.drawio.png" src="../_images/bank_deposit_interleaving.drawio.png" style="width: 80%;" /></a>
-<figcaption>
-<p><span class="caption-number">Fig. 32.1 </span><span class="caption-text">(a) The body of the <code class="docutils literal notranslate"><span class="pre">deposit()</span></code> function executed by two threads, (b) one possible interleaving of the execution of the threads, and (c) a second possible interleaving.</span><a class="headerlink" href="#fig-sync-badbank" title="Permalink to this image">#</a></p>
-</figcaption>
-</figure>
-<p>In <a class="reference internal" href="#fig-sync-badbank"><span class="std std-numref">Fig. 32.1</span></a>(b), however, we see one possible interleaving when
+<p>In <code class="xref std std-numref docutils literal notranslate"><span class="pre">../images/sync/badbank</span></code>, however, we see one possible result when
 this function is invoked by two threads nearly simultaneously. In this
-case Thread 1 is interrupted after it has read the current value of
+case thread 1 is interrupted after it has read the current value of
 <code class="docutils literal notranslate"><span class="pre">balance</span></code>, but before it could store the new value back to memory. The
-result is that the update performed by Thread 2 is lost, being
-over-written by Thread 1’s computation. After depositing a total of
-$150 to the account we have a final balance of $50. Context switches are unpredictable, however, and other interleavings of the thread executions are also possible. In <a class="reference internal" href="#fig-sync-badbank"><span class="std std-numref">Fig. 32.1</span></a>(c) we see another possible schedule, where Thread 1’s update to the account balance is overwritten by Thread 2.</p>
-<p>Let’s try running the bank deposit program a few times and see what happens.
-(The hidden block below will show you the full source code of this program.)</p>
-<p>Here is the complete code for the bank balance example, including the creation of two threads to run the deposit function on the same account with different amounts.</p>
-<div class="literal-block-wrapper docutils container" id="listing-sync-bank-full">
-<div class="code-block-caption"><span class="caption-number">Listing 32.3 </span><span class="caption-text">bank_deposit.c - Full source code for simple bank account example</span><a class="headerlink" href="#listing-sync-bank-full" title="Permalink to this code">#</a></div>
+result is that the update performed by thread 2 is lost, being
+over-written by thread 1’s computation, and after depositing a total of
+$150 to the account we have a final balance of $50.</p>
+<div class="literal-block-wrapper docutils container" id="listing-sync-bank">
+<div class="code-block-caption"><span class="caption-number">Listing 32.2 </span><span class="caption-text">deposit function from bank_deposit.c - Simple bank account example.</span><a class="headerlink" href="#listing-sync-bank" title="Permalink to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1">#include &lt;pthread.h&gt;</span>
 <span class="linenos">  2</span><span class="c1">#include &lt;stdlib.h&gt;</span>
 <span class="linenos">  3</span><span class="c1">#include &lt;sys/types.h&gt;</span>
@@ -853,8 +828,8 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="linenos">  9</span><span class="c1">#define MAX_ACCOUNTS 1000</span>
 <span class="linenos"> 10</span>
 <span class="linenos"> 11</span><span class="n">struct</span> <span class="n">deposit_s</span> <span class="p">{</span>
-<span class="linenos"> 12</span>    <span class="nb">int</span> <span class="n">account_num</span><span class="p">;</span>
-<span class="linenos"> 13</span>    <span class="n">money_t</span> <span class="n">amount</span><span class="p">;</span>
+<span class="linenos"> 12</span>	<span class="nb">int</span> <span class="n">account_num</span><span class="p">;</span>
+<span class="linenos"> 13</span>	<span class="n">money_t</span> <span class="n">amount</span><span class="p">;</span>
 <span class="linenos"> 14</span><span class="p">};</span>
 <span class="linenos"> 15</span>
 <span class="linenos"> 16</span><span class="n">money_t</span> <span class="n">accounts</span><span class="p">[</span><span class="n">MAX_ACCOUNTS</span><span class="p">];</span>
@@ -871,7 +846,7 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="linenos"> 27</span>
 <span class="linenos"> 28</span>    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nyield</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 <span class="linenos"> 29</span>        <span class="n">sched_yield</span><span class="p">();</span>
-<span class="linenos"> 30</span>        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 30</span>	<span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 <span class="linenos"> 31</span>            <span class="n">dummy</span> <span class="o">+=</span> <span class="n">rand</span><span class="p">();</span>
 <span class="linenos"> 32</span>        <span class="p">}</span>
 <span class="linenos"> 33</span>    <span class="p">}</span>
@@ -891,7 +866,7 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="linenos"> 47</span>
 <span class="linenos"> 48</span>    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nyield</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 <span class="linenos"> 49</span>        <span class="n">sched_yield</span><span class="p">();</span>
-<span class="linenos"> 50</span>        <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 50</span>	<span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
 <span class="linenos"> 51</span>            <span class="n">dummy</span> <span class="o">+=</span> <span class="n">rand</span><span class="p">();</span>
 <span class="linenos"> 52</span>        <span class="p">}</span>
 <span class="linenos"> 53</span>    <span class="p">}</span>
@@ -907,178 +882,175 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="linenos"> 63</span>    <span class="n">balance</span> <span class="o">+=</span> <span class="n">amount</span><span class="p">;</span>
 <span class="linenos"> 64</span>    <span class="n">put_balance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">balance</span><span class="p">);</span>
 <span class="linenos"> 65</span>
-<span class="linenos"> 66</span>    <span class="k">return</span><span class="p">;</span>        
-<span class="linenos"> 67</span><span class="p">}</span>
-<span class="linenos"> 68</span><span class="o">/*</span> <span class="n">End</span> <span class="n">of</span> <span class="n">deposit</span> <span class="n">function</span> <span class="o">*/</span>
-<span class="linenos"> 69</span>
-<span class="linenos"> 70</span><span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">deposit_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-<span class="linenos"> 71</span><span class="p">{</span>
-<span class="linenos"> 72</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="n">my_deposit</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
-<span class="linenos"> 73</span>    <span class="n">deposit</span><span class="p">(</span><span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">account_num</span><span class="p">,</span> <span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">amount</span><span class="p">);</span>
-<span class="linenos"> 74</span>
-<span class="linenos"> 75</span>    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
-<span class="linenos"> 76</span><span class="p">}</span>
-<span class="linenos"> 77</span>
-<span class="linenos"> 78</span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-<span class="linenos"> 79</span><span class="p">{</span>
-<span class="linenos"> 80</span>    <span class="n">pthread_t</span> <span class="n">tid1</span><span class="p">,</span> <span class="n">tid2</span><span class="p">;</span>
-<span class="linenos"> 81</span>    <span class="nb">int</span> <span class="n">account_num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
-<span class="linenos"> 82</span>    <span class="n">money_t</span> <span class="n">amt1</span> <span class="o">=</span> <span class="mf">50.00</span><span class="p">;</span>
-<span class="linenos"> 83</span>    <span class="n">money_t</span> <span class="n">amt2</span> <span class="o">=</span> <span class="mf">100.00</span><span class="p">;</span> 
-<span class="linenos"> 84</span>
-<span class="linenos"> 85</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep1</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt1</span><span class="p">};</span>
-<span class="linenos"> 86</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep2</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt2</span><span class="p">};</span> 
-<span class="linenos"> 87</span>
-<span class="linenos"> 88</span>    <span class="o">/*</span> <span class="n">Normally</span> <span class="n">we</span><span class="s1">&#39;d want to test the return value of pthread_create. */</span>
-<span class="linenos"> 89</span>
-<span class="linenos"> 90</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep1</span> <span class="p">);</span>
-<span class="linenos"> 91</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep2</span> <span class="p">);</span>
-<span class="linenos"> 92</span>
-<span class="linenos"> 93</span>    <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
-<span class="linenos"> 94</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="linenos"> 95</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="linenos"> 96</span>
-<span class="linenos"> 97</span>    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Final balance of account #</span><span class="si">%d</span><span class="s2"> after depositing $</span><span class="si">%.2lf</span><span class="s2"> and $</span><span class="si">%.2lf</span><span class="s2"> is $</span><span class="si">%.2lf</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
-<span class="linenos"> 98</span>           <span class="n">account_num</span><span class="p">,</span> <span class="n">amt1</span><span class="p">,</span> <span class="n">amt2</span><span class="p">,</span> <span class="n">accounts</span><span class="p">[</span><span class="n">account_num</span><span class="p">]</span> <span class="p">);</span>
+<span class="linenos"> 66</span>    <span class="k">return</span><span class="p">;</span>
+<span class="linenos"> 67</span>		        
+<span class="linenos"> 68</span><span class="p">}</span>
+<span class="linenos"> 69</span><span class="o">/*</span> <span class="n">End</span> <span class="n">of</span> <span class="n">deposit</span> <span class="n">function</span> <span class="o">*/</span>
+<span class="linenos"> 70</span>
+<span class="linenos"> 71</span><span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">deposit_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="linenos"> 72</span><span class="p">{</span>
+<span class="linenos"> 73</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="n">my_deposit</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+<span class="linenos"> 74</span>    <span class="n">deposit</span><span class="p">(</span><span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">account_num</span><span class="p">,</span> <span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">amount</span><span class="p">);</span>
+<span class="linenos"> 75</span>
+<span class="linenos"> 76</span>    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 77</span><span class="p">}</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="linenos"> 80</span><span class="p">{</span>
+<span class="linenos"> 81</span>    <span class="n">pthread_t</span> <span class="n">tid1</span><span class="p">,</span> <span class="n">tid2</span><span class="p">;</span>
+<span class="linenos"> 82</span>    <span class="nb">int</span> <span class="n">account_num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="linenos"> 83</span>    <span class="n">money_t</span> <span class="n">amt1</span> <span class="o">=</span> <span class="mf">50.00</span><span class="p">;</span>
+<span class="linenos"> 84</span>    <span class="n">money_t</span> <span class="n">amt2</span> <span class="o">=</span> <span class="mf">100.00</span><span class="p">;</span> 
+<span class="linenos"> 85</span>
+<span class="linenos"> 86</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep1</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt1</span><span class="p">};</span>
+<span class="linenos"> 87</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep2</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt2</span><span class="p">};</span> 
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>    <span class="o">/*</span> <span class="n">Normally</span> <span class="n">we</span><span class="s1">&#39;d want to test the return value of pthread_create. */</span>
+<span class="linenos"> 90</span>
+<span class="linenos"> 91</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep1</span> <span class="p">);</span>
+<span class="linenos"> 92</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep2</span> <span class="p">);</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span>    <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
+<span class="linenos"> 95</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos"> 96</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Final balance of account </span><span class="si">%d</span><span class="s2"> is $</span><span class="si">%.2lf</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">account_num</span><span class="p">,</span> <span class="n">accounts</span><span class="p">[</span><span class="n">account_num</span><span class="p">]);</span>
 <span class="linenos"> 99</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="linenos">100</span><span class="p">}</span>
+<span class="linenos">101</span>
 </pre></div>
 </div>
 </div>
+<p>The hidden block below will show you the full source code of a simple program to simulate two threads running the deposit function concurrently.</p>
+<p>Here is the complete code for the bank balance example, including the thread creation and multiple invocations of the
+<code class="docutils literal notranslate"><span class="pre">deposit</span></code> function.</p>
+<div class="literal-block-wrapper docutils container" id="listing-sync-bank-full">
+<div class="code-block-caption"><span class="caption-number">Listing 32.3 </span><span class="caption-text">bank_deposit.c - Full source code for simple bank account example</span><a class="headerlink" href="#listing-sync-bank-full" title="Permalink to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">  1</span><span class="c1">#include &lt;pthread.h&gt;</span>
+<span class="linenos">  2</span><span class="c1">#include &lt;stdlib.h&gt;</span>
+<span class="linenos">  3</span><span class="c1">#include &lt;sys/types.h&gt;</span>
+<span class="linenos">  4</span><span class="c1">#include &lt;unistd.h&gt;</span>
+<span class="linenos">  5</span><span class="c1">#include &lt;string.h&gt;</span>
+<span class="linenos">  6</span><span class="c1">#include &lt;stdio.h&gt;</span>
+<span class="linenos">  7</span>
+<span class="linenos">  8</span><span class="c1">#define money_t double</span>
+<span class="linenos">  9</span><span class="c1">#define MAX_ACCOUNTS 1000</span>
+<span class="linenos"> 10</span>
+<span class="linenos"> 11</span><span class="n">struct</span> <span class="n">deposit_s</span> <span class="p">{</span>
+<span class="linenos"> 12</span>	<span class="nb">int</span> <span class="n">account_num</span><span class="p">;</span>
+<span class="linenos"> 13</span>	<span class="n">money_t</span> <span class="n">amount</span><span class="p">;</span>
+<span class="linenos"> 14</span><span class="p">};</span>
+<span class="linenos"> 15</span>
+<span class="linenos"> 16</span><span class="n">money_t</span> <span class="n">accounts</span><span class="p">[</span><span class="n">MAX_ACCOUNTS</span><span class="p">];</span>
+<span class="linenos"> 17</span>
+<span class="linenos"> 18</span><span class="o">/*</span> <span class="n">This</span> <span class="n">function</span> <span class="ow">is</span> <span class="n">intended</span> <span class="n">so</span> <span class="n">simulate</span> <span class="n">the</span> <span class="n">work</span> <span class="n">of</span> <span class="n">retrieving</span> <span class="n">the</span> <span class="n">current</span> <span class="n">balance</span>
+<span class="linenos"> 19</span> <span class="o">*</span> <span class="k">for</span> <span class="n">a</span> <span class="n">given</span> <span class="n">account</span> <span class="n">number</span><span class="o">.</span> <span class="n">It</span> <span class="n">just</span> <span class="n">spins</span> <span class="ow">and</span> <span class="n">yields</span> <span class="n">a</span> <span class="n">random</span> <span class="n">number</span> <span class="n">of</span> <span class="n">times</span><span class="o">.</span>
+<span class="linenos"> 20</span> <span class="o">*/</span>
+<span class="linenos"> 21</span><span class="n">static</span> <span class="n">money_t</span> <span class="n">get_balance</span><span class="p">(</span><span class="nb">int</span> <span class="n">account_num</span><span class="p">)</span>
+<span class="linenos"> 22</span><span class="p">{</span>
+<span class="linenos"> 23</span>    <span class="n">long</span> <span class="n">dummy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 24</span>    <span class="nb">int</span> <span class="n">nyield</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos"> 25</span>    <span class="nb">int</span> <span class="n">nspin</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="linenos"> 26</span>
+<span class="linenos"> 27</span>
+<span class="linenos"> 28</span>    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nyield</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 29</span>        <span class="n">sched_yield</span><span class="p">();</span>
+<span class="linenos"> 30</span>	<span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 31</span>            <span class="n">dummy</span> <span class="o">+=</span> <span class="n">rand</span><span class="p">();</span>
+<span class="linenos"> 32</span>        <span class="p">}</span>
+<span class="linenos"> 33</span>    <span class="p">}</span>
+<span class="linenos"> 34</span>
+<span class="linenos"> 35</span>    <span class="k">return</span> <span class="n">accounts</span><span class="p">[</span><span class="n">account_num</span><span class="p">];</span>
+<span class="linenos"> 36</span><span class="p">}</span>
+<span class="linenos"> 37</span>
+<span class="linenos"> 38</span><span class="o">/*</span> <span class="n">This</span> <span class="n">function</span> <span class="ow">is</span> <span class="n">intended</span> <span class="n">so</span> <span class="n">simulate</span> <span class="n">the</span> <span class="n">work</span> <span class="n">of</span> <span class="n">saving</span> <span class="n">the</span> <span class="n">current</span> <span class="n">balance</span>
+<span class="linenos"> 39</span> <span class="o">*</span> <span class="n">back</span> <span class="n">to</span> <span class="n">a</span> <span class="n">given</span> <span class="n">account</span> <span class="n">number</span><span class="o">.</span> <span class="n">It</span> <span class="n">just</span> <span class="n">spins</span> <span class="ow">and</span> <span class="n">yields</span> <span class="n">a</span> <span class="n">random</span> <span class="n">number</span> <span class="n">of</span> <span class="n">times</span><span class="o">.</span>
+<span class="linenos"> 40</span> <span class="o">*/</span>
+<span class="linenos"> 41</span><span class="n">static</span> <span class="n">void</span> <span class="n">put_balance</span><span class="p">(</span><span class="nb">int</span> <span class="n">account_num</span><span class="p">,</span> <span class="n">money_t</span> <span class="n">balance</span><span class="p">)</span>
+<span class="linenos"> 42</span><span class="p">{</span>
+<span class="linenos"> 43</span>    <span class="n">long</span> <span class="n">dummy</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 44</span>    <span class="nb">int</span> <span class="n">nyield</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">10</span><span class="p">;</span>
+<span class="linenos"> 45</span>    <span class="nb">int</span> <span class="n">nspin</span> <span class="o">=</span> <span class="n">rand</span><span class="p">()</span> <span class="o">%</span> <span class="mi">1000</span><span class="p">;</span>
+<span class="linenos"> 46</span>
+<span class="linenos"> 47</span>
+<span class="linenos"> 48</span>    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nyield</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 49</span>        <span class="n">sched_yield</span><span class="p">();</span>
+<span class="linenos"> 50</span>	<span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">nspin</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos"> 51</span>            <span class="n">dummy</span> <span class="o">+=</span> <span class="n">rand</span><span class="p">();</span>
+<span class="linenos"> 52</span>        <span class="p">}</span>
+<span class="linenos"> 53</span>    <span class="p">}</span>
+<span class="linenos"> 54</span>
+<span class="linenos"> 55</span>    <span class="n">accounts</span><span class="p">[</span><span class="n">account_num</span><span class="p">]</span> <span class="o">=</span> <span class="n">balance</span><span class="p">;</span>
+<span class="linenos"> 56</span>    <span class="k">return</span><span class="p">;</span>
+<span class="linenos"> 57</span><span class="p">}</span>
+<span class="linenos"> 58</span>
+<span class="linenos"> 59</span><span class="o">/*</span> <span class="n">Start</span> <span class="n">of</span> <span class="n">deposit</span> <span class="n">function</span> <span class="o">*/</span>
+<span class="linenos"> 60</span><span class="n">static</span> <span class="n">void</span> <span class="n">deposit</span><span class="p">(</span><span class="nb">int</span> <span class="n">account</span><span class="p">,</span> <span class="n">money_t</span> <span class="n">amount</span><span class="p">)</span>
+<span class="linenos"> 61</span><span class="p">{</span>
+<span class="linenos"> 62</span>    <span class="n">money_t</span> <span class="n">balance</span> <span class="o">=</span> <span class="n">get_balance</span><span class="p">(</span><span class="n">account</span><span class="p">);</span>
+<span class="linenos"> 63</span>    <span class="n">balance</span> <span class="o">+=</span> <span class="n">amount</span><span class="p">;</span>
+<span class="linenos"> 64</span>    <span class="n">put_balance</span><span class="p">(</span><span class="n">account</span><span class="p">,</span> <span class="n">balance</span><span class="p">);</span>
+<span class="linenos"> 65</span>
+<span class="linenos"> 66</span>    <span class="k">return</span><span class="p">;</span>
+<span class="linenos"> 67</span>		        
+<span class="linenos"> 68</span><span class="p">}</span>
+<span class="linenos"> 69</span><span class="o">/*</span> <span class="n">End</span> <span class="n">of</span> <span class="n">deposit</span> <span class="n">function</span> <span class="o">*/</span>
+<span class="linenos"> 70</span>
+<span class="linenos"> 71</span><span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">deposit_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
+<span class="linenos"> 72</span><span class="p">{</span>
+<span class="linenos"> 73</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="n">my_deposit</span> <span class="o">=</span> <span class="p">(</span><span class="n">struct</span> <span class="n">deposit_s</span> <span class="o">*</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+<span class="linenos"> 74</span>    <span class="n">deposit</span><span class="p">(</span><span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">account_num</span><span class="p">,</span> <span class="n">my_deposit</span><span class="o">-&gt;</span><span class="n">amount</span><span class="p">);</span>
+<span class="linenos"> 75</span>
+<span class="linenos"> 76</span>    <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
+<span class="linenos"> 77</span><span class="p">}</span>
+<span class="linenos"> 78</span>
+<span class="linenos"> 79</span><span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="linenos"> 80</span><span class="p">{</span>
+<span class="linenos"> 81</span>    <span class="n">pthread_t</span> <span class="n">tid1</span><span class="p">,</span> <span class="n">tid2</span><span class="p">;</span>
+<span class="linenos"> 82</span>    <span class="nb">int</span> <span class="n">account_num</span> <span class="o">=</span> <span class="mi">100</span><span class="p">;</span>
+<span class="linenos"> 83</span>    <span class="n">money_t</span> <span class="n">amt1</span> <span class="o">=</span> <span class="mf">50.00</span><span class="p">;</span>
+<span class="linenos"> 84</span>    <span class="n">money_t</span> <span class="n">amt2</span> <span class="o">=</span> <span class="mf">100.00</span><span class="p">;</span> 
+<span class="linenos"> 85</span>
+<span class="linenos"> 86</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep1</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt1</span><span class="p">};</span>
+<span class="linenos"> 87</span>    <span class="n">struct</span> <span class="n">deposit_s</span> <span class="n">dep2</span> <span class="o">=</span> <span class="p">{</span><span class="n">account_num</span><span class="p">,</span> <span class="n">amt2</span><span class="p">};</span> 
+<span class="linenos"> 88</span>
+<span class="linenos"> 89</span>    <span class="o">/*</span> <span class="n">Normally</span> <span class="n">we</span><span class="s1">&#39;d want to test the return value of pthread_create. */</span>
+<span class="linenos"> 90</span>
+<span class="linenos"> 91</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep1</span> <span class="p">);</span>
+<span class="linenos"> 92</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">deposit_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">dep2</span> <span class="p">);</span>
+<span class="linenos"> 93</span>
+<span class="linenos"> 94</span>    <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
+<span class="linenos"> 95</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos"> 96</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos"> 97</span>
+<span class="linenos"> 98</span>    <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Final balance of account </span><span class="si">%d</span><span class="s2"> is $</span><span class="si">%.2lf</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">account_num</span><span class="p">,</span> <span class="n">accounts</span><span class="p">[</span><span class="n">account_num</span><span class="p">]);</span>
+<span class="linenos"> 99</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">100</span><span class="p">}</span>
+<span class="linenos">101</span>
+</pre></div>
+</div>
+</div>
+<p>Let’s try running the bank deposit program a few times and see what happens.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span><span class="o">.</span><span class="n">runNoOutput</span><span class="p">(</span><span class="s2">&quot;[[ -a bank_deposit ]] &amp;&amp; rm bank_deposit;make bank_deposit&quot;</span><span class="p">)</span>
-<span class="n">cmds</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;./bank_deposit</span>
-<span class="s1">./bank_deposit</span>
-<span class="s1">./bank_deposit</span>
-<span class="s1">./bank_deposit</span>
-<span class="s1">./bank_deposit&#39;&#39;&#39;</span>
-<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span>
+<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./bank_deposit&quot;</span><span class="p">)</span>
+<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./bank_deposit&quot;</span><span class="p">)</span>
+<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;./bank_deposit&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "bbf7d9bb5df6463192c45307302674d5", "version_major": 2, "version_minor": 0}
+{"model_id": "fc534b2bf8204ce58d984b807262012b", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># demke:</span>
-<span class="c1"># </span>
-<span class="c1"># This cell is removed in the html, but displays the code in the Jupyter notebook.</span>
-<span class="c1">#</span>
-
-<span class="n">display</span><span class="p">(</span><span class="n">Markdown</span><span class="p">(</span><span class="s1">&#39;&lt;font size=&quot;1.2rem&quot;&gt;&#39;</span> <span class="o">+</span> <span class="n">FileCodeBox</span><span class="p">(</span>
-    <span class="n">file</span><span class="o">=</span><span class="n">appdir</span> <span class="o">+</span> <span class="s2">&quot;/counter.c&quot;</span><span class="p">,</span> 
-    <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> 
-    <span class="n">number</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&lt;b&gt;counter.c - Two threads increment and decrement a shared counter without synchronization.&lt;/b&gt;&quot;</span><span class="p">,</span>
-    <span class="n">h</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span><span class="p">,</span> 
-    <span class="n">w</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span>
-<span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;&lt;/font&gt;&#39;</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<p><font size="1.2rem"><b>counter.c - Two threads increment and decrement a shared counter without synchronization.</b></p>
-<div style="width:100%; height:100%; font-size:inherit; overflow: auto;" >
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span> <span class="mi">1</span><span class="p">:</span> <span class="c1">#include &lt;pthread.h&gt;</span>
- <span class="mi">2</span><span class="p">:</span> <span class="c1">#include &lt;stdlib.h&gt;</span>
- <span class="mi">3</span><span class="p">:</span> <span class="c1">#include &lt;sys/types.h&gt;</span>
- <span class="mi">4</span><span class="p">:</span> <span class="c1">#include &lt;unistd.h&gt;</span>
- <span class="mi">5</span><span class="p">:</span> <span class="c1">#include &lt;string.h&gt;</span>
- <span class="mi">6</span><span class="p">:</span> <span class="c1">#include &lt;stdio.h&gt;</span>
- <span class="mi">7</span><span class="p">:</span> 
- <span class="mi">8</span><span class="p">:</span> <span class="n">long</span> <span class="nb">int</span> <span class="n">shared_counter</span><span class="p">;</span>
- <span class="mi">9</span><span class="p">:</span> 
-<span class="mi">10</span><span class="p">:</span> <span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">increment_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-<span class="mi">11</span><span class="p">:</span> <span class="p">{</span>
-<span class="mi">12</span><span class="p">:</span>     <span class="nb">int</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
-<span class="mi">13</span><span class="p">:</span>     <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<span class="mi">14</span><span class="p">:</span>         <span class="n">shared_counter</span><span class="o">++</span><span class="p">;</span>
-<span class="mi">15</span><span class="p">:</span>     <span class="p">}</span>
-<span class="mi">16</span><span class="p">:</span> 
-<span class="mi">17</span><span class="p">:</span>     <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
-<span class="mi">18</span><span class="p">:</span> <span class="p">}</span>
-<span class="mi">19</span><span class="p">:</span> 
-<span class="mi">20</span><span class="p">:</span> <span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">decrement_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
-<span class="mi">21</span><span class="p">:</span> <span class="p">{</span>
-<span class="mi">22</span><span class="p">:</span>     <span class="nb">int</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
-<span class="mi">23</span><span class="p">:</span> 
-<span class="mi">24</span><span class="p">:</span>     <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<span class="mi">25</span><span class="p">:</span>         <span class="n">shared_counter</span><span class="o">--</span><span class="p">;</span>
-<span class="mi">26</span><span class="p">:</span>     <span class="p">}</span>
-<span class="mi">27</span><span class="p">:</span> 
-<span class="mi">28</span><span class="p">:</span>     <span class="k">return</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="mi">0</span><span class="p">;</span>
-<span class="mi">29</span><span class="p">:</span> <span class="p">}</span>
-<span class="mi">30</span><span class="p">:</span> 
-<span class="mi">31</span><span class="p">:</span> <span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
-<span class="mi">32</span><span class="p">:</span> <span class="p">{</span>
-<span class="mi">33</span><span class="p">:</span>     <span class="n">pthread_t</span> <span class="o">*</span><span class="n">tids</span><span class="p">;</span>
-<span class="mi">34</span><span class="p">:</span>     <span class="nb">int</span> <span class="n">niters</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
-<span class="mi">35</span><span class="p">:</span>     
-<span class="mi">36</span><span class="p">:</span>     <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-<span class="mi">37</span><span class="p">:</span>         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s2">&quot;Usage: </span><span class="si">%s</span><span class="s2"> &lt;num_threads&gt; &lt;num_iters&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
-<span class="mi">38</span><span class="p">:</span>         <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
-<span class="mi">39</span><span class="p">:</span>     <span class="p">}</span>
-<span class="mi">40</span><span class="p">:</span> 
-<span class="mi">41</span><span class="p">:</span>     <span class="n">nthreads</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
-<span class="mi">42</span><span class="p">:</span>     <span class="n">niters</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
-<span class="mi">43</span><span class="p">:</span>     <span class="n">shared_counter</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
-<span class="mi">44</span><span class="p">:</span>     
-<span class="mi">45</span><span class="p">:</span>     <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Main thread: Beginning test with </span><span class="si">%d</span><span class="s2"> threads</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">);</span>
-<span class="mi">46</span><span class="p">:</span>     
-<span class="mi">47</span><span class="p">:</span>     <span class="n">tids</span> <span class="o">=</span> <span class="p">(</span><span class="n">pthread_t</span> <span class="o">*</span><span class="p">)</span><span class="n">malloc</span><span class="p">(</span><span class="n">nthreads</span> <span class="o">*</span> <span class="n">sizeof</span><span class="p">(</span><span class="n">pthread_t</span><span class="p">));</span>
-<span class="mi">48</span><span class="p">:</span>     
-<span class="mi">49</span><span class="p">:</span>     <span class="o">/*</span> <span class="n">We</span> <span class="n">create</span> <span class="n">the</span> <span class="n">same</span> <span class="n">number</span> <span class="n">of</span> <span class="n">increment</span> <span class="ow">and</span> <span class="n">decrement</span> <span class="n">threads</span><span class="p">,</span> <span class="n">each</span> <span class="n">doing</span> <span class="n">the</span> <span class="n">same</span> <span class="n">number</span> <span class="n">of</span> <span class="n">iterations</span><span class="o">.</span> 
-<span class="mi">50</span><span class="p">:</span>      <span class="o">*</span> <span class="n">When</span> <span class="nb">all</span> <span class="n">threads</span> <span class="n">have</span> <span class="n">completed</span><span class="p">,</span> <span class="n">we</span> <span class="n">expect</span> <span class="n">the</span> <span class="n">final</span> <span class="n">value</span> <span class="n">of</span> <span class="n">the</span> <span class="n">shared</span> <span class="n">counter</span> <span class="n">to</span> <span class="n">be</span> <span class="n">the</span> <span class="n">same</span> <span class="k">as</span> <span class="n">its</span>
-<span class="mi">51</span><span class="p">:</span>      <span class="o">*</span> <span class="n">initial</span> <span class="n">value</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span>
-<span class="mi">52</span><span class="p">:</span>      <span class="o">*/</span>
-<span class="mi">53</span><span class="p">:</span>     <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<span class="mi">54</span><span class="p">:</span>         <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">increment_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">niters</span> <span class="p">);</span>
-<span class="mi">55</span><span class="p">:</span>         <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">decrement_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">niters</span> <span class="p">);</span>
-<span class="mi">56</span><span class="p">:</span>     <span class="p">}</span>
-<span class="mi">57</span><span class="p">:</span>     
-<span class="mi">58</span><span class="p">:</span>     <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
-<span class="mi">59</span><span class="p">:</span>     <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-<span class="mi">60</span><span class="p">:</span>         <span class="n">pthread_join</span><span class="p">(</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="mi">61</span><span class="p">:</span>         <span class="n">pthread_join</span><span class="p">(</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">NULL</span><span class="p">);</span>
-<span class="mi">62</span><span class="p">:</span>     <span class="p">}</span>
-<span class="mi">63</span><span class="p">:</span>     
-<span class="mi">64</span><span class="p">:</span>     <span class="n">printf</span><span class="p">(</span><span class="s2">&quot;Main thread: Final value of shared counter is </span><span class="si">%ld</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">shared_counter</span><span class="p">);</span>
-<span class="mi">65</span><span class="p">:</span> 
-<span class="mi">66</span><span class="p">:</span>     <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
-<span class="mi">67</span><span class="p">:</span> <span class="p">}</span>
-</pre></div>
-</div>
-</div>
-</font></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">bash</span><span class="o">.</span><span class="n">runNoOutput</span><span class="p">(</span><span class="s2">&quot;[[ -a counter ]] &amp;&amp; rm counter;make counter&quot;</span><span class="p">)</span>
-<span class="n">cmds</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;./counter 2 20000</span>
-<span class="s1">./counter 2 20000</span>
-<span class="s1">./counter 4 10000</span>
-<span class="s1">./counter 4 10000&#39;&#39;&#39;</span>
-
-<span class="n">bash</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmds</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "36da042ba37f4be0ae3c95125794b1c1", "version_major": 2, "version_minor": 0}
-</script></div>
-</div>
-<p>Even though it looks like the racing thread accesses to the shared counter variable is just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig:sync:counter_assembly</span></code>. (Try <code class="docutils literal notranslate"><span class="pre">objdump</span> <span class="pre">-d</span> <span class="pre">counter</span></code> on the <code class="docutils literal notranslate"><span class="pre">counter</span></code> executable file, and see if you can find these lines in the disassembly of the <code class="docutils literal notranslate"><span class="pre">increment_thread</span></code> and <code class="docutils literal notranslate"><span class="pre">decrement_thread</span></code> functions.)</p>
 </section>
 </section>
 
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"03e01b0c2c6c473fb95590d38bf78777": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "36da042ba37f4be0ae3c95125794b1c1": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_c957a809f8874a6087664b06f174e55b", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is 1168\r\n$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is -5595\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 10000\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 0\r\n$ "}]}}, "6433bcad018b458d89c343357dbab8b2": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_03e01b0c2c6c473fb95590d38bf78777", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ [[ -d mydir ]] && rm -rf mydir\r\n$     #\r\n$ "}]}}, "7cb4ac59fdac4cfd92931ae636ccf65a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "83b067b1d2a64790a0e22990cea9fc13": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_9f11b873e2524d54b777f2cdd736fa7e", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./output_example\r\nHGeololdobye\r\n$ ./output_example\r\nHGeooldlboye\r\n$ ./output_example\r\nHGeolloodbye\r\n$ ./output_example\r\nHGoeoldblyeo\r\n$ "}]}}, "9f11b873e2524d54b777f2cdd736fa7e": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "a59a433475fa4f89bd8904ef62029070": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bbdab623a1af4dac842008aa75b8c6c4": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f958222f26d144da9a0292d2e542d574", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "\ngcc -o bank_deposit bank_deposit.c -lpthread\r\n"}]}}, "bbf7d9bb5df6463192c45307302674d5": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_7cb4ac59fdac4cfd92931ae636ccf65a", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $50.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ "}]}}, "c59cd6770aa640258f3a8ab33857cac9": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_a59a433475fa4f89bd8904ef62029070", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n"}]}}, "c957a809f8874a6087664b06f174e55b": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "f958222f26d144da9a0292d2e542d574": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}}, "version_major": 2, "version_minor": 0}
+{"state": {"03afc7d62321446fa01cacee6613ef11": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_30176f0bb0e24ada9bb86c23a3af4993", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./output_example\r\nHGeololdobye\r\n$ "}]}}, "0644a93f80b04b84b22f146ebae1240f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "30176f0bb0e24ada9bb86c23a3af4993": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "5b83689d6db042af897cec9086e0ad94": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "6eeda02700f3457980eb26d6757747b2": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "bffb14e22f984c98bf2d60b6744f86eb": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "c89676bac45d471d8a4c85c468a96997": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_bffb14e22f984c98bf2d60b6744f86eb", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ [[ -d mydir ]] && rm -rf mydir\r\n$     #\r\n$ "}]}}, "d970ffbe5aa84f3aad86a83e1db64949": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f64d015a45f043a1b710dad1beed9779", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account 100 is $150.00\r\n$ "}]}}, "dbbffd4310d843f698c5e3251393cf9a": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_0644a93f80b04b84b22f146ebae1240f", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account 100 is $100.00\r\n$ "}]}}, "f64d015a45f043a1b710dad1beed9779": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "fa375f54913b470999790d165e809ff2": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_5b83689d6db042af897cec9086e0ad94", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./output_example\r\nHGoeolldboye\r\n$ "}]}}, "fc534b2bf8204ce58d984b807262012b": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_6eeda02700f3457980eb26d6757747b2", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account 100 is $100.00\r\n$ "}]}}}, "version_major": 2, "version_minor": 0}
 </script>
 
 
