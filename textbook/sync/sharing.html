@@ -840,6 +840,7 @@ over-written by Thread 1’s computation. After depositing a total of
 $150 to the account we have a final balance of $50. Context switches are unpredictable, however, and other interleavings of the thread executions are also possible. In <a class="reference internal" href="#fig-sync-badbank"><span class="std std-numref">Fig. 32.1</span></a>(c) we see another possible schedule, where Thread 1’s update to the account balance is overwritten by Thread 2.</p>
 <p>Let’s try running the bank deposit program a few times and see what happens.
 (The hidden block below will show you the full source code of this program.)</p>
+<div class="toggle docutils container">
 <p>Here is the complete code for the bank balance example, including the creation of two threads to run the deposit function on the same account with different amounts.</p>
 <div class="literal-block-wrapper docutils container" id="listing-sync-bank-full">
 <div class="code-block-caption"><span class="caption-number">Listing 32.3 </span><span class="caption-text">bank_deposit.c - Full source code for simple bank account example</span><a class="headerlink" href="#listing-sync-bank-full" title="Permalink to this code">#</a></div>
@@ -946,6 +947,10 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 </pre></div>
 </div>
 </div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
@@ -1037,9 +1042,9 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 {"model_id": "404e5603870c46abb6be606f0560fe43", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<p>Even though it looks like the racing thread accesses to the shared counter variable is just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">fig:sync:counter_assembly</span></code>. (Try <code class="docutils literal notranslate"><span class="pre">objdump</span> <span class="pre">-d</span> <span class="pre">counter</span></code> on the <code class="docutils literal notranslate"><span class="pre">counter</span></code> executable file, and see if you can find these lines in the disassembly of the <code class="docutils literal notranslate"><span class="pre">increment_thread</span></code> and <code class="docutils literal notranslate"><span class="pre">decrement_thread</span></code> functions.)</p>
-<div class="literal-block-wrapper docutils container" id="listing-sync-assembly">
-<div class="code-block-caption"><span class="caption-number">Listing 32.5 </span><span class="caption-text">Assembly code snippet of loop body in <code class="docutils literal notranslate"><span class="pre">decrement_thread()</span></code> function.</span><a class="headerlink" href="#listing-sync-assembly" title="Permalink to this code">#</a></div>
+<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <a class="reference internal" href="#listing-sync-counter-assembly"><span class="std std-numref">Listing 32.5</span></a>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
+<div class="literal-block-wrapper docutils container" id="listing-sync-counter-assembly">
+<div class="code-block-caption"><span class="caption-number">Listing 32.5 </span><span class="caption-text">Assembly code snippet of loop body in <code class="docutils literal notranslate"><span class="pre">decrement_thread()</span></code> function.</span><a class="headerlink" href="#listing-sync-counter-assembly" title="Permalink to this code">#</a></div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>	movq	shared_counter(%rip), %rax
 <span class="linenos">2</span>	subq	$1, %rax
 <span class="linenos">3</span>	movq	%rax, shared_counter(%rip)
