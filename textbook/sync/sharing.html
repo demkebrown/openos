@@ -55,7 +55,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.1/dist/embed-amd.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="33. Synchronization Primitives" href="locking.html" />
+    <link rel="next" title="33. The Critical Section Problem" href="criticalsection.html" />
     <link rel="prev" title="31. Introduction to Concurrency, Synchronization and Deadlock" href="sync.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -311,23 +311,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="criticalsection.html">
+   33. The Critical Section Problem
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="locking.html">
-   33. Synchronization Primitives
+   34. Synchronization Primitives
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="deadlock.html">
-   34. Deadlocks
+   35. Deadlocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hardware_challenges.html">
-   35. Challenges of Modern Hardware
+   36. Challenges of Modern Hardware
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linux_locking.html">
-   36. Locking in the Linux Kernel
+   37. Locking in the Linux Kernel
   </a>
  </li>
 </ul>
@@ -339,17 +344,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/OtherInro.html">
-   37. Overview of other topics
+   38. Overview of other topics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../virt/virt.html">
-   38. Virtualization and Cloud computing
+   39. Virtualization and Cloud computing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../intro/other.html">
-   39. Other OS structures
+   40. Other OS structures
   </a>
  </li>
 </ul>
@@ -361,17 +366,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/howto.html">
-   40. How to read this book
+   41. How to read this book
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../contributing/Contributing.html">
-   41. Contributing
+   42. Contributing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/bib.html">
-   42. Bibliography
+   43. Bibliography
   </a>
  </li>
 </ul>
@@ -626,8 +631,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#coordinating-thread-or-process-activities">
-   32.3. Coordinating Thread or Process Activities
+  <a class="reference internal nav-link" href="#issues-with-concurrent-execution">
+   32.3. Issues with Concurrent Execution
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -665,8 +670,8 @@ title="Print to PDF"
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#coordinating-thread-or-process-activities">
-   32.3. Coordinating Thread or Process Activities
+  <a class="reference internal nav-link" href="#issues-with-concurrent-execution">
+   32.3. Issues with Concurrent Execution
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -727,8 +732,8 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <p>Recall from <a class="reference internal" href="../scheduling/process.html#cont-scheduling-process-threads"><span class="std std-numref">Section 7.3</span></a> that a process can have multiple <em>threads</em>, and that all threads in a process share the same virtual address space. This means that multi-threaded processes do not need to do any extra work to communicate using shared memory. The operating system itself is multi-threaded: every user-level process has at least one thread in the kernel, and other threads carry out asynchronous operating system activities, such as writing dirty file system blocks back to the disk. All of these kernel threads share the same operating system code and data structures. We will see later how user-level communication through pipes is implemented in the operating system by threads writing to, and reading from, a shared buffer of memory. In our discussion of concurrency and synchronization, we will use examples in multi-threaded user-level processes, since they can be presented as simple, stand-alone programs. Keep in mind that everything we say about multi-threaded processes also applies to the implementation of the operating system.</p>
 <p>Since each thread is an independent execution entity, they need to have their own execution state. This includes a per-thread execution stack to hold local variables. In contrast, global variables and heap-allocated variables are shared by all threads in a process. Note that although each thread has its own execution stack, these are still all part of the same virtual address space, and threads in the same process are not protected from each other by the operating system. Thus, it is possible for a buggy thread to accidentally scribble on another thread’s stack space, leading to bizarre behavior.</p>
 </section>
-<section id="coordinating-thread-or-process-activities">
-<h2><span class="section-number">32.3. </span>Coordinating Thread or Process Activities<a class="headerlink" href="#coordinating-thread-or-process-activities" title="Permalink to this headline">#</a></h2>
+<section id="issues-with-concurrent-execution">
+<span id="cont-sync-sharing-issues"></span><h2><span class="section-number">32.3. </span>Issues with Concurrent Execution<a class="headerlink" href="#issues-with-concurrent-execution" title="Permalink to this headline">#</a></h2>
 <p>Regardless of whether we are using multiple processes, or a single multi-threaded process, whether we are implementing user-level programs or the operating system, we need a way to coordinate multiple concurrent activities.</p>
 <aside class="sidebar">
 <p><em>Concurrency</em> in computer systems means that the execution of multiple (i.e., two or more) tasks <em>overlaps in time</em>. The context switch mechanism gives us concurrent execution of multiple processes, even on a single physical CPU. <em>Parallelism</em> means that multiple tasks are executing <em>at the same time</em>. Parallelism requires multiple physical CPUs.</p>
@@ -802,7 +807,7 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "270f5a76f9154c6781bc13dcf7caab92", "version_major": 2, "version_minor": 0}
+{"model_id": "5c82d96e83574a479bb7fa015f73e63a", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 <p>The output doesn’t look great. Not only is the output unreadable, it is also different from one run to the next. (And each time we build this book, we don’t know exactly what output you will be seeing! Maybe some of the runs even produce something reasonable.) What we want to see is either “HelloGoodbye” or “GoodbyeHello” — by adding synchronization, we can restrict the interleavings of the output to just these two possibilities. And, if we wanted to ensure that “Hello” always appeared on the terminal before “Goodbye”, another form of synchronization would allow us to enforce that ordering as well. In fact, the C library <code class="docutils literal notranslate"><span class="pre">printf()</span></code> family of functions, and the internal implementation of the <code class="docutils literal notranslate"><span class="pre">write()</span></code> system call, contain synchronization to ensure that output from one call is not interleaved with another, but if we wanted to ensure that “Hello” is displayed before “Goodbye”, we would still need to add more synchronization on top of the <code class="docutils literal notranslate"><span class="pre">write()</span></code> or <code class="docutils literal notranslate"><span class="pre">printf()</span></code> functions.</p>
@@ -954,7 +959,7 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "06f7594d8ea94330ab3fe3b2a72180c8", "version_major": 2, "version_minor": 0}
+{"model_id": "6539a0d112314003a2df65f9fa87f4ef", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
 </section>
@@ -1039,24 +1044,17 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <div class="cell tag_remove-input docutils container">
 <div class="cell_output docutils container">
 <script type="application/vnd.jupyter.widget-view+json">
-{"model_id": "404e5603870c46abb6be606f0560fe43", "version_major": 2, "version_minor": 0}
+{"model_id": "3cdb67c1a7a44bf5bff8a6ad3ffb10bd", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <a class="reference internal" href="#listing-sync-counter-assembly"><span class="std std-numref">Listing 32.5</span></a>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
-<div class="literal-block-wrapper docutils container" id="listing-sync-counter-assembly">
-<div class="code-block-caption"><span class="caption-number">Listing 32.5 </span><span class="caption-text">Assembly code snippet of loop body in <code class="docutils literal notranslate"><span class="pre">decrement_thread()</span></code> function.</span><a class="headerlink" href="#listing-sync-counter-assembly" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>	movq	shared_counter(%rip), %rax
-<span class="linenos">2</span>	subq	$1, %rax
-<span class="linenos">3</span>	movq	%rax, shared_counter(%rip)
-</pre></div>
-</div>
-</div>
+<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">listing:sync:counter_assembly</span></code>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
+<p>Clearly, uncontrolled sharing can lead to serious problems. In the next chapter, we define the problem a bit more formally. The subsequent chapters look at some ways to solve the problem.</p>
 </section>
 </section>
 
 
 <script type="application/vnd.jupyter.widget-state+json">
-{"state": {"03ecc6373e98486ea37c322d41717f5f": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "06f7594d8ea94330ab3fe3b2a72180c8": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_590b93972ead4eeaad8f57d0023fcb18", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $150.00\r\n$ "}]}}, "14a7cacc903d4a6a89e86cac75079e31": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "270f5a76f9154c6781bc13dcf7caab92": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_86869150f8a44c029196dffb9476e1fc", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./output_example\r\nHGeololdboye\r\n$ ./output_example\r\nHGeololdobye\r\n$ ./output_example\r\nHGeololdobye\r\n$ ./output_example\r\nHGeolodlobye\r\n$ "}]}}, "404e5603870c46abb6be606f0560fe43": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_03ecc6373e98486ea37c322d41717f5f", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is -8630\r\n$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is -7369\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 0\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 0\r\n$ "}]}}, "590b93972ead4eeaad8f57d0023fcb18": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "86869150f8a44c029196dffb9476e1fc": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "e015fee24bc24937929a615050b2cf82": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_14a7cacc903d4a6a89e86cac75079e31", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ [[ -d mydir ]] && rm -rf mydir\r\n$     #\r\n$ "}]}}}, "version_major": 2, "version_minor": 0}
+{"state": {"3cdb67c1a7a44bf5bff8a6ad3ffb10bd": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_f0d7061b2a6449eb8506e60de57a4d76", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is 0\r\n$ ./counter 2 20000\r\nMain thread: Beginning test with 2 threads\r\nMain thread: Final value of shared counter is 0\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 0\r\n$ ./counter 4 10000\r\nMain thread: Beginning test with 4 threads\r\nMain thread: Final value of shared counter is 0\r\n$ "}]}}, "57e3c083d0614c74b84c88ddee89a686": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "5c82d96e83574a479bb7fa015f73e63a": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_7633d1720c0f49f0adc871f82d2a1954", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./output_example\r\nHGeololdobye\r\n$ ./output_example\r\nHGeooldlboye\r\n$ ./output_example\r\nHGeololdobye\r\n$ ./output_example\r\nHGeololdobye\r\n$ "}]}}, "6539a0d112314003a2df65f9fa87f4ef": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_57e3c083d0614c74b84c88ddee89a686", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $50.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $50.00\r\n$ ./bank_deposit\r\nFinal balance of account #100 after depositing $50.00 and $100.00 is $100.00\r\n$ "}]}}, "65824b17eb6c49c78b452c2a048caa5a": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "7633d1720c0f49f0adc871f82d2a1954": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}, "d189bc0d87704f43acf1e10bd5447b66": {"model_module": "@jupyter-widgets/output", "model_module_version": "1.0.0", "model_name": "OutputModel", "state": {"_dom_classes": [], "_model_module": "@jupyter-widgets/output", "_model_module_version": "1.0.0", "_model_name": "OutputModel", "_view_count": null, "_view_module": "@jupyter-widgets/output", "_view_module_version": "1.0.0", "_view_name": "OutputView", "layout": "IPY_MODEL_65824b17eb6c49c78b452c2a048caa5a", "msg_id": "", "outputs": [{"name": "stdout", "output_type": "stream", "text": "$ [[ -d mydir ]] && rm -rf mydir\r\n$     #\r\n$ "}]}}, "f0d7061b2a6449eb8506e60de57a4d76": {"model_module": "@jupyter-widgets/base", "model_module_version": "1.2.0", "model_name": "LayoutModel", "state": {"_model_module": "@jupyter-widgets/base", "_model_module_version": "1.2.0", "_model_name": "LayoutModel", "_view_count": null, "_view_module": "@jupyter-widgets/base", "_view_module_version": "1.2.0", "_view_name": "LayoutView", "align_content": null, "align_items": null, "align_self": null, "border": "1px solid black", "bottom": null, "display": null, "flex": null, "flex_flow": null, "grid_area": null, "grid_auto_columns": null, "grid_auto_flow": null, "grid_auto_rows": null, "grid_column": null, "grid_gap": null, "grid_row": null, "grid_template_areas": null, "grid_template_columns": null, "grid_template_rows": null, "height": "100%", "justify_content": null, "justify_items": null, "left": null, "margin": null, "max_height": null, "max_width": null, "min_height": null, "min_width": null, "object_fit": null, "object_position": null, "order": null, "overflow": null, "overflow_x": null, "overflow_y": "scroll", "padding": null, "right": null, "top": null, "visibility": null, "width": null}}}, "version_major": 2, "version_minor": 0}
 </script>
 
 
@@ -1094,10 +1092,10 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
             <p class="prev-next-title"><span class="section-number">31. </span>Introduction to Concurrency, Synchronization and Deadlock</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="locking.html" title="next page">
+    <a class='right-next' id="next-link" href="criticalsection.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">33. </span>Synchronization Primitives</p>
+        <p class="prev-next-title"><span class="section-number">33. </span>The Critical Section Problem</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
