@@ -1053,7 +1053,32 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 {"model_id": "5c10d42a8c974691a74c778d801b88b6", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">listing:sync:counter_assembly</span></code>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
+<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <a class="reference internal" href="#listing-sync-counter-assembly"><span class="std std-numref">Listing 32.5</span></a>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter.s</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) The highlighted lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
+<div class="literal-block-wrapper docutils container" id="listing-sync-counter-assembly">
+<div class="code-block-caption"><span class="caption-number">Listing 32.5 </span><span class="caption-text">Assembly code snippet of loop in <code class="docutils literal notranslate"><span class="pre">decrement_thread()</span></code> function.</span><a class="headerlink" href="#listing-sync-counter-assembly" title="Permalink to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span>decrement_thread:
+<span class="linenos"> 2</span>.LFB63:
+<span class="linenos"> 3</span>	.cfi_startproc
+<span class="linenos"> 4</span>	endbr64
+<span class="linenos"> 5</span>	testq	%rdi, %rdi
+<span class="linenos"> 6</span>	jle	.L7
+<span class="linenos"> 7</span>	xorl	%edx, %edx
+<span class="linenos"> 8</span>	.p2align 4,,10
+<span class="linenos"> 9</span>	.p2align 3
+<span class="linenos">10</span>.L8:
+<span class="hll"><span class="linenos">11</span>	movq	shared_counter(%rip), %rax
+</span><span class="linenos">12</span>	addq	$1, %rdx
+<span class="hll"><span class="linenos">13</span>	subq	$1, %rax
+</span><span class="hll"><span class="linenos">14</span>	movq	%rax, shared_counter(%rip)
+</span><span class="linenos">15</span>	cmpq	%rdx, %rdi
+<span class="linenos">16</span>	jne	.L8
+<span class="linenos">17</span>.L7:
+<span class="linenos">18</span>	xorl	%eax, %eax
+<span class="linenos">19</span>	ret
+<span class="linenos">20</span>	.cfi_endproc
+</pre></div>
+</div>
+</div>
 <p>Clearly, uncontrolled sharing can lead to serious problems. In the next chapter, we define the problem a bit more formally. The subsequent chapters look at some ways to solve the problem.</p>
 </section>
 </section>
