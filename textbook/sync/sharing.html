@@ -316,23 +316,28 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="locks.html">
+   34. Implementing Locks
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="locking.html">
-   34. Synchronization Primitives
+   35. Synchronization Primitives
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="deadlock.html">
-   35. Deadlocks
+   36. Deadlocks
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="hardware_challenges.html">
-   36. Challenges of Modern Hardware
+   37. Challenges of Modern Hardware
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linux_locking.html">
-   37. Locking in the Linux Kernel
+   38. Locking in the Linux Kernel
   </a>
  </li>
 </ul>
@@ -344,17 +349,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/OtherInro.html">
-   38. Overview of other topics
+   39. Overview of other topics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../virt/virt.html">
-   39. Virtualization and Cloud computing
+   40. Virtualization and Cloud computing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../intro/other.html">
-   40. Other OS structures
+   41. Other OS structures
   </a>
  </li>
 </ul>
@@ -366,17 +371,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/howto.html">
-   41. How to read this book
+   42. How to read this book
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../contributing/Contributing.html">
-   42. Contributing
+   43. Contributing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/bib.html">
-   43. Bibliography
+   44. Bibliography
   </a>
  </li>
 </ul>
@@ -795,7 +800,7 @@ cooperate if they are completely isolated from each other? The short answer is, 
 <span class="linenos">52</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid1</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
 <span class="linenos">53</span>    <span class="n">pthread_join</span><span class="p">(</span><span class="n">tid2</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
 <span class="linenos">54</span>
-<span class="linenos">55</span>    <span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    
+<span class="linenos">55</span>    <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">write</span><span class="p">(</span><span class="n">STDOUT_FILENO</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>    
 <span class="linenos">56</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
 <span class="linenos">57</span><span class="p">}</span>
 <span class="linenos">58</span>
@@ -978,12 +983,12 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="c1">#include &lt;string.h&gt;</span>
 <span class="c1">#include &lt;stdio.h&gt;</span>
 
-<span class="n">long</span> <span class="nb">int</span> <span class="n">shared_counter</span><span class="p">;</span>
+<span class="n">volatile</span> <span class="n">long</span> <span class="n">shared_counter</span><span class="p">;</span>
 
 <span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">increment_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nb">int</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
-    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">long</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="n">long</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">shared_counter</span><span class="o">++</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -992,9 +997,9 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 
 <span class="n">static</span> <span class="n">void</span> <span class="o">*</span><span class="n">decrement_thread</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span>
 <span class="p">{</span>
-    <span class="nb">int</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
+    <span class="n">long</span> <span class="n">niters</span> <span class="o">=</span> <span class="p">(</span><span class="n">long</span><span class="p">)</span><span class="n">arg</span><span class="p">;</span>
 
-    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">long</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">niters</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">shared_counter</span><span class="o">--</span><span class="p">;</span>
     <span class="p">}</span>
 
@@ -1004,7 +1009,8 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 <span class="nb">int</span> <span class="n">main</span><span class="p">(</span><span class="nb">int</span> <span class="n">argc</span><span class="p">,</span> <span class="n">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="n">pthread_t</span> <span class="o">*</span><span class="n">tids</span><span class="p">;</span>
-    <span class="nb">int</span> <span class="n">niters</span><span class="p">,</span> <span class="n">nthreads</span><span class="p">,</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">long</span> <span class="n">niters</span><span class="p">;</span>
+    <span class="nb">int</span> <span class="n">nthreads</span><span class="p">;</span>
     
     <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">fprintf</span><span class="p">(</span><span class="n">stderr</span><span class="p">,</span><span class="s2">&quot;Usage: </span><span class="si">%s</span><span class="s2"> &lt;num_threads&gt; &lt;num_iters&gt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
@@ -1023,13 +1029,13 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
      <span class="o">*</span> <span class="n">When</span> <span class="nb">all</span> <span class="n">threads</span> <span class="n">have</span> <span class="n">completed</span><span class="p">,</span> <span class="n">we</span> <span class="n">expect</span> <span class="n">the</span> <span class="n">final</span> <span class="n">value</span> <span class="n">of</span> <span class="n">the</span> <span class="n">shared</span> <span class="n">counter</span> <span class="n">to</span> <span class="n">be</span> <span class="n">the</span> <span class="n">same</span> <span class="k">as</span> <span class="n">its</span>
      <span class="o">*</span> <span class="n">initial</span> <span class="n">value</span> <span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">e</span><span class="o">.</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span>
      <span class="o">*/</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
         <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">increment_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">niters</span> <span class="p">);</span>
         <span class="p">(</span><span class="n">void</span><span class="p">)</span><span class="n">pthread_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">NULL</span><span class="p">,</span> <span class="n">decrement_thread</span><span class="p">,</span> <span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="p">)</span><span class="n">niters</span> <span class="p">);</span>
     <span class="p">}</span>
     
     <span class="o">/*</span> <span class="n">Wait</span> <span class="k">for</span> <span class="n">child</span> <span class="n">threads</span> <span class="n">to</span> <span class="n">finish</span> <span class="o">*/</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="o">/</span><span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="nb">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">nthreads</span><span class="p">;</span> <span class="n">i</span><span class="o">+=</span><span class="mi">2</span><span class="p">)</span> <span class="p">{</span>
         <span class="n">pthread_join</span><span class="p">(</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">NULL</span><span class="p">);</span>
         <span class="n">pthread_join</span><span class="p">(</span><span class="n">tids</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="n">NULL</span><span class="p">);</span>
     <span class="p">}</span>
@@ -1047,15 +1053,7 @@ $150 to the account we have a final balance of $50. Context switches are unpredi
 {"model_id": "3cdb67c1a7a44bf5bff8a6ad3ffb10bd", "version_major": 2, "version_minor": 0}
 </script></div>
 </div>
-<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <a class="reference internal" href="#listing-sync-counter-assembly"><span class="std std-numref">Listing 32.5</span></a>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
-<div class="literal-block-wrapper docutils container" id="listing-sync-counter-assembly">
-<div class="code-block-caption"><span class="caption-number">Listing 32.5 </span><span class="caption-text">Assembly code snippet of loop body in <code class="docutils literal notranslate"><span class="pre">decrement_thread()</span></code> function.</span><a class="headerlink" href="#listing-sync-counter-assembly" title="Permalink to this code">#</a></div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span>	movq	shared_counter(%rip), %rax
-<span class="linenos">2</span>	subq	$1, %rax
-<span class="linenos">3</span>	movq	%rax, shared_counter(%rip)
-</pre></div>
-</div>
-</div>
+<p>Even though it looks like the racing thread accesses to the shared counter variable are each just a single line of code, we still have unpredictable final results. The reason is because that single line of C source code, <code class="docutils literal notranslate"><span class="pre">shared_counter++</span></code> or <code class="docutils literal notranslate"><span class="pre">shared_counter--</span></code> becomes three lines of machine code when the program is compiled, as shown in <code class="xref std std-numref docutils literal notranslate"><span class="pre">listing:sync:counter_assembly</span></code>. (Try <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">counter</span></code>, and see if you can find these lines in the assembly file <code class="docutils literal notranslate"><span class="pre">counter.s</span></code>.) These lines load the value of the counter from memory into a register, decrement the value in the register, and then store the register value back to memory. Context switches can occur between any of these statements, leading to exactly the same interleaving problems that we saw in the bank account example.</p>
 <p>Clearly, uncontrolled sharing can lead to serious problems. In the next chapter, we define the problem a bit more formally. The subsequent chapters look at some ways to solve the problem.</p>
 </section>
 </section>
