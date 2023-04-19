@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="36. Deadlocks" href="deadlock.html" />
+    <link rel="next" title="36. Common Concurrency Bugs" href="concurrency_bugs.html" />
     <link rel="prev" title="34. Implementing Locks" href="locks.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -328,8 +328,8 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="deadlock.html">
-   36. Deadlocks
+  <a class="reference internal" href="concurrency_bugs.html">
+   36. Common Concurrency Bugs
   </a>
  </li>
  <li class="toctree-l1">
@@ -926,6 +926,75 @@ title="Print to PDF"
 </ul>
 <p>Note that locks and condition variables must always be used together. The lock protects the shared data, so that a thread can examine the state of a structure, make decisions about what to do next, and modify the shared data without interference from other threads. The condition variable provides the mechanism to atomically release the lock and put a thread to sleep until it becomes possible for that thread to make progress again. Upon return from a <code class="docutils literal notranslate"><span class="pre">pthread_cond_wait()</span></code>, a thread is guaranteed to hold the lock again. However, there is no guarantee that a thread awakened by a <code class="docutils literal notranslate"><span class="pre">pthread_cond_signal()</span></code> will be the next thread to acquire the lock—other threads could run first, acquire the lock, change shared variables and invalidate the condition that the thread was waiting for. Hence, a thread should always re-evaluate the boolean expression after returning from <code class="docutils literal notranslate"><span class="pre">pthread_cond_wait()</span></code> to make sure it is ok to proceed. In some cases, a thread may need to wait repeatedly.</p>
 <p>To illustrate these concepts, let’s look first at how we would implement a solution to our original bounded buffer problem using a lock together with condition variables.</p>
+<div class="literal-block-wrapper docutils container" id="listing-sync-ordering-bbuf-cv">
+<div class="code-block-caption"><span class="caption-number">Listing 35.4 </span><span class="caption-text">Bounded buffer with condition variables for multiple producers and consumers.</span><a class="headerlink" href="#listing-sync-ordering-bbuf-cv" title="Permalink to this code">#</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="o">/*</span> <span class="n">For</span> <span class="n">illustration</span> <span class="n">purposes</span> <span class="n">only</span><span class="o">.</span> 
+<span class="linenos"> 2</span> <span class="o">*</span> <span class="n">This</span> <span class="n">code</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">complete</span> <span class="ow">and</span> <span class="n">cannot</span> <span class="n">be</span> <span class="n">compiled</span> <span class="n">into</span> <span class="n">an</span> <span class="n">executable</span><span class="o">.</span>
+<span class="linenos"> 3</span> <span class="o">*/</span>
+<span class="linenos"> 4</span><span class="c1">#include &lt;pthread.h&gt;</span>
+<span class="linenos"> 5</span><span class="c1">#include &lt;stdbool.h&gt;</span>
+<span class="linenos"> 6</span>
+<span class="linenos"> 7</span><span class="n">extern</span> <span class="n">char</span> <span class="n">produce_item</span><span class="p">();</span>
+<span class="linenos"> 8</span><span class="n">extern</span> <span class="n">void</span> <span class="n">consume_item</span><span class="p">(</span><span class="n">char</span> <span class="n">item</span><span class="p">);</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span><span class="c1">#define N 2</span>
+<span class="linenos">11</span>
+<span class="linenos">12</span><span class="n">struct</span> <span class="n">bounded_buffer</span> <span class="p">{</span>
+<span class="linenos">13</span>    <span class="n">char</span> <span class="n">data</span><span class="p">[</span><span class="n">N</span><span class="p">];</span>   <span class="o">/*</span> <span class="s1">&#39;items&#39;</span> <span class="ow">in</span> <span class="n">this</span> <span class="n">example</span> <span class="n">are</span> <span class="n">just</span> <span class="nb">bytes</span> <span class="o">*/</span>
+<span class="linenos">14</span>    <span class="nb">int</span> <span class="ow">in</span><span class="p">;</span>     <span class="o">/*</span> <span class="n">index</span> <span class="n">where</span> <span class="n">producer</span> <span class="n">inserts</span> <span class="n">items</span><span class="p">,</span> <span class="n">initially</span> <span class="mi">0</span> <span class="o">*/</span>
+<span class="linenos">15</span>    <span class="nb">int</span> <span class="n">out</span><span class="p">;</span>    <span class="o">/*</span> <span class="n">index</span> <span class="n">where</span> <span class="n">consumer</span> <span class="n">removes</span> <span class="n">items</span><span class="p">,</span> <span class="n">initially</span> <span class="mi">0</span> <span class="o">*/</span>
+<span class="linenos">16</span>    <span class="nb">int</span> <span class="n">count</span><span class="p">;</span>
+<span class="hll"><span class="linenos">17</span>    <span class="n">pthread_mutex_t</span> <span class="n">buflock</span><span class="p">;</span>
+</span><span class="hll"><span class="linenos">18</span>    <span class="n">pthread_cond_t</span> <span class="n">not_full</span><span class="p">;</span>
+</span><span class="hll"><span class="linenos">19</span>    <span class="n">pthread_cond_t</span> <span class="n">not_empty</span><span class="p">;</span>
+</span><span class="linenos">20</span><span class="p">};</span>
+<span class="linenos">21</span>
+<span class="linenos">22</span><span class="n">struct</span> <span class="n">bounded_buffer</span> <span class="n">bb</span><span class="p">;</span>
+<span class="linenos">23</span>
+<span class="linenos">24</span><span class="n">void</span> <span class="o">*</span><span class="n">producer</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">25</span>    <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">26</span>        <span class="n">char</span> <span class="n">item</span> <span class="o">=</span> <span class="n">produce_item</span><span class="p">();</span>
+<span class="hll"><span class="linenos">27</span>        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">28</span>        <span class="k">while</span><span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="n">N</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll"><span class="linenos">29</span>            <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notfull</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">30</span>        <span class="p">}</span>
+</span><span class="linenos">31</span>        <span class="n">bb</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">bb</span><span class="o">.</span><span class="ow">in</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span><span class="p">;</span>
+<span class="linenos">32</span>        <span class="n">bb</span><span class="o">.</span><span class="ow">in</span> <span class="o">=</span> <span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="ow">in</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+<span class="linenos">33</span>        <span class="n">bb</span><span class="o">.</span><span class="n">count</span><span class="o">++</span><span class="p">;</span>
+<span class="hll"><span class="linenos">34</span>        <span class="n">pthread_cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notempty</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">35</span>        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="linenos">36</span>    <span class="p">}</span>
+<span class="linenos">37</span><span class="p">}</span>
+<span class="linenos">38</span>
+<span class="linenos">39</span><span class="n">void</span> <span class="o">*</span><span class="n">consumer</span><span class="p">(</span><span class="n">void</span> <span class="o">*</span><span class="n">arg</span><span class="p">)</span> <span class="p">{</span>
+<span class="linenos">40</span>    <span class="k">while</span><span class="p">(</span><span class="n">true</span><span class="p">)</span> <span class="p">{</span>
+<span class="hll"><span class="linenos">41</span>        <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">42</span>        <span class="k">while</span> <span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+</span><span class="hll"><span class="linenos">43</span>            <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notempty</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">44</span>        <span class="p">}</span>
+</span><span class="linenos">45</span>        <span class="n">char</span> <span class="n">item</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">bb</span><span class="o">.</span><span class="n">out</span><span class="p">];</span>
+<span class="linenos">46</span>        <span class="n">bb</span><span class="o">.</span><span class="n">out</span> <span class="o">=</span> <span class="p">(</span><span class="n">bb</span><span class="o">.</span><span class="n">out</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">N</span><span class="p">;</span>
+<span class="linenos">47</span>        <span class="n">bb</span><span class="o">.</span><span class="n">count</span><span class="o">--</span><span class="p">;</span>
+<span class="hll"><span class="linenos">48</span>        <span class="n">pthread_cond_signal</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notfull</span><span class="p">);</span>
+</span><span class="hll"><span class="linenos">49</span>        <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">);</span>
+</span><span class="linenos">50</span>
+<span class="linenos">51</span>        <span class="n">consume_item</span><span class="p">(</span><span class="n">item</span><span class="p">);</span>
+<span class="linenos">52</span>    <span class="p">}</span>
+<span class="linenos">53</span><span class="p">}</span>
+<span class="linenos">54</span>
+<span class="linenos">55</span><span class="nb">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="linenos">56</span><span class="p">{</span>
+<span class="linenos">57</span>    <span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">buflock</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos">58</span>    <span class="n">pthread_cond_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notfull</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos">59</span>    <span class="n">pthread_cond_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">bb</span><span class="o">.</span><span class="n">notempty</span><span class="p">,</span> <span class="n">NULL</span><span class="p">);</span>
+<span class="linenos">60</span>    
+<span class="linenos">61</span>    <span class="o">/***</span> <span class="n">Thread</span> <span class="n">creation</span> <span class="n">stuff</span> <span class="n">here</span> <span class="o">***/</span>
+<span class="linenos">62</span>    
+<span class="linenos">63</span>    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="linenos">64</span><span class="p">}</span>
+</pre></div>
+</div>
+</div>
 <p>Once the producer has created an item to add to the buffer, it first locks the buffer (line 27), then checks if there is space to insert a new item (line 28). If the buffer is full, the producer calls <code class="docutils literal notranslate"><span class="pre">pthread_cond_wait()</span></code> to put itself to sleep until the buffer becomes not full (line 29). Upon returning from the wait, the producer re-checks to make sure there is still space in the buffer, and if so, it can proceed to insert it (lines 31-33). Finally, the producer notifies a waiting consumer (if there is one) that the buffer is not empty (line 34) and releases the buffer lock (line 35). The consumer goes through a similar set of steps.</p>
 <p>Notice that we use a <code class="docutils literal notranslate"><span class="pre">while()</span></code> loop on lines 28 and 42 to check the number of items in the buffer. This is necessary because the buffer lock is released while waiting, and not immediately re-acquired after a signal is sent. <em>A set of pictures should go here to illustrate the reason.</em> Suppose we have a full buffer, and two producer threads that want to add an item. Producer <span class="math notranslate nohighlight">\(p1\)</span> executes lines 26 to 29 and is blocked on the <em>notfull</em> condition variable, releasing the lock. While <span class="math notranslate nohighlight">\(p1\)</span> held the lock, consumer <span class="math notranslate nohighlight">\(c1\)</span> and producer <span class="math notranslate nohighlight">\(p2\)</span> also tried to acquire the lock and are queued up waiting for it to be released; when <span class="math notranslate nohighlight">\(p1\)</span> releases the lock in its call to <code class="docutils literal notranslate"><span class="pre">pthread_cond_wait()</span></code>, <span class="math notranslate nohighlight">\(c1\)</span> will acquire it next. Consumer <span class="math notranslate nohighlight">\(c1\)</span> executes lines 42-47 to check that the buffer is not empty and remove an item, then signals the <em>notfull</em> condition variable since there is now an empty slot in the buffer. The <code class="docutils literal notranslate"><span class="pre">pthread_cond_signal()</span></code> operation makes <span class="math notranslate nohighlight">\(p1\)</span> runnable again, but <span class="math notranslate nohighlight">\(p1\)</span> must acquire the lock before it can return. When <span class="math notranslate nohighlight">\(c1\)</span> releases the lock on line 49, it is possible for <span class="math notranslate nohighlight">\(p2\)</span> to acquire it before <span class="math notranslate nohighlight">\(p1\)</span>, and fill the only available slot in the buffer. When <span class="math notranslate nohighlight">\(p2\)</span> releases the lock and <span class="math notranslate nohighlight">\(p1\)</span> acquires it, returning from the wait on line 29, the buffer will be full again. If <span class="math notranslate nohighlight">\(p1\)</span> did not re-check the state of the buffer on line 28 (i.e., if we used an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement on line 28 instead of a <code class="docutils literal notranslate"><span class="pre">while</span></code> statement), then <span class="math notranslate nohighlight">\(p1\)</span> would proceed to insert its item into the buffer, overwriting an existing item that had not yet been removed by a consumer.</p>
 <p><strong>Exercise for the reader</strong></p>
@@ -973,10 +1042,10 @@ title="Print to PDF"
             <p class="prev-next-title"><span class="section-number">34. </span>Implementing Locks</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="deadlock.html" title="next page">
+    <a class='right-next' id="next-link" href="concurrency_bugs.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">36. </span>Deadlocks</p>
+        <p class="prev-next-title"><span class="section-number">36. </span>Common Concurrency Bugs</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
