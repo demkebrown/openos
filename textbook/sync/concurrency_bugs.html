@@ -57,7 +57,7 @@ const thebe_selector_output = ".output, .cell_output"
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="37. Challenges of Modern Hardware" href="hardware_challenges.html" />
+    <link rel="next" title="37. Read-Dominated Workloads" href="readmostly.html" />
     <link rel="prev" title="35. Ordering Thread Events" href="ordering.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="None">
@@ -333,13 +333,18 @@ const thebe_selector_output = ".output, .cell_output"
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="readmostly.html">
+   37. Read-Dominated Workloads
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="hardware_challenges.html">
-   37. Challenges of Modern Hardware
+   38. Challenges of Modern Hardware
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="linux_locking.html">
-   38. Locking in the Linux Kernel
+   39. Locking in the Linux Kernel
   </a>
  </li>
 </ul>
@@ -351,17 +356,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/OtherInro.html">
-   39. Overview of other topics
+   40. Overview of other topics
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../virt/virt.html">
-   40. Virtualization and Cloud computing
+   41. Virtualization and Cloud computing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../intro/other.html">
-   41. Other OS structures
+   42. Other OS structures
   </a>
  </li>
 </ul>
@@ -373,17 +378,17 @@ const thebe_selector_output = ".output, .cell_output"
 <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/howto.html">
-   42. How to read this book
+   43. How to read this book
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../contributing/Contributing.html">
-   43. Contributing
+   44. Contributing
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="../misc/bib.html">
-   44. Bibliography
+   45. Bibliography
   </a>
  </li>
 </ul>
@@ -785,7 +790,33 @@ title="Print to PDF"
 <section class="tex2jax_ignore mathjax_ignore" id="common-concurrency-bugs">
 <span id="cont-sync-concurrency-bugs"></span><h1><span class="section-number">36. </span>Common Concurrency Bugs<a class="headerlink" href="#common-concurrency-bugs" title="Permalink to this headline">#</a></h1>
 <p>In the previous chapters, we have already seen some examples of how things can go wrong without correct synchronization. In this chapter, we examine the three most common types of concurrency bugs: <em>atomicity violations</em>, <em>order violations</em>, and <em>deadlocks</em>. We will also briefly discuss other, less common, concurrency bugs. We will focus on deadlocks, since we have already seen the tools needed to address the other two main types of bugs.</p>
-<p>Our bug classifications, and real-world examples, are drawn from Lu et al.’s 2008 study of concurrency bugs <span id="id1">[<a class="reference internal" href="../misc/bib.html#id9" title="Shan Lu, Soyeon Park, Eunsoo Seo, and Yuanyuan Zhou. Learning from mistakes: a comprehensive study on real world concurrency bug characteristics. In Proceedings of the 13th International Conference on Architectural Support for Programming Languages and Operating Systems, ASPLOS XIII, 329–339. New York, NY, USA, 2008. Association for Computing Machinery. URL: https://doi.org/10.1145/1346281.1346323, doi:10.1145/1346281.1346323.">LPSZ08</a>]</span>, which examined 105 randomly selected concurrency bugs drawn from the bug databases of four open-source applications (MySQL, Apache, Mozilla, and OpenOffice). In <code class="xref std std-numref docutils literal notranslate"><span class="pre">bug-breakdown</span></code>, we break down these bugs by category.</p>
+<p>Our bug classifications, and real-world examples, are drawn from Lu et al.’s 2008 study of concurrency bugs <span id="id1">[<a class="reference internal" href="../misc/bib.html#id9" title="Shan Lu, Soyeon Park, Eunsoo Seo, and Yuanyuan Zhou. Learning from mistakes: a comprehensive study on real world concurrency bug characteristics. In Proceedings of the 13th International Conference on Architectural Support for Programming Languages and Operating Systems, ASPLOS XIII, 329–339. New York, NY, USA, 2008. Association for Computing Machinery. URL: https://doi.org/10.1145/1346281.1346323, doi:10.1145/1346281.1346323.">LPSZ08</a>]</span>, which examined 105 randomly selected concurrency bugs drawn from the bug databases of four open-source applications (MySQL, Apache, Mozilla, and OpenOffice). In <a class="reference internal" href="#table-sync-bugs-breakdown"><span class="std std-numref">Table 36.1</span></a>, we break down these bugs by category.</p>
+<table class="table" id="table-sync-bugs-breakdown">
+<caption><span class="caption-number">Table 36.1 </span><span class="caption-text">Concurrency Bug Breakdown (3 bugs are counted as both atomicity violation and order violation)</span><a class="headerlink" href="#table-sync-bugs-breakdown" title="Permalink to this table">#</a></caption>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Bug Category</p></th>
+<th class="head"><p>Bug Count</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Deadlock</p></td>
+<td><p>31</p></td>
+</tr>
+<tr class="row-odd"><td><p>Atomicity Violation</p></td>
+<td><p>51</p></td>
+</tr>
+<tr class="row-even"><td><p>Order Violation</p></td>
+<td><p>24</p></td>
+</tr>
+<tr class="row-odd"><td><p>Other</p></td>
+<td><p>2</p></td>
+</tr>
+</tbody>
+</table>
 <p>One key takeaway from this study is that concurrent programming is <em>hard</em>—even mature, widely used projects have concurrency bugs. Developing tools to help detect, diagnose, and correct these concurrency bugs is an active area of research, but so far, there is no silver bullet.</p>
 <section id="atomicity-violations">
 <h2><span class="section-number">36.1. </span>Atomicity Violations<a class="headerlink" href="#atomicity-violations" title="Permalink to this headline">#</a></h2>
@@ -1126,10 +1157,10 @@ time as you</p></li>
             <p class="prev-next-title"><span class="section-number">35. </span>Ordering Thread Events</p>
         </div>
     </a>
-    <a class='right-next' id="next-link" href="hardware_challenges.html" title="next page">
+    <a class='right-next' id="next-link" href="readmostly.html" title="next page">
     <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">37. </span>Challenges of Modern Hardware</p>
+        <p class="prev-next-title"><span class="section-number">37. </span>Read-Dominated Workloads</p>
     </div>
     <i class="fas fa-angle-right"></i>
     </a>
